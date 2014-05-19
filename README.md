@@ -47,6 +47,10 @@ That provides support for the following:
 
 **2.** Then just drop the [frontendPerformanceData.js](https://github.com/Comcast/frontend-performance-data/blob/master/frontendPerformanceData.js) in your codebase and reference that JavaScript file in your HTML document, again making sure that Underscore is referenced first. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'frontendPerformanceData'.
 
+### Storing & Retrieving Performance Data
+
+Details in the [JavaScript API](https://github.com/Comcast/frontend-performance-data/wiki/JavaScript-API) page in the wiki
+
 ## Running Tests
 
 Tests are written in [Jasmine](http://jasmine.github.io/) and run with [Karma](http://karma-runner.github.io/)
