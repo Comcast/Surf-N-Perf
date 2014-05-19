@@ -13,7 +13,7 @@ Micro-library for gathering web page performance data
 
 There are 2 pieces of code that need to be included in your webpage:
 
-1. The following code must be included as high up in the source code of your base HTML document as possible, ideally right after the opening <head> tag:
+**1.** The following code must be included as high up in the source code of your base HTML document as possible, ideally right after the opening ```<head>``` tag:
 
 ```html
 <script>
@@ -45,7 +45,7 @@ That provides support for the following:
 - A "loadEventEnd" mark for browsers that do not support [Navigation Timing](http://www.w3.org/TR/navigation-timing/) which can be used to compute durations from when the load event of the document is completed ([loadEventEnd](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-loadend))
 - A "loadEventEnd" [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp) mark for accurately calculating durations from when the load event of the document is completed in browsers that support [High Resolution Time](http://www.w3.org/TR/hr-time/)
 
-2. Then just drop the [frontendPerformanceData.js](https://github.com/Comcast/frontend-performance-data/blob/master/frontendPerformanceData.js) in your codebase and reference that JavaScript file in your HTML document, again making sure that Underscore is referenced first. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'frontendPerformanceData'.
+**2.** Then just drop the [frontendPerformanceData.js](https://github.com/Comcast/frontend-performance-data/blob/master/frontendPerformanceData.js) in your codebase and reference that JavaScript file in your HTML document, again making sure that Underscore is referenced first. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'frontendPerformanceData'.
 
 ## Running Tests
 
