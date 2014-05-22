@@ -23,6 +23,10 @@ There are 2 pieces of code that need to be included in your webpage:
   };
 
   FE_PERF_DATA.marks.pageStart = (new Date()).getTime();
+  
+  if(window.performance && window.performance.now) {
+    FE_PERF_DATA.highResMarks.pageStart = window.performance.now();
+  }
 
   FE_PERF_DATA.setPageLoad = function() {
     FE_PERF_DATA.marks.loadEventEnd = (new Date()).getTime();
