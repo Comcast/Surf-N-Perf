@@ -1,8 +1,11 @@
 {
-  "name": "Surf-N-Perf.js",
+  "name": "Surf-N-Perf",
   "version": "0.0.1",
   "description": "Micro-library for gathering frontend web page performance data",
-  "main": "surfnperf.js",
+  "main": "surfnperf",
+  "engines": {
+    "node": "0.10.x"
+  },
   "dependencies": {
     "underscore": "^1.6.0"
   },
@@ -23,6 +26,9 @@
     "type": "git",
     "url": "git://github.com/Comcast/Surf-N-Perf.git"
   },
+  "keywords": [
+    "performance"
+  ],
   "author": "John Riviello, Comcast",
   "license": "MIT",
   "bugs": {
