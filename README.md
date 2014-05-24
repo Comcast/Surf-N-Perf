@@ -1,4 +1,4 @@
-Surf-N-Perf.js
+Surf-N-Perf
 ==============
 
 Micro-library for gathering frontend web page performance data.  
@@ -7,7 +7,7 @@ Micro-library for gathering frontend web page performance data.
 
 ### Dependencies
 
-[Underscore](http://underscorejs.org/) is a dependency, so make sure it is referenced in your code prior to surfnperf.js.
+[Underscore](http://underscorejs.org/) is a dependency, so make sure it is referenced in your code prior to surfnperf.
 
 ### Including the code in your project
 
