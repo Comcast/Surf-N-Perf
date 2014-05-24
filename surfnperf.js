@@ -23,10 +23,10 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // For Require.js
-    define('surf-n-perf', ['underscore'], factory);
+    define('surfnperf', ['underscore'], factory);
   } else {
     // Browser global if not using Require.js
-    root['surf-n-perf'] = factory(root._);
+    root.surfnperf = factory(root._);
   }
 }(this, function (_) {
 

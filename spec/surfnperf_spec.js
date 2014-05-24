@@ -1,5 +1,5 @@
-define('spec/surf-n-perf_spec', [
-  'surf-n-perf'
+define('spec/surfnperf_spec', [
+  'surfnperf'
 ], function(
   SurfNPerf
 ) {

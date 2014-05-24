@@ -2,7 +2,7 @@
   "name": "Surf-N-Perf.js",
   "version": "0.0.1",
   "description": "Micro-library for gathering frontend web page performance data",
-  "main": "surf-n-perf.js",
+  "main": "surfnperf.js",
   "dependencies": {
     "underscore": "^1.6.0"
   },

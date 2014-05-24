@@ -7,7 +7,7 @@ Micro-library for gathering frontend web page performance data.
 
 ### Dependencies
 
-[Underscore](http://underscorejs.org/) is a dependency, so make sure it is referenced in your code prior to surf-n-perf.js.
+[Underscore](http://underscorejs.org/) is a dependency, so make sure it is referenced in your code prior to surfnperf.js.
 
 ### Including the code in your project
 
@@ -49,7 +49,7 @@ That provides support for the following:
 - A "loadEventEnd" mark for browsers that do not support [Navigation Timing](http://www.w3.org/TR/navigation-timing/) which can be used to compute durations from when the load event of the document is completed ([loadEventEnd](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-loadend))
 - A "loadEventEnd" [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp) mark for accurately calculating durations from when the load event of the document is completed in browsers that support [High Resolution Time](http://www.w3.org/TR/hr-time/)
 
-**2.** Then just drop the [surf-n-perf.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surf-n-perf.js) in your codebase and reference that JavaScript file in your HTML document, again making sure that Underscore is referenced first. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'surf-n-perf'.
+**2.** Then just drop the [surfnperf.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js) in your codebase and reference that JavaScript file in your HTML document, again making sure that Underscore is referenced first. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'surfnperf'.
 
 ### Storing & Retrieving Performance Data
 
