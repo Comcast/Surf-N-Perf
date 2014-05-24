@@ -23,10 +23,10 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // For Require.js
-    define('frontendPerformanceData', ['underscore'], factory);
+    define('surf-n-perf', ['underscore'], factory);
   } else {
     // Browser global if not using Require.js
-    root.frontendPerformanceData = factory(root._);
+    root['surf-n-perf'] = factory(root._);
   }
 }(this, function (_) {
 
@@ -42,9 +42,9 @@
   /**
    * Frontend Web Performance Data Gathering
    *
-   * @class FrontendPerformanceData
+   * @class SurfNPerf
    */
-  var FrontendPerformanceData = function() {
+  var SurfNPerf = function() {
       this._data = {
         custom: {},
         marks: {},
@@ -58,7 +58,7 @@
       this.initialize();
     };
 
-  _.extend(FrontendPerformanceData.prototype, {
+  _.extend(SurfNPerf.prototype, {
 
     _setPerformanceApis: function() {
       if(window.performance) {
@@ -75,8 +75,8 @@
     },
 
     _setPerfProperties: function() {
-      if(_.isUndefined(window.FE_PERF_DATA) || !window.FE_PERF_DATA.marks) {
-        window.FE_PERF_DATA = {
+      if(_.isUndefined(window.SURF_N_PERF) || !window.SURF_N_PERF.marks) {
+        window.SURF_N_PERF = {
           marks: {},
           highResMarks: {}
         };
@@ -98,7 +98,7 @@
      *
      * @arguments {String} timeType 'highRes' (to return a DOMHighResTimeStamp, if available) or 'DOM' (to return a DOMTimeStamp's value) - optional. Defaults to 'highRes'
      * @returns {DOMHighResTimeStamp | integer} time value
-     * @memberOf FrontendPerformanceData
+     * @memberOf SurfNPerf
      */
     now: function(timeType) {
       timeType = timeType || 'highRes';
@@ -119,7 +119,7 @@
      * @arguments {String} eventKey name of the timing event
      * @arguments {String} timeType 'highRes' (to return a DOMHighResTimeStamp, if available) or 'DOM' (to return a DOMTimeStamp's value) - optional. Defaults to 'DOM'
      * @returns {DOMHighResTimeStamp | integer} time value
-     * @memberOf FrontendPerformanceData
+     * @memberOf SurfNPerf
      */
     getTimingMark: function(eventKey, timeType) {
       timeType = timeType || 'DOM';
@@ -128,7 +128,7 @@
         if(timeType === 'DOM' || this._highResTime === false) {
           return this._performanceTiming()[eventKey];
         } else { // timeType === 'HighRes'
-          return window.FE_PERF_DATA.highResMarks[eventKey];
+          return window.SURF_N_PERF.highResMarks[eventKey];
         }
       } else {
         return this.getMark(eventKey, timeType);
@@ -148,9 +148,9 @@
       timeType = timeType || 'highRes';
 
       if(timeType === 'highRes' && this._highResTime === true) {
-        mark = this._data.highResMarks[eventKey] || window.FE_PERF_DATA.highResMarks[eventKey];
+        mark = this._data.highResMarks[eventKey] || window.SURF_N_PERF.highResMarks[eventKey];
       }
-      return mark || this._data.marks[eventKey] || window.FE_PERF_DATA.marks[eventKey];
+      return mark || this._data.marks[eventKey] || window.SURF_N_PERF.marks[eventKey];
     },
 
     updateEvent: function(eventKey, key, value) {
@@ -208,7 +208,7 @@
      * Total time for App Cache, DNS, TCP, Request & Response
      *
      * @returns {integer} time in ms
-     * @memberOf FrontendPerformanceData
+     * @memberOf SurfNPerf
      */
     getNetworkLatency: function() {
       var fetchStart = this.getTimingMark('fetchStart'),
@@ -222,7 +222,7 @@
      * Total time to process the Response & fire the onLoad event
      *
      * @returns {integer} time in ms
-     * @memberOf FrontendPerformanceData
+     * @memberOf SurfNPerf
      */
     getProcessingLoadTime: function() {
       var responseEnd = this.getTimingMark('responseEnd') || this.getMark('pageStart', 'DOM'),
@@ -236,7 +236,7 @@
      * Total time for a page to load from the time the user initiates the access of the page to the firing of the onLoad event
      *
      * @returns {integer} time in ms
-     * @memberOf FrontendPerformanceData
+     * @memberOf SurfNPerf
      */
     getFullRequestLoadTime: function() {
       var navigationStart = this.getTimingMark('navigationStart'),
@@ -248,6 +248,6 @@
 
   });
 
-  return new FrontendPerformanceData();
+  return new SurfNPerf();
 
 }));

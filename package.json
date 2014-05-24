@@ -1,10 +1,10 @@
 {
-  "name": "frontend-performance-data",
+  "name": "Surf-N-Perf.js",
   "version": "0.0.1",
-  "description": "Micro-library for gathering web page performance data",
-  "main": "frontendPerformanceData.js",
+  "description": "Micro-library for gathering frontend web page performance data",
+  "main": "surf-n-perf.js",
   "dependencies": {
-    "karma": "^0.12.16"
+    "underscore": "^1.6.0"
   },
   "devDependencies": {
     "install": "^0.1.7",
@@ -21,12 +21,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Comcast/frontend-performance-data.git"
+    "url": "git://github.com/Comcast/Surf-N-Perf.git"
   },
   "author": "John Riviello, Comcast",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Comcast/frontend-performance-data/issues"
+    "url": "https://github.com/Comcast/Surf-N-Perf/issues"
   },
-  "homepage": "https://github.com/Comcast/frontend-performance-data"
+  "homepage": "https://github.com/Comcast/Surf-N-Perf"
 }

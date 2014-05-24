@@ -1,13 +1,13 @@
-frontend-performance-data
-=========================
+Surf-N-Perf.js
+==============
 
-Micro-library for gathering web page performance data
+Micro-library for gathering frontend web page performance data.  
 
 ## Usage
 
 ### Dependencies
 
-[Underscore](http://underscorejs.org/) is a dependency, so make sure it is referenced in your code prior to frontendPerformanceData.js.
+[Underscore](http://underscorejs.org/) is a dependency, so make sure it is referenced in your code prior to surf-n-perf.js.
 
 ### Including the code in your project
 
@@ -17,29 +17,29 @@ There are 2 pieces of code that need to be included in your webpage:
 
 ```html
 <script>
-  var FE_PERF_DATA = {
+  var SURF_N_PERF = {
     marks: {},
     highResMarks: {}
   };
 
-  FE_PERF_DATA.marks.pageStart = (new Date()).getTime();
+  SURF_N_PERF.marks.pageStart = (new Date()).getTime();
   
   if(window.performance && window.performance.now) {
-    FE_PERF_DATA.highResMarks.pageStart = window.performance.now();
+    SURF_N_PERF.highResMarks.pageStart = window.performance.now();
   }
 
-  FE_PERF_DATA.setPageLoad = function() {
-    FE_PERF_DATA.marks.loadEventEnd = (new Date()).getTime();
+  SURF_N_PERF.setPageLoad = function() {
+    SURF_N_PERF.marks.loadEventEnd = (new Date()).getTime();
 
     if(window.performance && window.performance.now) {
-      FE_PERF_DATA.highResMarks.loadEventEnd = window.performance.now();
+      SURF_N_PERF.highResMarks.loadEventEnd = window.performance.now();
     }
   };
 
   if(window.addEventListener) {
-    window.addEventListener('load', FE_PERF_DATA.setPageLoad, false);
+    window.addEventListener('load', SURF_N_PERF.setPageLoad, false);
   } else {
-    window.attachEvent('onload', FE_PERF_DATA.setPageLoad);
+    window.attachEvent('onload', SURF_N_PERF.setPageLoad);
   }
 </script>
 ```
@@ -49,11 +49,11 @@ That provides support for the following:
 - A "loadEventEnd" mark for browsers that do not support [Navigation Timing](http://www.w3.org/TR/navigation-timing/) which can be used to compute durations from when the load event of the document is completed ([loadEventEnd](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-loadend))
 - A "loadEventEnd" [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp) mark for accurately calculating durations from when the load event of the document is completed in browsers that support [High Resolution Time](http://www.w3.org/TR/hr-time/)
 
-**2.** Then just drop the [frontendPerformanceData.js](https://github.com/Comcast/frontend-performance-data/blob/master/frontendPerformanceData.js) in your codebase and reference that JavaScript file in your HTML document, again making sure that Underscore is referenced first. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'frontendPerformanceData'.
+**2.** Then just drop the [surf-n-perf.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surf-n-perf.js) in your codebase and reference that JavaScript file in your HTML document, again making sure that Underscore is referenced first. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'surf-n-perf'.
 
 ### Storing & Retrieving Performance Data
 
-Details in the [JavaScript API](https://github.com/Comcast/frontend-performance-data/wiki/JavaScript-API) page in the wiki
+Details in the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API) page in the wiki
 
 ## Running Tests
 
@@ -75,4 +75,4 @@ By default, it will run the tests using [PhantomJS](http://phantomjs.org/). You 
 
 ## License
 
-Licensed under the [MIT License](https://github.com/Comcast/frontend-performance-data/blob/master/LICENSE)
+Licensed under the [MIT License](https://github.com/Comcast/Surf-N-Perf/blob/master/LICENSE)
