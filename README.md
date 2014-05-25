@@ -68,7 +68,7 @@ $ npm install
 And then run the tests with:
 
 ```bash
-$ npm test
+$ npm run-script karma
 ```
 
 By default, it will run the tests using [PhantomJS](http://phantomjs.org/). You can also run the tests in any browser by going to http://localhost:9876/
