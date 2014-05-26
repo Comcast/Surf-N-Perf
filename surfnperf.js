@@ -268,6 +268,26 @@
     },
 
     /**
+     * Total time for App Cache, DNS & TCP
+     *
+     * @returns {integer} time in ms
+     * @memberOf SurfNPerf
+     */
+    getNetworkTime: function() {
+      return this.duration('fetchStart', 'connectEnd');
+    },
+
+    /**
+     * Total time for Request & Response
+     *
+     * @returns {integer} time in ms
+     * @memberOf SurfNPerf
+     */
+    getServerTime: function() {
+      return this.duration('requestStart', 'responseEnd');
+    },
+
+    /**
      * Total time for App Cache, DNS, TCP, Request & Response
      *
      * @returns {integer} time in ms

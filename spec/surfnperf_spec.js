@@ -883,6 +883,7 @@ define('spec/surfnperf_spec', [
         spyOn(SurfNPerf, 'performanceTiming').andReturn({
           navigationStart: 1388595600000,
           fetchStart     : 1388595601000,
+          connectEnd     : 1388595601900,
           requestStart   : 1388595602000,
           responseStart  : 1388595603000,
           responseEnd    : 1388595604000,
@@ -912,6 +913,14 @@ define('spec/surfnperf_spec', [
           SurfNPerf._highResTime = true;
         });
 
+        it('getNetworkTime returns the difference between fetchStart & connectEnd for the page', function() {
+          expect(SurfNPerf.getNetworkTime()).toEqual(900);
+        });
+
+        it('getServerTime returns the difference between requestStart & responseEnd for the page', function() {
+          expect(SurfNPerf.getServerTime()).toEqual(2000);
+        });
+
         it('getNetworkLatency returns the difference between fetchStart & responseEnd for the page', function() {
           expect(SurfNPerf.getNetworkLatency()).toEqual(3000);
         });
@@ -931,6 +940,14 @@ define('spec/surfnperf_spec', [
         beforeEach(function() {
           SurfNPerf._navigationTiming = true;
           SurfNPerf._highResTime = false;
+        });
+
+        it('getNetworkTime returns the difference between fetchStart & connectEnd for the page', function() {
+          expect(SurfNPerf.getNetworkTime()).toEqual(900);
+        });
+
+        it('getServerTime returns the difference between requestStart & responseEnd for the page', function() {
+          expect(SurfNPerf.getServerTime()).toEqual(2000);
         });
 
         it('getNetworkLatency returns the difference between fetchStart & responseEnd for the page', function() {
@@ -955,6 +972,14 @@ define('spec/surfnperf_spec', [
           /* highRes Marks won't exist: */
           SURF_N_PERF.highResMarks = {};
           SurfNPerf._data.highResMarks = {};
+        });
+
+        it('getNetworkTime returns 0', function() {
+          expect(SurfNPerf.getNetworkTime()).toEqual(0);
+        });
+
+        it('getServerTime returns 0', function() {
+          expect(SurfNPerf.getServerTime()).toEqual(0);
         });
 
         it('getNetworkLatency returns 0', function() {
