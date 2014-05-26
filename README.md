@@ -27,6 +27,10 @@ There are 2 pieces of code that need to be included in your webpage:
   if(window.performance && window.performance.now) {
     SURF_N_PERF.highResMarks.pageStart = window.performance.now();
   }
+  
+  if(window.performance.mark) {
+    window.performance.mark('pageStart');
+  }
 
   SURF_N_PERF.setPageLoad = function() {
     SURF_N_PERF.marks.loadEventEnd = (new Date()).getTime();
@@ -47,7 +51,7 @@ There are 2 pieces of code that need to be included in your webpage:
 That provides support for the following:
 - A "pageStart" mark for browsers that do not support [Navigation Timing](http://www.w3.org/TR/navigation-timing/) which can be used to compute durations from when the page first started loading (specifically, this mark falls between the [domLoading](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-domloading) and [domInteractive](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-dominteractive) attributes of Navigation Timing)
 - A "loadEventEnd" mark for browsers that do not support [Navigation Timing](http://www.w3.org/TR/navigation-timing/) which can be used to compute durations from when the load event of the document is completed ([loadEventEnd](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-loadend))
-- A "loadEventEnd" [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp) mark for accurately calculating durations from when the load event of the document is completed in browsers that support [High Resolution Time](http://www.w3.org/TR/hr-time/)
+- A "loadEventEnd" [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp) mark for calculating high resolution durations between a Navigation Timing mark and a user mark in browsers that support [High Resolution Time](http://www.w3.org/TR/hr-time/) but don't support [User Timing](http://www.w3.org/TR/user-timing/)
 
 **2.** Then just drop the [surfnperf.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js) in your codebase and reference that JavaScript file in your HTML document, again making sure that Underscore is referenced first. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'surfnperf'.
 

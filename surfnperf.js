@@ -54,6 +54,12 @@
 
       this._navigationTiming = null;
       this._highResTime = null;
+      this._userTiming = null;
+
+      this._navigationTimingEvents = {
+        a: ["navigationStart", "unloadEventEnd", "unloadEventStart", "redirectStart", "redirectEnd", "fetchStart", "domainLookupStart", "domainLookupEnd", "connectStart", "secureConnectionStart", "connectEnd", "requestStart", "responseStart", "responseEnd", "domLoading"],
+        b: ["domInteractive", "domContentLoadedEventStart", "domContentLoadedEventEnd", "domComplete", "loadEventStart", "loadEventEnd"]
+      };
 
       this.initialize();
     };
@@ -62,15 +68,13 @@
 
     _setPerformanceApis: function() {
       if(window.performance) {
-        if(window.performance.timing) {
-          this._navigationTiming = true;
-        }
-        if(window.performance.now) {
-          this._highResTime = true;
-        }
+        this._navigationTiming = !!(window.performance.timing);
+        this._highResTime = !!(window.performance.now);
+        this._userTiming = !!(window.performance.mark && window.performance.measure && window.performance.getEntriesByName);
       } else {
         this._navigationTiming = false;
         this._highResTime = false;
+        this._userTiming = false;
       }
     },
 
@@ -109,8 +113,14 @@
       }
     },
 
-    _performanceTiming: function() {
+    performanceTiming: function() {
       return this._navigationTiming ? window.performance.timing : {};
+    },
+
+    _performanceTimingL2: function(eventKey) {
+      var delta = this.getTimingMark('loadEventEnd', 'DOM') - this.getTimingMark(eventKey, 'DOM'),
+          value = window.SURF_N_PERF.highResMarks.loadEventEnd - delta;
+      return (value < 0) ? 0 : this._round(value, {decimalPlaces: 10});
     },
 
     /**
@@ -126,18 +136,29 @@
 
       if(this._navigationTiming) {
         if(timeType === 'DOM' || this._highResTime === false) {
-          return this._performanceTiming()[eventKey];
+          return this.performanceTiming()[eventKey];
         } else { // timeType === 'HighRes'
-          return window.SURF_N_PERF.highResMarks[eventKey];
+          return this._performanceTimingL2(eventKey);
         }
       } else {
-        return this.getMark(eventKey, timeType);
+        if(_.contains(this._navigationTimingEvents.a, eventKey)) {
+          return this.getMark('pageStart', 'DOM');
+        } else {
+          return this.getMark('loadEventEnd', 'DOM');
+        }
       }
+    },
+
+    userTiming: function() {
+      return this._userTiming ? window.performance : {};
     },
 
     mark: function(eventKey) {
       if(this._highResTime) {
         this._data.highResMarks[eventKey] = this.now();
+      }
+      if(this._userTiming) {
+        this.userTiming().mark(eventKey);
       }
       this._data.marks[eventKey] = this.now('DOM');
     },
@@ -151,6 +172,50 @@
         mark = this._data.highResMarks[eventKey] || window.SURF_N_PERF.highResMarks[eventKey];
       }
       return mark || this._data.marks[eventKey] || window.SURF_N_PERF.marks[eventKey];
+    },
+
+    _isTimingMark: function(eventKey) {
+      return _.contains(this._navigationTimingEvents.a, eventKey) || _.contains(this._navigationTimingEvents.b, eventKey);
+    },
+
+    _getDurationMark: function(eventKey) {
+      if(this._isTimingMark(eventKey)) {
+        return this.getTimingMark(eventKey, 'highRes');
+      } else {
+        return this.getMark(eventKey);
+      }
+    },
+
+    _round: function(n, options) {
+      options = options || {};
+      var dp = options.decimalPlaces || 0;
+      return +(n).toFixed(dp);
+    },
+
+    _roundedDuration: function(a, b, options) {
+      return this._round(b-a, options);
+    },
+
+    _measureName: function(a,b) {
+      return '_SNP_'+a+'_TO_'+b;
+    },
+
+    _setMeasure: function(a,b) {
+      this.userTiming().measure(this._measureName(a,b), a, b);
+    },
+
+    _getMeasureDuration: function(a,b) {
+      var measure = this.userTiming().getEntriesByName(this._measureName(a,b))[0] || {};
+      return measure.duration;
+    },
+
+    duration: function(a, b, options) {
+      if(this._userTiming) {
+        this._setMeasure(a,b);
+        return this._round(this._getMeasureDuration(a,b), options);
+      } else {
+        return this._roundedDuration(this._getDurationMark(a), this._getDurationMark(b), options);
+      }
     },
 
     updateEvent: function(eventKey, key, value) {
@@ -191,9 +256,7 @@
     },
 
     eventDuration: function(eventKey, options) {
-      options = options || {};
-      var dp = options.decimalPlaces || 0;
-      return +(this.getEventData(eventKey, 'end') - this.getEventData(eventKey, 'start')).toFixed(dp);
+      return this._roundedDuration(this.getEventData(eventKey, 'start'), this.getEventData(eventKey, 'end'), options);
     },
 
     setCustom: function(key, value) {
@@ -211,11 +274,7 @@
      * @memberOf SurfNPerf
      */
     getNetworkLatency: function() {
-      var fetchStart = this.getTimingMark('fetchStart'),
-          responseEnd = this.getTimingMark('responseEnd');
-      if(fetchStart && responseEnd) {
-        return responseEnd-fetchStart;
-      }
+      return this.duration('fetchStart', 'responseEnd');
     },
 
     /**
@@ -225,11 +284,7 @@
      * @memberOf SurfNPerf
      */
     getProcessingLoadTime: function() {
-      var responseEnd = this.getTimingMark('responseEnd') || this.getMark('pageStart', 'DOM'),
-          loadEventEnd = this.getTimingMark('loadEventEnd', 'DOM');
-      if(responseEnd && loadEventEnd) {
-        return loadEventEnd-responseEnd;
-      }
+      return this.duration('responseEnd', 'loadEventEnd');
     },
 
     /**
@@ -239,11 +294,7 @@
      * @memberOf SurfNPerf
      */
     getFullRequestLoadTime: function() {
-      var navigationStart = this.getTimingMark('navigationStart'),
-          loadEventEnd = this.getTimingMark('loadEventEnd');
-      if(navigationStart && loadEventEnd) {
-        return loadEventEnd-navigationStart;
-      }
+      return this.duration('navigationStart', 'loadEventEnd');
     }
 
   });
