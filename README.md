@@ -28,7 +28,7 @@ There are 2 pieces of code that need to be included in your webpage:
     SURF_N_PERF.highResMarks.pageStart = window.performance.now();
   }
   
-  if(window.performance.mark) {
+  if(window.performance && window.performance.mark) {
     window.performance.mark('pageStart');
   }
 
