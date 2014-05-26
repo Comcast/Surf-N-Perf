@@ -24,12 +24,13 @@ There are 2 pieces of code that need to be included in your webpage:
 
   SURF_N_PERF.marks.pageStart = (new Date()).getTime();
   
-  if(window.performance && window.performance.now) {
-    SURF_N_PERF.highResMarks.pageStart = window.performance.now();
-  }
-  
-  if(window.performance && window.performance.mark) {
-    window.performance.mark('pageStart');
+  if(window.performance) {
+    if(window.performance.now) {
+      SURF_N_PERF.highResMarks.pageStart = window.performance.now();
+    }
+    if(window.performance.mark) {
+      window.performance.mark('pageStart');
+    }
   }
 
   SURF_N_PERF.setPageLoad = function() {
