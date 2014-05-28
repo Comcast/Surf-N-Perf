@@ -19,6 +19,7 @@
     "karma-jasmine": "^0.1.5",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-requirejs": "^0.2.1",
+    "grunt-karma": "^0.8.3",
     "requirejs": "^2.1.11",
     "underscore": "^1.6.0"
   },
