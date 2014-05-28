@@ -3,6 +3,8 @@ Surf-N-Perf
 
 Micro-library for gathering frontend web page performance data.  
 
+[![Build Status](https://travis-ci.org/Comcast/Surf-N-Perf.svg?branch=master)](https://travis-ci.org/Comcast/Surf-N-Perf)
+
 ## Usage
 
 ### Dependencies
