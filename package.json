@@ -1,6 +1,6 @@
 {
-  "name": "Surf-N-Perf",
-  "version": "0.0.1",
+  "name": "surfnperf",
+  "version": "1.0.0",
   "description": "Micro-library for gathering frontend web page performance data",
   "main": "surfnperf",
   "engines": {
@@ -35,5 +35,11 @@
   "bugs": {
     "url": "https://github.com/Comcast/Surf-N-Perf/issues"
   },
-  "homepage": "https://github.com/Comcast/Surf-N-Perf"
+  "homepage": "https://github.com/Comcast/Surf-N-Perf",
+  "files": [
+    "surfnperf.js",
+    "LICENSE",
+    "NOTICE",
+    "README.md"
+  ]
 }
