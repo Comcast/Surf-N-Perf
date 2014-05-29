@@ -79,7 +79,7 @@ Run jshint and tests:
 $ grunt
 ```
 
-Alternatively, run jshint and tests while keeping the Karma file watcher open, thus allowing continued development and cross-browser testing:
+Alternatively, to continuously run jshint and tests on any relevant file modification, thus allowing continued development and cross-browser testing:
 
 ```bash
 $ grunt dev
