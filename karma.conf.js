@@ -13,12 +13,15 @@ module.exports = function(config) {
     frameworks: ['jasmine', 'requirejs'],
 
 
+
     // list of files / patterns to load in the browser
-    files: [
-      {pattern: 'node_modules/underscore/underscore-min.js'},
-      {pattern: 'surfnperf.js'},
-      {pattern: 'spec/**/*.js'}
-    ],
+    files: [{
+      pattern: 'node_modules/underscore/underscore-min.js'
+    }, {
+      pattern: 'surfnperf.js'
+    }, {
+      pattern: 'spec/**/*.js'
+    }],
 
 
     // list of files to exclude
@@ -37,10 +40,12 @@ module.exports = function(config) {
     },
 
     coverageReporter: {
-      reporters:[
-        {type: 'html', dir:'coverage/'},
-        {type: 'text-summary'}
-      ],
+      reporters: [{
+        type: 'html',
+        dir: 'coverage/'
+      }, {
+        type: 'text-summary'
+      }],
     },
 
     // test results reporter to use
