@@ -67,16 +67,22 @@ Details in the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/Java
 
 Tests are written in [Jasmine](http://jasmine.github.io/) and run with [Karma](http://karma-runner.github.io/)
 
-Install the dependencies to run the tests with:
+Install dependencies:
 
 ```bash
 $ npm install
 ```
 
-And then run jshint and the tests with:
+Run jshint and tests:
 
 ```bash
 $ grunt
+```
+
+Alternatively, run jshint and tests while keeping the Karma file watcher open, thus allowing continued development and cross-browser testing:
+
+```bash
+$ grunt dev
 ```
 
 By default, it will run the tests using [PhantomJS](http://phantomjs.org/). You can also run the tests in any browser by going to http://localhost:9876/
