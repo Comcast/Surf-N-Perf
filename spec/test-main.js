@@ -6,7 +6,7 @@ var pathToModule = function(path) {
 };
 
 Object.keys(window.__karma__.files).forEach(function(file) {
-  if (TEST_REGEXP.test(file)) {
+  if(TEST_REGEXP.test(file)) {
     // Normalize paths to RequireJS module names.
     allTestFiles.push(pathToModule(file));
   }
@@ -17,9 +17,9 @@ require.config({
   baseUrl: '/base',
 
   shim: {
-      'underscore': {
-          exports: '_'
-      }
+    'underscore': {
+      exports: '_'
+    }
   },
 
   // dynamically load all test files

@@ -18,7 +18,7 @@ module.exports = function(grunt) {
       dist: {
         // any javascript that is not minified
         // and not part of the node_modules, coverage or spec folder
-        src: ['**/*.js', '!**/*.min.js', '!node_modules/**/*', '!coverage/**/*', '!spec/**/*'],
+        src: ['**/*.js', '!**/*.min.js', '!node_modules/**/*', '!coverage/**/*'],
         options: {
           js: {
             indentSize: 2,
