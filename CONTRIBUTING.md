@@ -32,10 +32,11 @@ Pull Requests
 * should be reviewable in the GitHub code review tool
 * should be linked to any issues it relates to (i.e. issue number after
 (#) in commit messages or pull request message)
+* ```$ grunt precommit``` should be executed before committing
 
 Expect a thorough review process for any pull requests that add functionality or change the behavior of the application. We encourage you to sketch your
 approach in writing on a relevant issue (or creating such an issue if needed)
-before starting to code, in order to save time and frustration all around. 
+before starting to code, in order to save time and frustration all around.
 
 Formatting
 ----------

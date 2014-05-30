@@ -20,20 +20,20 @@
  * SOFTWARE.
  */
 
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
+(function(root, factory) {
+  if(typeof define === 'function' && define.amd) {
     // For Require.js
     define('surfnperf', ['underscore'], factory);
   } else {
     // Browser global if not using Require.js
     root.surfnperf = factory(root._);
   }
-}(this, function (_) {
+}(this, function(_) {
 
- /**
+  /**
    * Date.now() shim for older browsers
    */
-  if (!Date.now) {
+  if(!Date.now) {
     Date.now = function now() {
       return new Date().getTime();
     };
@@ -45,24 +45,24 @@
    * @class SurfNPerf
    */
   var SurfNPerf = function() {
-      this._data = {
-        custom: {},
-        marks: {},
-        highResMarks: {},
-        events: {}
-      };
-
-      this._navigationTiming = null;
-      this._highResTime = null;
-      this._userTiming = null;
-
-      this._navigationTimingEvents = {
-        a: ["navigationStart", "unloadEventEnd", "unloadEventStart", "redirectStart", "redirectEnd", "fetchStart", "domainLookupStart", "domainLookupEnd", "connectStart", "secureConnectionStart", "connectEnd", "requestStart", "responseStart", "responseEnd", "domLoading"],
-        b: ["domInteractive", "domContentLoadedEventStart", "domContentLoadedEventEnd", "domComplete", "loadEventStart", "loadEventEnd"]
-      };
-
-      this.initialize();
+    this._data = {
+      custom: {},
+      marks: {},
+      highResMarks: {},
+      events: {}
     };
+
+    this._navigationTiming = null;
+    this._highResTime = null;
+    this._userTiming = null;
+
+    this._navigationTimingEvents = {
+      a: ["navigationStart", "unloadEventEnd", "unloadEventStart", "redirectStart", "redirectEnd", "fetchStart", "domainLookupStart", "domainLookupEnd", "connectStart", "secureConnectionStart", "connectEnd", "requestStart", "responseStart", "responseEnd", "domLoading"],
+      b: ["domInteractive", "domContentLoadedEventStart", "domContentLoadedEventEnd", "domComplete", "loadEventStart", "loadEventEnd"]
+    };
+
+    this.initialize();
+  };
 
   _.extend(SurfNPerf.prototype, {
 
@@ -119,8 +119,10 @@
 
     _performanceTimingL2: function(eventKey) {
       var delta = this.getTimingMark('loadEventEnd', 'DOM') - this.getTimingMark(eventKey, 'DOM'),
-          value = window.SURF_N_PERF.highResMarks.loadEventEnd - delta;
-      return (value < 0) ? 0 : this._round(value, {decimalPlaces: 10});
+        value = window.SURF_N_PERF.highResMarks.loadEventEnd - delta;
+      return(value < 0) ? 0 : this._round(value, {
+        decimalPlaces: 10
+      });
     },
 
     /**
@@ -193,26 +195,26 @@
     },
 
     _roundedDuration: function(a, b, options) {
-      return this._round(b-a, options);
+      return this._round(b - a, options);
     },
 
-    _measureName: function(a,b) {
-      return '_SNP_'+a+'_TO_'+b;
+    _measureName: function(a, b) {
+      return '_SNP_' + a + '_TO_' + b;
     },
 
-    _setMeasure: function(a,b) {
-      this.userTiming().measure(this._measureName(a,b), a, b);
+    _setMeasure: function(a, b) {
+      this.userTiming().measure(this._measureName(a, b), a, b);
     },
 
-    _getMeasureDuration: function(a,b) {
-      var measure = this.userTiming().getEntriesByName(this._measureName(a,b))[0] || {};
+    _getMeasureDuration: function(a, b) {
+      var measure = this.userTiming().getEntriesByName(this._measureName(a, b))[0] || {};
       return measure.duration;
     },
 
     duration: function(a, b, options) {
       if(this._userTiming) {
-        this._setMeasure(a,b);
-        return this._round(this._getMeasureDuration(a,b), options);
+        this._setMeasure(a, b);
+        return this._round(this._getMeasureDuration(a, b), options);
       } else {
         return this._roundedDuration(this._getDurationMark(a), this._getDurationMark(b), options);
       }
