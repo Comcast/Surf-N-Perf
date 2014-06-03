@@ -39,6 +39,14 @@
     };
   }
 
+  var defaults = function(o, d) {
+    for(var prop in d) {
+      if(!o.hasOwnProperty(prop)) {
+        o[prop] = d[prop];
+      }
+    }
+  };
+
   /**
    * Frontend Web Performance Data Gathering
    *
@@ -222,7 +230,7 @@
     var obj = {};
     obj[eventKey] = {};
 
-    _.defaults(this._data.events, obj);
+    defaults(this._data.events, obj);
 
     this._data.events[eventKey][key] = value;
   };
