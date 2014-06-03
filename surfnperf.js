@@ -77,7 +77,7 @@
   };
 
   SurfNPerf.prototype._setPerfProperties = function() {
-    if(_.isUndefined(window.SURF_N_PERF) || !window.SURF_N_PERF.marks) {
+    if(!window.SURF_N_PERF || !window.SURF_N_PERF.marks) {
       window.SURF_N_PERF = {
         marks: {},
         highResMarks: {}
@@ -237,13 +237,14 @@
   };
 
   SurfNPerf.prototype.eventEnd = function(eventKey, options) {
-    var now = this.now();
+    var now = this.now(),
+      key;
 
     options = options || {};
 
-    _.each(options, function(value, key) {
-      this.updateEvent(eventKey, key, value);
-    }, this);
+    for(key in options) {
+      this.updateEvent(eventKey, key, options[key]);
+    }
 
     this.updateEvent(eventKey, 'end', now);
   };
