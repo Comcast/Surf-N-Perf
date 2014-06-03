@@ -149,7 +149,9 @@
         return this._performanceTimingL2(eventKey);
       }
     } else {
-      if(_.contains(this._navigationTimingEvents.a, eventKey)) {
+
+
+      if(this._navigationTimingEvents.a.indexOf(eventKey) > -1) {
         return this.getMark('pageStart', 'DOM');
       } else {
         return this.getMark('loadEventEnd', 'DOM');
@@ -183,7 +185,7 @@
   };
 
   SurfNPerf.prototype._isTimingMark = function(eventKey) {
-    return _.contains(this._navigationTimingEvents.a, eventKey) || _.contains(this._navigationTimingEvents.b, eventKey);
+    return this._navigationTimingEvents.a.concat(this._navigationTimingEvents.b).indexOf(eventKey) > -1;
   };
 
   SurfNPerf.prototype._getDurationMark = function(eventKey) {
