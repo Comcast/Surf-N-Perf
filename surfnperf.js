@@ -23,12 +23,12 @@
 (function(root, factory) {
   if(typeof define === 'function' && define.amd) {
     // For Require.js
-    define('surfnperf', ['underscore'], factory);
+    define('surfnperf', factory);
   } else {
     // Browser global if not using Require.js
-    root.surfnperf = factory(root._);
+    root.surfnperf = factory();
   }
-}(this, function(_) {
+}(this, function() {
 
   /**
    * Date.now() shim for older browsers
