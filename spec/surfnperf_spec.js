@@ -689,6 +689,18 @@ define('spec/surfnperf_spec', [
         });
       });
 
+      it('can update data for an existing event object that has a falsy value', function() {
+        SurfNPerf._data.events.test = {
+          foo: false
+        };
+
+        SurfNPerf.updateEvent('test', 'foo', 'baz');
+
+        expect(SurfNPerf._data.events.test).toEqual({
+          foo: 'baz'
+        });
+      });
+
       it('can add a new key/value to an existing event object', function() {
         SurfNPerf._data.events.test = {
           foo: 'baz'

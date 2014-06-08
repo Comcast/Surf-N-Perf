@@ -1,15 +1,11 @@
 Surf-N-Perf
 ==============
 
-Micro-library for gathering frontend web page performance data.  
+Micro-library for gathering frontend web page performance data.
 
 [![Build Status](https://travis-ci.org/Comcast/Surf-N-Perf.svg?branch=master)](https://travis-ci.org/Comcast/Surf-N-Perf)
 
 ## Usage
-
-### Dependencies
-
-[Underscore](http://underscorejs.org/) is a dependency, so make sure it is referenced in your code prior to surfnperf.
 
 ### Including the code in your project
 
@@ -25,7 +21,7 @@ There are 2 pieces of code that need to be included in your webpage:
   };
 
   SURF_N_PERF.marks.pageStart = (new Date()).getTime();
-  
+
   if(window.performance) {
     if(window.performance.now) {
       SURF_N_PERF.highResMarks.pageStart = window.performance.now();
@@ -57,7 +53,7 @@ That provides support for the following:
 - A "loadEventEnd" mark for browsers that do not support [Navigation Timing](http://www.w3.org/TR/navigation-timing/) which can be used to compute durations from when the load event of the document is completed ([loadEventEnd](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-loadend))
 - A "loadEventEnd" [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp) mark for calculating high resolution durations between a Navigation Timing mark and a user mark in browsers that support [High Resolution Time](http://www.w3.org/TR/hr-time/) but don't support [User Timing](http://www.w3.org/TR/user-timing/)
 
-**2.** Then just drop the [surfnperf.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js) in your codebase and reference that JavaScript file in your HTML document, again making sure that Underscore is referenced first. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'surfnperf'.
+**2.** Then just drop the [surfnperf.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js) in your codebase and reference that JavaScript file in your HTML document. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'surfnperf'.
 
 ### Storing & Retrieving Performance Data
 

@@ -7,7 +7,6 @@
     "node": "0.10.x"
   },
   "dependencies": {
-    "underscore": "^1.6.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -22,8 +21,7 @@
     "karma-jasmine": "^0.1.5",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-requirejs": "^0.2.1",
-    "requirejs": "^2.1.11",
-    "underscore": "^1.6.0"
+    "requirejs": "^2.1.11"
   },
   "scripts": {
     "test": "./node_modules/karma/bin/karma start --single-run",
