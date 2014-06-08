@@ -441,6 +441,28 @@ define('spec/surfnperf_spec', [
         expect(measureSpy).toHaveBeenCalledWith('_SNP_markA_TO_markB', 'markA', 'markB');
       });
 
+      describe('when at least one of the marks/events being measured does not exist yet', function() {
+
+        beforeEach(function() {
+          spyOn(window.console, 'error');
+        });
+
+        it('logs the error message to the console if the exception contains one', function() {
+          spyOn(SurfNPerf, 'userTiming').andThrow({
+            message: 'exception message'
+          });
+          SurfNPerf._setMeasure('markA', 'markZ');
+          expect(window.console.error).toHaveBeenCalledWith('Surf-N-Perf Exception:', 'exception message');
+        });
+
+        it('logs a specific error message to the console if the exception does not contain a message', function() {
+          spyOn(SurfNPerf, 'userTiming').andThrow('an exception');
+          SurfNPerf._setMeasure('markA', 'markZ');
+          expect(window.console.error).toHaveBeenCalledWith('Surf-N-Perf Exception: at least one of these events/marks is not available yet', 'markA', 'markZ');
+        });
+
+      });
+
     });
 
     describe('#_getMeasureDuration', function() {
@@ -542,6 +564,13 @@ define('spec/surfnperf_spec', [
             expect(SurfNPerf.duration('markA', 'markB', {
               decimalPlaces: 'foo'
             })).toEqual(123);
+          });
+
+          it('returns NaN if at least one of the marks does not exist', function() {
+            SurfNPerf._getMeasureDuration.andReturn(undefined);
+            expect(isNaN(SurfNPerf.duration('markA', 'markZ', {
+              decimalPlaces: 'foo'
+            }))).toEqual(true);
           });
 
         });

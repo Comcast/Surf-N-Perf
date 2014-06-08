@@ -149,8 +149,6 @@
         return this._performanceTimingL2(eventKey);
       }
     } else {
-
-
       if(this._navigationTimingEvents.a.indexOf(eventKey) > -1) {
         return this.getMark('pageStart', 'DOM');
       } else {
@@ -199,7 +197,8 @@
   SurfNPerf.prototype._round = function(n, options) {
     options = options || {};
     var dp = options.decimalPlaces || 0;
-    return +(n).toFixed(dp);
+    n = +(n);
+    return n.toFixed ? +(n).toFixed(dp) : n;
   };
 
   SurfNPerf.prototype._roundedDuration = function(a, b, options) {
@@ -211,7 +210,17 @@
   };
 
   SurfNPerf.prototype._setMeasure = function(a, b) {
-    this.userTiming().measure(this._measureName(a, b), a, b);
+    try {
+      this.userTiming().measure(this._measureName(a, b), a, b);
+    } catch(e) {
+      if(window.console && window.console.error) {
+        if(e && e.message) {
+          console.error("Surf-N-Perf Exception:", e.message);
+        } else {
+          console.error("Surf-N-Perf Exception: at least one of these events/marks is not available yet", a, b);
+        }
+      }
+    }
   };
 
   SurfNPerf.prototype._getMeasureDuration = function(a, b) {
