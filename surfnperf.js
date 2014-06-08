@@ -66,26 +66,27 @@
    * @class SurfNPerf
    */
   var SurfNPerf = function() {
-    this._data = {
-      custom: {},
-      marks: {},
-      highResMarks: {},
-      events: {}
-    };
+      this._data = {
+        custom: {},
+        marks: {},
+        highResMarks: {},
+        events: {}
+      };
 
-    this._navigationTiming = null;
-    this._highResTime = null;
-    this._userTiming = null;
+      this._navigationTiming = null;
+      this._highResTime = null;
+      this._userTiming = null;
 
-    this._navigationTimingEvents = {
-      a: ["navigationStart", "unloadEventEnd", "unloadEventStart", "redirectStart", "redirectEnd", "fetchStart", "domainLookupStart", "domainLookupEnd", "connectStart", "secureConnectionStart", "connectEnd", "requestStart", "responseStart", "responseEnd", "domLoading"],
-      b: ["domInteractive", "domContentLoadedEventStart", "domContentLoadedEventEnd", "domComplete", "loadEventStart", "loadEventEnd"]
-    };
+      this._navigationTimingEvents = {
+        a: ["navigationStart", "unloadEventEnd", "unloadEventStart", "redirectStart", "redirectEnd", "fetchStart", "domainLookupStart", "domainLookupEnd", "connectStart", "secureConnectionStart", "connectEnd", "requestStart", "responseStart", "responseEnd", "domLoading"],
+        b: ["domInteractive", "domContentLoadedEventStart", "domContentLoadedEventEnd", "domComplete", "loadEventStart", "loadEventEnd"]
+      };
 
-    this.initialize();
-  };
+      this.initialize();
+    },
+    SNPProto = SurfNPerf.prototype;
 
-  SurfNPerf.prototype._setPerformanceApis = function() {
+  SNPProto._setPerformanceApis = function() {
     if(window.performance) {
       this._navigationTiming = !!(window.performance.timing);
       this._highResTime = !!(window.performance.now);
@@ -97,7 +98,7 @@
     }
   };
 
-  SurfNPerf.prototype._setPerfProperties = function() {
+  SNPProto._setPerfProperties = function() {
     if(!window.SURF_N_PERF || !window.SURF_N_PERF.marks) {
       window.SURF_N_PERF = {
         marks: {},
@@ -106,11 +107,11 @@
     }
   };
 
-  SurfNPerf.prototype._setInitialUrl = function() {
+  SNPProto._setInitialUrl = function() {
     this.setCustom('initialUrl', window.location.pathname);
   };
 
-  SurfNPerf.prototype.initialize = function() {
+  SNPProto.initialize = function() {
     this._setPerformanceApis();
     this._setPerfProperties();
     this._setInitialUrl();
@@ -123,7 +124,7 @@
    * @returns {DOMHighResTimeStamp | integer} time value
    * @memberOf SurfNPerf
    */
-  SurfNPerf.prototype.now = function(timeType) {
+  SNPProto.now = function(timeType) {
     timeType = timeType || 'highRes';
     if(this._highResTime && timeType === 'highRes') {
       return window.performance.now();
@@ -132,11 +133,11 @@
     }
   };
 
-  SurfNPerf.prototype.performanceTiming = function() {
+  SNPProto.performanceTiming = function() {
     return this._navigationTiming ? window.performance.timing : {};
   };
 
-  SurfNPerf.prototype._performanceTimingL2 = function(eventKey) {
+  SNPProto._performanceTimingL2 = function(eventKey) {
     var delta = this.getTimingMark('loadEventEnd', 'DOM') - this.getTimingMark(eventKey, 'DOM'),
       value = window.SURF_N_PERF.highResMarks.loadEventEnd - delta;
     return(value < 0) ? 0 : this._round(value, {
@@ -152,7 +153,7 @@
    * @returns {DOMHighResTimeStamp | integer} time value
    * @memberOf SurfNPerf
    */
-  SurfNPerf.prototype.getTimingMark = function(eventKey, timeType) {
+  SNPProto.getTimingMark = function(eventKey, timeType) {
     timeType = timeType || 'DOM';
 
     if(this._navigationTiming) {
@@ -170,11 +171,11 @@
     }
   };
 
-  SurfNPerf.prototype.userTiming = function() {
+  SNPProto.userTiming = function() {
     return this._userTiming ? window.performance : {};
   };
 
-  SurfNPerf.prototype.mark = function(eventKey) {
+  SNPProto.mark = function(eventKey) {
     if(this._highResTime) {
       this._data.highResMarks[eventKey] = this.now();
     }
@@ -184,7 +185,7 @@
     this._data.marks[eventKey] = this.now('DOM');
   };
 
-  SurfNPerf.prototype.getMark = function(eventKey, timeType) {
+  SNPProto.getMark = function(eventKey, timeType) {
     var mark;
 
     timeType = timeType || 'highRes';
@@ -195,11 +196,11 @@
     return mark || this._data.marks[eventKey] || window.SURF_N_PERF.marks[eventKey];
   };
 
-  SurfNPerf.prototype._isTimingMark = function(eventKey) {
+  SNPProto._isTimingMark = function(eventKey) {
     return contains(this._navigationTimingEvents.a.concat(this._navigationTimingEvents.b), eventKey);
   };
 
-  SurfNPerf.prototype._getDurationMark = function(eventKey) {
+  SNPProto._getDurationMark = function(eventKey) {
     if(this._isTimingMark(eventKey)) {
       return this.getTimingMark(eventKey, 'highRes');
     } else {
@@ -207,22 +208,22 @@
     }
   };
 
-  SurfNPerf.prototype._round = function(n, options) {
+  SNPProto._round = function(n, options) {
     options = options || {};
     var dp = options.decimalPlaces || 0;
     n = +(n);
     return n.toFixed ? +(n).toFixed(dp) : n;
   };
 
-  SurfNPerf.prototype._roundedDuration = function(a, b, options) {
+  SNPProto._roundedDuration = function(a, b, options) {
     return this._round(b - a, options);
   };
 
-  SurfNPerf.prototype._measureName = function(a, b) {
+  SNPProto._measureName = function(a, b) {
     return '_SNP_' + a + '_TO_' + b;
   };
 
-  SurfNPerf.prototype._setMeasure = function(a, b) {
+  SNPProto._setMeasure = function(a, b) {
     try {
       this.userTiming().measure(this._measureName(a, b), a, b);
     } catch(e) {
@@ -236,12 +237,12 @@
     }
   };
 
-  SurfNPerf.prototype._getMeasureDuration = function(a, b) {
+  SNPProto._getMeasureDuration = function(a, b) {
     var measure = this.userTiming().getEntriesByName(this._measureName(a, b))[0] || {};
     return measure.duration;
   };
 
-  SurfNPerf.prototype.duration = function(a, b, options) {
+  SNPProto.duration = function(a, b, options) {
     if(this._userTiming) {
       this._setMeasure(a, b);
       return this._round(this._getMeasureDuration(a, b), options);
@@ -250,7 +251,7 @@
     }
   };
 
-  SurfNPerf.prototype.updateEvent = function(eventKey, key, value) {
+  SNPProto.updateEvent = function(eventKey, key, value) {
     var obj = {};
     obj[eventKey] = {};
 
@@ -259,16 +260,16 @@
     this._data.events[eventKey][key] = value;
   };
 
-  SurfNPerf.prototype.resetEvent = function(eventKey, key, value) {
+  SNPProto.resetEvent = function(eventKey, key, value) {
     this._data.events[eventKey] = {};
     this._data.events[eventKey][key] = value;
   };
 
-  SurfNPerf.prototype.eventStart = function(eventKey) {
+  SNPProto.eventStart = function(eventKey) {
     this.resetEvent(eventKey, 'start', this.now());
   };
 
-  SurfNPerf.prototype.eventEnd = function(eventKey, options) {
+  SNPProto.eventEnd = function(eventKey, options) {
     var now = this.now(),
       key;
 
@@ -281,22 +282,22 @@
     this.updateEvent(eventKey, 'end', now);
   };
 
-  SurfNPerf.prototype.getEventData = function(eventKey, key) {
+  SNPProto.getEventData = function(eventKey, key) {
     var eventObj = this._data.events[eventKey];
     if(eventObj) {
       return eventObj[key];
     }
   };
 
-  SurfNPerf.prototype.eventDuration = function(eventKey, options) {
+  SNPProto.eventDuration = function(eventKey, options) {
     return this._roundedDuration(this.getEventData(eventKey, 'start'), this.getEventData(eventKey, 'end'), options);
   };
 
-  SurfNPerf.prototype.setCustom = function(key, value) {
+  SNPProto.setCustom = function(key, value) {
     this._data.custom[key] = value;
   };
 
-  SurfNPerf.prototype.getCustom = function(key) {
+  SNPProto.getCustom = function(key) {
     return this._data.custom[key];
   };
 
@@ -306,7 +307,7 @@
    * @returns {integer} time in ms
    * @memberOf SurfNPerf
    */
-  SurfNPerf.prototype.getNetworkTime = function() {
+  SNPProto.getNetworkTime = function() {
     return this.duration('fetchStart', 'connectEnd');
   };
 
@@ -316,7 +317,7 @@
    * @returns {integer} time in ms
    * @memberOf SurfNPerf
    */
-  SurfNPerf.prototype.getServerTime = function() {
+  SNPProto.getServerTime = function() {
     return this.duration('requestStart', 'responseEnd');
   };
 
@@ -326,7 +327,7 @@
    * @returns {integer} time in ms
    * @memberOf SurfNPerf
    */
-  SurfNPerf.prototype.getNetworkLatency = function() {
+  SNPProto.getNetworkLatency = function() {
     return this.duration('fetchStart', 'responseEnd');
   };
 
@@ -336,7 +337,7 @@
    * @returns {integer} time in ms
    * @memberOf SurfNPerf
    */
-  SurfNPerf.prototype.getProcessingLoadTime = function() {
+  SNPProto.getProcessingLoadTime = function() {
     return this.duration('responseEnd', 'loadEventEnd');
   };
 
@@ -346,7 +347,7 @@
    * @returns {integer} time in ms
    * @memberOf SurfNPerf
    */
-  SurfNPerf.prototype.getFullRequestLoadTime = function() {
+  SNPProto.getFullRequestLoadTime = function() {
     return this.duration('navigationStart', 'loadEventEnd');
   };
 
