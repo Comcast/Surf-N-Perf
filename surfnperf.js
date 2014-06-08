@@ -40,12 +40,25 @@
   }
 
   var defaults = function(o, d) {
-    for(var prop in d) {
-      if(!o.hasOwnProperty(prop)) {
-        o[prop] = d[prop];
+      for(var prop in d) {
+        if(!o.hasOwnProperty(prop)) {
+          o[prop] = d[prop];
+        }
       }
-    }
-  };
+    },
+    contains = function(array, value) {
+      if(Array.prototype.indexOf) {
+        return array.indexOf(value) != -1;
+      } else {
+        var i, length = array.length;
+        for(i = 0; i < length; i++) {
+          if(array[i] === value) {
+            return true;
+          }
+        }
+        return false;
+      }
+    };
 
   /**
    * Frontend Web Performance Data Gathering
@@ -149,7 +162,7 @@
         return this._performanceTimingL2(eventKey);
       }
     } else {
-      if(this._navigationTimingEvents.a.indexOf(eventKey) > -1) {
+      if(contains(this._navigationTimingEvents.a, eventKey)) {
         return this.getMark('pageStart', 'DOM');
       } else {
         return this.getMark('loadEventEnd', 'DOM');
@@ -183,7 +196,7 @@
   };
 
   SurfNPerf.prototype._isTimingMark = function(eventKey) {
-    return this._navigationTimingEvents.a.concat(this._navigationTimingEvents.b).indexOf(eventKey) > -1;
+    return contains(this._navigationTimingEvents.a.concat(this._navigationTimingEvents.b), eventKey);
   };
 
   SurfNPerf.prototype._getDurationMark = function(eventKey) {
