@@ -24,8 +24,11 @@
   if(typeof define === 'function' && define.amd) {
     // For Require.js
     define('surfnperf', factory);
+  } else if(typeof exports === 'object') {
+    // For Browserify
+    module.exports = factory(require('surfnperf'));
   } else {
-    // Browser global if not using Require.js
+    // Browser global if not using Require.js or Browserify
     root.surfnperf = factory();
   }
 }(this, function() {
