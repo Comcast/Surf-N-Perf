@@ -36,12 +36,29 @@ module.exports = function(grunt) {
         singleRun: true
       },
     },
+    jsdoc: {
+      dist: {
+        src: ['surfnperf.js'],
+        options: {
+          destination: 'doc'
+        }
+      }
+    },
     watch: {
       dev: {
         files: ['surfnperf.js', 'spec/**/*.js'],
-        tasks: ['jshint', 'jsbeautifier', 'uglify', 'karma:continuous'],
+        tasks: ['jshint', 'jsbeautifier', 'uglify', 'jsdoc'],
         options: {
-          nospawn: true
+          spawn: false,
+          atBegin: true
+        }
+      }
+    },
+    concurrent: {
+      target: {
+        tasks: ['karma:unit', 'watch'],
+        options: {
+          logConcurrentOutput: true
         }
       }
     }
@@ -51,10 +68,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jsbeautifier');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-concurrent');
 
-  grunt.registerTask('default', ['jshint', 'karma:continuous']);
+  grunt.registerTask('default', ['jshint', 'karma:continuous', 'jsdoc']);
   grunt.registerTask('build', ['jshint', 'karma:continuous', 'uglify']);
   grunt.registerTask('precommit', ['jsbeautifier', 'build']);
-  grunt.registerTask('dev', ['default', 'watch:dev']);
+  grunt.registerTask('dev', ['concurrent:target']);
 };
