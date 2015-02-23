@@ -34,6 +34,15 @@ module.exports = function(grunt) {
       continuous: {
         configFile: 'karma.conf.js',
         singleRun: true
+      },
+    },
+    watch: {
+      dev: {
+        files: ['surfnperf.js', 'spec/**/*.js'],
+        tasks: ['jshint', 'jsbeautifier', 'uglify', 'karma:continuous'],
+        options: {
+          nospawn: true
+        }
       }
     }
   });
@@ -42,8 +51,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jsbeautifier');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['jshint', 'karma:continuous']);
   grunt.registerTask('build', ['jshint', 'karma:continuous', 'uglify']);
   grunt.registerTask('precommit', ['jsbeautifier', 'build']);
+  grunt.registerTask('dev', ['default', 'watch:dev']);
 };
