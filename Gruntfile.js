@@ -39,9 +39,18 @@ module.exports = function(grunt) {
     watch: {
       dev: {
         files: ['surfnperf.js', 'spec/**/*.js'],
-        tasks: ['jshint', 'jsbeautifier', 'uglify', 'karma:continuous'],
+        tasks: ['jshint', 'jsbeautifier', 'uglify'],
         options: {
-          nospawn: true
+          spawn: false,
+          atBegin: true
+        }
+      }
+    },
+    concurrent: {
+      target: {
+        tasks: ['karma:unit', 'watch'],
+        options: {
+          logConcurrentOutput: true
         }
       }
     }
@@ -52,9 +61,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jsbeautifier');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-concurrent');
 
   grunt.registerTask('default', ['jshint', 'karma:continuous']);
   grunt.registerTask('build', ['jshint', 'karma:continuous', 'uglify']);
   grunt.registerTask('precommit', ['jsbeautifier', 'build']);
-  grunt.registerTask('dev', ['default', 'watch:dev']);
+  grunt.registerTask('dev', ['concurrent:target']);
 };

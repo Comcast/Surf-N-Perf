@@ -59,23 +59,25 @@ That provides support for the following:
 
 Details in the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API) page in the wiki
 
-## Running Tests
+## Running Tests & Other Development Tools
 
 Tests are written in [Jasmine](http://jasmine.github.io/) and run with [Karma](http://karma-runner.github.io/)
 
-Install the dependencies to run the tests with:
+Install the dependencies by executing this command from the root of your Surf-N-Perf project directory:
 
 ```bash
 $ npm install
 ```
 
-And then run the tests with:
+And then run the tests, JSHint, beautify your code & generate the minified file with:
 
 ```bash
-$ npm run karma
+$ grunt dev
 ```
 
 By default, it will run the tests using [PhantomJS](http://phantomjs.org/). You can also run the tests in any browser by going to http://localhost:9876/
+
+If you encounter an error related to Grunt, it may not be installed, so [go install it](http://gruntjs.com/getting-started).
 
 ## License
 
