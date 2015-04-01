@@ -1,0 +1,58 @@
+#!/usr/bin/env rake
+require "bundler/gem_tasks"
+require 'pathname'
+
+task :build => ["clean", "setup"]
+task :install => ["setup"]
+
+desc "Copy asset files to vendor directory in preparation for building"
+task :setup do
+  file_map = {
+    "../surfnperf.js" => "vendor/assets/javascripts/",
+    "../README.md" => "./"
+  }
+
+  file_map.each_pair do |src, dst|
+    src_file = Pathname.new(src)
+    dst_path = Pathname.new(dst)
+    if src_file.file?
+      mkdir_p "#{dst_path}"
+      cp src_file, "#{dst_path}"
+    end
+  end
+end
+
+namespace :grunt do
+  def grunt_command(command_args = '')
+    if File.directory? "#{File.dirname(__FILE__)}/../node_modules/grunt"
+      system "grunt #{command_args}"
+    else
+      puts 'Installing Node.js dependencies...'
+      system 'npm install'
+      system "grunt #{command_args}"
+    end
+  end
+
+  task :default do
+    grunt_task = grunt_command
+    if !!grunt_task == false
+      puts "\nBAD CODE MAKE RAKE TABLE-FLIPPIN' MAD!\n\n"
+      raise
+    else
+      puts "grunt completed without any errors :-)"
+    end
+  end
+end
+
+desc "Run Grunt"
+task :grunt => 'grunt:default'
+
+# Make this part of the default tasks for $ bundle exec rake
+task :default => 'grunt:default'
+
+desc "Clean up files generated from previous gem build"
+task :clean do
+  rm_rf "vendor"
+  rm_rf "pkg"
+  rm_rf "README.md"
+end
