@@ -31,3 +31,9 @@ Gemfile.lock
 
 jaguarjs/
 gh-pages/
+
+gem/.bundle
+gem/pkg
+gem/README.md
+gem/vendor
+gem/Gemfile.lock
