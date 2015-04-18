@@ -1,3 +1,11 @@
+<a name="1.0.2"></a>
+### 1.0.2
+
+#### Features
+
+* More precise handling of durations between navigationStart & a user mark ([6e814f5](https://github.com/Comcast/Surf-N-Perf/commit/6e814f5db1bc650d2ab487c45fea61986fca4000))
+* Available now as a [Ruby Gem](https://rubygems.org/gems/surfnperf)
+
 <a name="1.0.1"></a>
 ### 1.0.1
 

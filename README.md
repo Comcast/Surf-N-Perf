@@ -59,6 +59,48 @@ That provides support for the following:
 
 Details in the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API) page in the wiki
 
+## Ruby Project Integration
+
+### Using within a Rails project
+
+The [surfnperf Ruby Gem](https://rubygems.org/gems/surfnperf) allows you to quickly & easily integrate Surf-N-Perf into your Rails projects. To include the necessary files, add `surfnperf` to your `Gemfile`:
+
+```ruby
+gem 'surfnperf'
+```
+
+After a `$ bundle install`, you'll be able to include the [main JavaScript file](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js) in your JavaScript manifest by simply adding:
+
+```
+//= require surfnperf
+```
+
+The necessary script for the ```<head>``` of your HTML document is also available to you via a [partial template](http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials) that you can include in the appropriate layout file for your page, such as `app/views/layouts/application.html.erb` by simply adding this line:
+
+```erb
+<%= render "surfnperf/head" %>
+```
+
+Those 3 lines of code are all your need to get started using Surf-N-Perf in Rails!
+
+### Using within other Ruby projects that integrate with Sprockets
+
+[Sprockets](https://github.com/sstephenson/sprockets) is what powers the [Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html) in Rails, as well as other Ruby website tools such as [Middleman](https://middlemanapp.com/). For these other Ruby projects that use [Sprockets](https://middlemanapp.com/advanced/asset_pipeline/), integration is similar to the Rails instructions above, with one extra step:
+
+Add `surfnperf` to your `Gemfile`:
+
+```ruby
+gem 'surfnperf'
+```
+
+After a `$ bundle install`, include [surfnperf.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js) in your JavaScript manifest by adding:
+
+```
+//= require surfnperf
+```
+
+For now, you'll have to manually include the [necessary script](#including-the-code-in-your-project) for the ```<head>``` of your HTML document. If someone would like to update the Ruby Gem to work as a proper [Middleman Extension](https://middlemanapp.com/advanced/custom_extensions/), we'd happily accept a [pull request](https://github.com/Comcast/Surf-N-Perf/issues/35).
+
 ## Running Tests & Other Development Tools
 
 Tests are written in [Jasmine](http://jasmine.github.io/) and run with [Karma](http://karma-runner.github.io/)
