@@ -249,6 +249,8 @@
     if(this._userTiming) {
       this._setMeasure(a, b);
       return this._round(this._getMeasureDuration(a, b), options);
+    } else if(this._highResTime && a === 'navigationStart' && !this._isTimingMark(b)) {
+      return this._round(this.getMark(b), options);
     } else {
       return this._roundedDuration(this._getDurationMark(a), this._getDurationMark(b), options);
     }

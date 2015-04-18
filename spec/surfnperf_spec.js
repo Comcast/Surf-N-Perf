@@ -601,6 +601,12 @@ define('spec/surfnperf_spec', [
           })).toEqual(6999.0483);
         });
 
+        it('can calculate the high resolution duration between the navigationStart Navigation Timing mark and a user mark as the high resolution value of the user mark', function() {
+          expect(SurfNPerf.duration('navigationStart', 'mark_above_the_fold', {
+            decimalPlaces: 4
+          })).toEqual(6905.0234);
+        });
+
         describe('decimal place rounding', function() {
 
           it('rounds to the nearest integer by default', function() {
