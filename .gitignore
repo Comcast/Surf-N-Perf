@@ -39,3 +39,6 @@ gem/pkg
 gem/README.md
 gem/vendor
 gem/Gemfile.lock
+
+# jaguarjs repo (template for JSDoc)
+jaguarjs/
