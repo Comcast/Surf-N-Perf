@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript">
+  var SURF_N_PERF = {
+    marks: {},
+    highResMarks: {}
+  };
+
+  SURF_N_PERF.marks.pageStart = (new Date()).getTime();
+
+  if(window.performance) {
+    if(window.performance.now) {
+      SURF_N_PERF.highResMarks.pageStart = window.performance.now();
+    }
+    if(window.performance.mark) {
+      window.performance.mark('pageStart');
+    }
+  }
+
+  SURF_N_PERF.setPageLoad = function() {
+    SURF_N_PERF.marks.loadEventEnd = (new Date()).getTime();
+
+    if(window.performance && window.performance.now) {
+      SURF_N_PERF.highResMarks.loadEventEnd = window.performance.now();
+    }
+  };
+
+  if(window.addEventListener) {
+    window.addEventListener('load', SURF_N_PERF.setPageLoad, false);
+  } else {
+    window.attachEvent('onload', SURF_N_PERF.setPageLoad);
+  }
+  </script>
+  
+  <!-- Bootstrap -->
+  <link href="public/bootstrap.min.css" rel="stylesheet">
+  <script src="http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(window).load(function() {
+	  	setTimeout(function() {
+	  		surfnperf.eventStart('demo');
+	  		surfnperf.setCustom('customKey', 'custom value');
+	      	document.getElementById('networkTime').innerHTML = surfnperf.getNetworkTime();
+	      	document.getElementById('serverTime').innerHTML = surfnperf.getServerTime();
+	      	document.getElementById('networkLatency').innerHTML = surfnperf.getNetworkLatency();
+	      	document.getElementById('processingLoadTime').innerHTML = surfnperf.getProcessingLoadTime();
+	      	document.getElementById('fullRequestLoadTime').innerHTML = surfnperf.getFullRequestLoadTime();
+	      	document.getElementById('getCustom').innerHTML = surfnperf.getCustom('customKey');
+	      	surfnperf.mark('foo');
+	      	document.getElementById('durationStart').innerHTML = surfnperf.duration('pageStart', 'foo');
+	      	document.getElementById('durationEnd').innerHTML = surfnperf.duration('responseEnd','foo');
+	      	document.getElementById('loadEventDuration').innerHTML = surfnperf.duration('loadEventEnd','foo');
+	      	surfnperf.eventEnd('demo');
+	      	document.getElementById('eventDuration').innerHTML = surfnperf.eventDuration('demo');
+	      	document.getElementById('eventDurationDec').innerHTML = surfnperf.eventDuration('demo',{decimalPlaces:10});
+		}, 0);
+	});
+  </script>
+</head>
+<body>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="scripts/bootstrap.min.js"></script>
+  
+  <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Surf-N-Perf Demo</div>
+
+  <!-- Table -->
+  <table class="table table-bordered" cellspacing="0" width="80%">
+    <thead>
+      <tr>
+        <th> Method </th>
+        <th> Status/Loading Time </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td> surfnperf.eventStart('demo') </td>
+        <td> <div>Event Started</div></td>
+      </tr>
+      <tr>
+        <td> surfnperf.setCustom('customKey', 'custom value') </td>
+        <td> <div>Custom Set</div></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getNetworkTime() </td>
+        <td id="networkTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getServerTime() </td>
+        <td id="serverTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getNetworkLatency() </td>
+        <td id="networkLatency"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getProcessingLoadTime() </td>
+        <td id="processingLoadTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getFullRequestLoadTime() </td>
+        <td id="fullRequestLoadTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getCustom('customKey') </td>
+        <td id="getCustom"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.mark('foo') </td>
+        <td> <div>Time Marked</div></td>
+      </tr>
+      <tr>
+        <td> surfnperf.duration('pageStart', 'foo') </td>
+        <td id="durationStart"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.duration('responseEnd','foo') </td>
+        <td id="durationEnd"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.duration('loadEventEnd','foo') </td>
+        <td id="loadEventDuration"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.eventEnd('demo') </td>
+        <td> <div> Event Ended </div></td>
+      </tr>
+      <tr>
+        <td> surfnperf.eventDuration('demo') </td>
+        <td id="eventDuration"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.eventDuration('demo',{decimalPlaces:10}) </td>
+        <td id="eventDurationDec"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
