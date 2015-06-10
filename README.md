@@ -1,7 +1,17 @@
-Surf-N-Perf
+Surf-N-Perf 
 ==============
 
-Micro-library for gathering frontend web page performance data.
+Micro-library for gathering frontend web page performance data. 
+
+Surf-N-Perf provides a simple to use API to gather [User Timing](http://www.w3.org/TR/user-timing/) and other important performance data in any browser.
+
+Tired of typing `window.performance.getEntriesByName('foo')[0].startTime;` with your User Timing Polyfill?
+
+With Surf-N-Perf, all you need  is `surfnperf.getMark('foo')';`, and that's just the start!
+
+Check out the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API) to see all of its features.
+
+Available as both an [NPM Module](https://www.npmjs.com/package/surfnperf) and a [Ruby Gem](https://rubygems.org/gems/surfnperf).
 
 [![Build Status](https://travis-ci.org/Comcast/Surf-N-Perf.svg?branch=master)](https://travis-ci.org/Comcast/Surf-N-Perf)
 
