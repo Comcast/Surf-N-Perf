@@ -129,6 +129,8 @@ $ grunt dev
 
 By default, it will run the tests using [PhantomJS](http://phantomjs.org/). You can also run the tests in any browser by going to http://localhost:9876/
 
+The `grunt dev` process will watch for file updates, so as you modify surfnperf.js or the test files, it will automatically run jshint, jsbeautifier, uglify & the tests. To stop the watch process, press control + C
+
 If you encounter an error related to Grunt, it may not be installed, so [go install it](http://gruntjs.com/getting-started).
 
 ## License
