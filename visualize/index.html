@@ -24,12 +24,12 @@
 			  height: 600px;
 			}
 		</style>
-		<link rel="stylesheet" type="text/css" href="public/nv.d3.css" />
+		<link rel="stylesheet" type="text/css" href="visualize/nv.d3.css" />
 
 		<script src="http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script src="http://d3js.org/d3.v3.js"></script>
-		<script src="public/nv.d3.js"></script>
+		<script src="visualize/nv.d3.js"></script>
 
 		<script type="text/javascript">
 			var data = [
@@ -59,7 +59,7 @@
 				tooltipDisplayed = $(".nvtooltip").length > 0;
 				if (!tooltipDisplayed) {
 					var iframe = document.createElement("iframe");
-					iframe.src = "public/surfnperf.html";
+					iframe.src = "visualize/surfnperf.html";
 					iframe.style.height = "1000px";
 					iframe.style.width = "1000px";
 
