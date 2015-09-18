@@ -1,0 +1,155 @@
+ <!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<style>
+			body {
+			  font: 10px sans-serif;
+			}
+
+			.axis path,
+			.axis line {
+			  fill: none;
+			  stroke: #000;
+			  shape-rendering: crispEdges;
+			}
+
+			.browser text {
+			  text-anchor: end;
+			}
+
+			#chart svg {
+			  width: 1000px;
+			  height: 600px;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="nv.d3.css" />
+
+		<script src="http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="http://d3js.org/d3.v3.js"></script>
+		<script src="nv.d3.js"></script>
+
+		<script type="text/javascript">
+			var data = [
+				{
+					key: "network",
+					color: "#5F9DC7",
+					values: []
+				},
+				{
+					key: "server",
+					color: "#68B968",
+					values: []
+				},
+				{
+					key: "processing",
+					color: "#FCA253",
+					values: []
+				}
+			];
+			var firstGenerated = false;
+			var newNetwork = [];
+			var newServer = [];
+			var newProcessing = [];
+			var tooltipDisplayed = false;
+
+			window.setInterval(function() {
+				tooltipDisplayed = $(".nvtooltip").length > 0;
+				if (!tooltipDisplayed) {
+					var iframe = document.createElement("iframe");
+					iframe.src = "surfnperf.html";
+					iframe.style.height = "1000px";
+					iframe.style.width = "1000px";
+
+					$("div#iframe").append(iframe);
+				}
+			}, 3000);
+
+			function loadGraph(data) { 
+				nv.addGraph(function() {
+					d3.select('#chart svg')
+							.datum(data)
+							.call(chart);
+
+					nv.utils.windowResize(chart.update);
+
+					return chart;
+				});
+			};
+
+			var addDataPoint = function(network, processing, server) {
+				var len = data[0].values.length + 1;
+				data[0].values.push([len, Math.log10(network)]);
+				data[1].values.push([len, Math.log10(server)]);
+				data[2].values.push([len, Math.log10(processing)]);
+
+				if (len >= 5) {
+					if (firstGenerated) {
+						newProcessing = [];
+						newNetwork = [];
+						newServer = [];
+
+						for (var i = 1; i < data[0].values.length; i++) {
+							newNetwork[i - 1] = ([i - 1, data[0].values[i][1]]);
+							newServer[i - 1] = ([i - 1, data[1].values[i][1]]);
+							newProcessing[i - 1] = ([i - 1, data[2].values[i][1]]);
+						}
+
+						data[0].values = newNetwork;
+						data[1].values = newServer;
+						data[2].values = newProcessing;
+					}
+					firstGenerated = true;
+					$("#loading").remove();
+					generateGraphNVD3(data);
+				}
+			};
+
+			var generateGraphNVD3 = function (data) {
+				nv.addGraph(function() {
+					var chart = nv.models.stackedAreaChart()
+					              .margin({right: 100})
+					              .x(function(d) { return d[0] })   //We can modify the data accessor functions...
+					              .y(function(d) { return d[1] })   //...in case your data is formatted differently.
+					              .useInteractiveGuideline(true)    //Tooltips which show all data points. Very nice!
+					              .rightAlignYAxis(false)      //Let's move the y-axis to the right side.
+					              .showControls(false)       //Allow user to choose 'Stacked', 'Stream', 'Expanded' mode.
+					              .clipEdge(false);
+
+					chart.yAxis.axisLabel("Time (log(ms) - log base 10 of the milliseconds)");
+					chart.xAxis.axisLabel("Data point");
+
+					//Format x-axis labels with custom function.
+					chart.xAxis
+					    .tickFormat(function(d, i) { 
+					      return i 
+					});
+
+					chart.yAxis
+					    .tickFormat(d3.format(',.2f'));
+
+					d3.select('#chart svg')
+					  .datum(data)
+					  .transition().duration(2000)
+					  .call(chart);
+
+					nv.utils.windowResize(chart.update);
+					return chart;
+				});
+			}
+
+		</script>
+	</head>
+
+	<body>
+		<div id="network"></div>
+		<div id="processing"></div>
+		<div id="server"></div>
+		<div id="iframe" style="display: none"></div>
+		<div id="loading">Please wait... Generating graph</div>
+		<div id="chart"><svg></svg></div>
+	</body>
+
+</html> 
