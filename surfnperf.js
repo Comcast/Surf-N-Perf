@@ -26,7 +26,7 @@
     define('surfnperf', factory);
   } else if(typeof exports === 'object') {
     // For Browserify
-    module.exports = factory(require('surfnperf'));
+    module.exports = factory();
   } else {
     // Browser global if not using Require.js or Browserify
     root.surfnperf = factory();
