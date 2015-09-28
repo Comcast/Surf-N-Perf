@@ -1,2 +1,9 @@
 ## Mac
 .DS_Store
+
+## Node
+/node_modules/
+/coverage/
+
+## Documentation cache and generated files:
+/_build/
