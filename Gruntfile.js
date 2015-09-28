@@ -36,6 +36,17 @@ module.exports = function(grunt) {
         singleRun: true
       },
     },
+    jsdoc: {
+      dist: {
+        src: ['./*.js', './README.md'],
+        options: {
+          destination: './_build/docs',
+          configure: './jsdoc-conf.json',
+          template: './node_modules/jaguarjs-jsdoc',
+          private: false
+        }
+      }
+    },
     watch: {
       dev: {
         files: ['surfnperf.js', 'spec/**/*.js'],
@@ -60,6 +71,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jsbeautifier');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-concurrent');
 

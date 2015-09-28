@@ -1,3 +1,9 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
+env:
+  global:
+  - secure: fIKaKRzHR0k7nr0htaBSCl1k6ONE4gYublrCFmOvUA+FalAuxgqSBPKcJjTKoVRy0jnyV0LNPDzLqPHkxVdb/Nwkz6BWBnqOHtMT2J0Es7ZNkXRTcJLymm/Q5FETTNejPpyrRuCMN02BprubejaI5QFDMkzYmpr48UIJvlxTR4ilNjKs8I/XMWQPfbQVGj43PUqrsBBI35Xt84pXf76Z30+nWe8AFJW1mBNGXhKHdO7xGLM2OjUBL156ywREqV+CiB/c3+hKhAdfHTB5s3dUKltvBpRZBeyAT4K64swjwNAP0FW7Au4Iqes41m4M/EXSvXv75dX6mioSkCRwJxiQz/qgc6ZAo4p/Glah2DJ9WfedqqgLa9SryehM333BqgN6Xx06r8OQYgS/iYv2HQx7OfRKE5JfaUbywpiEyzoLAsxSlxK3lN5QVVoP5zUMl2EufJG0ZRZU86wp7EZYmC0jDRoVli4IuM2V1lqPvyR5jIDc1FbiOnMP514tr8aMjgJO5/N+fKG/XW6OUzhWZXSUgrpUdw6X0vmxZI3B2ltAd4d8JeauimBdAlGcO7mHpkyRdFpw931pbobU00mGKaCOpDvqt5gX3Bjw6mmuYPg4OTIlkGfu1ZUSld62ll08sEKtQTcFo4H2nduFwJCL6HhDjAdSrGE3gSFamKi79yk1Ijc=
+before_script: npm install -g grunt-cli
+after_success:
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
