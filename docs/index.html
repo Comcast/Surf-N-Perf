@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Surf-N-Perf</title>
+    
+    <meta name="description" content="A micro-library for gathering web page performance data" />
+    
+        <meta name="keywords" content="performance" />
+        <meta name="keyword" content="performance" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"Demo","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"Surf-N-Perf","description":"A micro-library for gathering web page performance data","keyword":"performance"},"linenums":false};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">Demo</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <li class="item" data-name="SurfNPerf">
+            <span class="title">
+                <a href="SurfNPerf.html">SurfNPerf</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="SurfNPerf.SNPProto.getFullRequestLoadTime"><a href="SurfNPerf.html#.SNPProto.getFullRequestLoadTime">SNPProto.getFullRequestLoadTime</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.getNetworkLatency"><a href="SurfNPerf.html#.SNPProto.getNetworkLatency">SNPProto.getNetworkLatency</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.getNetworkTime"><a href="SurfNPerf.html#.SNPProto.getNetworkTime">SNPProto.getNetworkTime</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.getProcessingLoadTime"><a href="SurfNPerf.html#.SNPProto.getProcessingLoadTime">SNPProto.getProcessingLoadTime</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.getServerTime"><a href="SurfNPerf.html#.SNPProto.getServerTime">SNPProto.getServerTime</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.getTimingMark"><a href="SurfNPerf.html#.SNPProto.getTimingMark">SNPProto.getTimingMark</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.now"><a href="SurfNPerf.html#.SNPProto.now">SNPProto.now</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="index.html">Index</h1>
+        
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article class="readme"><h1>Surf-N-Perf </h1><p>Micro-library for gathering frontend web page performance data. </p>
+<p>Surf-N-Perf provides a simple to use API to gather <a href="http://www.w3.org/TR/user-timing/">User Timing</a> and other important performance data in any browser.</p>
+<p>Tired of typing <code>window.performance.getEntriesByName('foo')[0].startTime;</code> with your User Timing Polyfill?</p>
+<p>With Surf-N-Perf, all you need  is <code>surfnperf.getMark('foo')';</code>, and that's just the start!</p>
+<p>Check out the <a href="https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API">JavaScript API</a> to see all of its features.</p>
+<p>Available as both an <a href="https://www.npmjs.com/package/surfnperf">NPM Module</a> and a <a href="https://rubygems.org/gems/surfnperf">Ruby Gem</a>.</p>
+<p><a href="https://travis-ci.org/Comcast/Surf-N-Perf"><img src="https://travis-ci.org/Comcast/Surf-N-Perf.svg?branch=master" alt="Build Status"></a></p>
+<h2>Usage</h2><h3>Including the code in your project</h3><p>There are 2 pieces of code that need to be included in your webpage:</p>
+<p><strong>1.</strong> The following code must be included as high up in the source code of your base HTML document as possible, ideally right after the opening <code>&lt;head&gt;</code> tag:</p>
+<pre class="prettyprint source lang-html"><code>&lt;script>
+  var SURF_N_PERF = {
+    marks: {},
+    highResMarks: {}
+  };
+
+  SURF_N_PERF.marks.pageStart = (new Date()).getTime();
+
+  if(window.performance) {
+    if(window.performance.now) {
+      SURF_N_PERF.highResMarks.pageStart = window.performance.now();
+    }
+    if(window.performance.mark) {
+      window.performance.mark('pageStart');
+    }
+  }
+
+  SURF_N_PERF.setPageLoad = function() {
+    SURF_N_PERF.marks.loadEventEnd = (new Date()).getTime();
+
+    if(window.performance && window.performance.now) {
+      SURF_N_PERF.highResMarks.loadEventEnd = window.performance.now();
+    }
+  };
+
+  if(window.addEventListener) {
+    window.addEventListener('load', SURF_N_PERF.setPageLoad, false);
+  } else {
+    window.attachEvent('onload', SURF_N_PERF.setPageLoad);
+  }
+&lt;/script></code></pre><p>That provides support for the following:</p>
+<ul>
+<li>A &quot;pageStart&quot; mark for browsers that do not support <a href="http://www.w3.org/TR/navigation-timing/">Navigation Timing</a> which can be used to compute durations from when the page first started loading (specifically, this mark falls between the <a href="http://www.w3.org/TR/navigation-timing/#dom-performancetiming-domloading">domLoading</a> and <a href="http://www.w3.org/TR/navigation-timing/#dom-performancetiming-dominteractive">domInteractive</a> attributes of Navigation Timing)</li>
+<li>&quot;pageStart&quot; marks for browsers that support <a href="http://www.w3.org/TR/hr-time/">High Resolution Time</a> and/or <a href="http://www.w3.org/TR/user-timing/">User Timing</a> so that &quot;pageStart&quot; can be used as a consistent starting point for duration calculations across all browsers regardless of their supported features</li>
+<li>A &quot;loadEventEnd&quot; mark for browsers that do not support <a href="http://www.w3.org/TR/navigation-timing/">Navigation Timing</a> which can be used to compute durations from when the load event of the document is completed (<a href="http://www.w3.org/TR/navigation-timing/#dom-performancetiming-loadend">loadEventEnd</a>)</li>
+<li>A &quot;loadEventEnd&quot; <a href="http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp">DOMHighResTimeStamp</a> mark for calculating high resolution durations between a Navigation Timing mark and a user mark in browsers that support <a href="http://www.w3.org/TR/hr-time/">High Resolution Time</a> but don't support <a href="http://www.w3.org/TR/user-timing/">User Timing</a></li>
+</ul>
+<p><strong>2.</strong> Then just drop the <a href="https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.min.js">surfnperf.min.js</a> in your codebase and reference that JavaScript file in your HTML document. If you're using <a href="http://requirejs.org/">RequireJS</a> or <a href="http://browserify.org/">Browserify</a>, it registers itself as 'surfnperf'.</p>
+<h3>Storing &amp; Retrieving Performance Data</h3><p>Details in the <a href="https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API">JavaScript API</a> page in the wiki</p>
+<h2>Ruby Project Integration</h2><h3>Using within a Rails project</h3><p>The <a href="https://rubygems.org/gems/surfnperf">surfnperf Ruby Gem</a> allows you to quickly &amp; easily integrate Surf-N-Perf into your Rails projects. To include the necessary files, add <code>surfnperf</code> to your <code>Gemfile</code>:</p>
+<pre class="prettyprint source lang-ruby"><code>gem 'surfnperf'</code></pre><p>After a <code>$ bundle install</code>, you'll be able to include the <a href="https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js">main JavaScript file</a> in your JavaScript manifest by simply adding:</p>
+<pre class="prettyprint source"><code>//= require surfnperf</code></pre><p>The necessary script for the <code>&lt;head&gt;</code> of your HTML document is also available to you via a <a href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a> that you can include in the appropriate layout file for your page, such as <code>app/views/layouts/application.html.erb</code> by simply adding this line:</p>
+<pre class="prettyprint source lang-erb"><code>&lt;%= render &quot;surfnperf/head&quot; %></code></pre><p>Those 3 lines of code are all your need to get started using Surf-N-Perf in Rails!</p>
+<h3>Using within other Ruby projects that integrate with Sprockets</h3><p><a href="https://github.com/sstephenson/sprockets">Sprockets</a> is what powers the <a href="http://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline</a> in Rails, as well as other Ruby website tools such as <a href="https://middlemanapp.com/">Middleman</a>. For these other Ruby projects that use <a href="https://middlemanapp.com/advanced/asset_pipeline/">Sprockets</a>, integration is similar to the Rails instructions above, with one extra step:</p>
+<p>Add <code>surfnperf</code> to your <code>Gemfile</code>:</p>
+<pre class="prettyprint source lang-ruby"><code>gem 'surfnperf'</code></pre><p>After a <code>$ bundle install</code>, include <a href="https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js">surfnperf.js</a> in your JavaScript manifest by adding:</p>
+<pre class="prettyprint source"><code>//= require surfnperf</code></pre><p>For now, you'll have to manually include the <a href="#including-the-code-in-your-project">necessary script</a> for the <code>&lt;head&gt;</code> of your HTML document. If someone would like to update the Ruby Gem to work as a proper <a href="https://middlemanapp.com/advanced/custom_extensions/">Middleman Extension</a>, we'd happily accept a <a href="https://github.com/Comcast/Surf-N-Perf/issues/35">pull request</a>.</p>
+<h2>Running Tests &amp; Other Development Tools</h2><p>Tests are written in <a href="http://jasmine.github.io/">Jasmine</a> and run with <a href="http://karma-runner.github.io/">Karma</a></p>
+<p>Install the dependencies by executing this command from the root of your Surf-N-Perf project directory:</p>
+<pre class="prettyprint source lang-bash"><code>$ npm install</code></pre><p>If Grunt CLI has not been already installed, <a href="http://gruntjs.com/getting-started">go install it</a>.</p>
+<p>And then run the tests, JSHint, beautify your code &amp; generate the minified file with:</p>
+<pre class="prettyprint source lang-bash"><code>$ grunt dev</code></pre><p>By default, it will run the tests using <a href="http://phantomjs.org/">PhantomJS</a>. You can also run the tests in any browser by going to http://localhost:9876/</p>
+<p>The <code>grunt dev</code> process will watch for file updates, so as you modify surfnperf.js or the test files, it will automatically run jshint, jsbeautifier, uglify &amp; the tests. To stop the watch process, press control + C</p>
+<h2>License</h2><p>Licensed under the <a href="https://github.com/Comcast/Surf-N-Perf/blob/master/LICENSE">MIT License</a></p></article>
+    </section>
+
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Mon Sep 28 2015 17:51:11 GMT+0000 (UTC)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/main.js"></script>
+</body>
+</html>
