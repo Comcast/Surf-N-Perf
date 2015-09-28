@@ -1,61 +1,9 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
 env:
   global:
-    - GH_REF: "github.com/rachbrown151/Surf-N-Perf"
-    - secure: "gfPoLSAj3+kYluRzuwPtrik93SXL1Pefq4PR9odncqkgd5hA8vpMP9gqwIyyM1LubBctbbFxMO8Zt8jFGGpZCqMp57LZSkWj5nayk0SUn3YtBoXTsLXAy+WLEUr8qXRtxFhXCJIwhYuhMucZAowoaAaZmnLcRcRJj1MSCQA5Yzw="
-branches:
-  only:
-    - master
-    - documentation
-before_install: npm install -g grunt-cli
-install:
-  - npm install
+  - secure: fIKaKRzHR0k7nr0htaBSCl1k6ONE4gYublrCFmOvUA+FalAuxgqSBPKcJjTKoVRy0jnyV0LNPDzLqPHkxVdb/Nwkz6BWBnqOHtMT2J0Es7ZNkXRTcJLymm/Q5FETTNejPpyrRuCMN02BprubejaI5QFDMkzYmpr48UIJvlxTR4ilNjKs8I/XMWQPfbQVGj43PUqrsBBI35Xt84pXf76Z30+nWe8AFJW1mBNGXhKHdO7xGLM2OjUBL156ywREqV+CiB/c3+hKhAdfHTB5s3dUKltvBpRZBeyAT4K64swjwNAP0FW7Au4Iqes41m4M/EXSvXv75dX6mioSkCRwJxiQz/qgc6ZAo4p/Glah2DJ9WfedqqgLa9SryehM333BqgN6Xx06r8OQYgS/iYv2HQx7OfRKE5JfaUbywpiEyzoLAsxSlxK3lN5QVVoP5zUMl2EufJG0ZRZU86wp7EZYmC0jDRoVli4IuM2V1lqPvyR5jIDc1FbiOnMP514tr8aMjgJO5/N+fKG/XW6OUzhWZXSUgrpUdw6X0vmxZI3B2ltAd4d8JeauimBdAlGcO7mHpkyRdFpw931pbobU00mGKaCOpDvqt5gX3Bjw6mmuYPg4OTIlkGfu1ZUSld62ll08sEKtQTcFo4H2nduFwJCL6HhDjAdSrGE3gSFamKi79yk1Ijc=
+before_script: npm install -g grunt-cli
 after_success:
-  - git remote set-url origin "github.com/rachbrown151/Surf-N-Perf.git"
-  - git config --global user.email "rabrown@seas.upenn.edu"
-  - git config --global user.name "Rachel Brown"
-  - grunt jsdoc
-  - git add -A
-  - git status
-  - git stash
-  - git checkout -b gh-pages
-  - ls
-  - mkdir demo
-  - mkdir demo/public
-  - mv demo.html demo/demo.html
-  - mv visualize.html demo/visualize.html
-  - mv public/surfnperf.html demo/public/surfnperf.html
-  - mv public/nv.d3.js demo/public/nv.d3.js
-  - mv public/nv.d3.css demo/public/nv.d3.css
-  - ls -la
-  - ls -la demo
-  - ls -la demo/public
-  - "rm *"
-  - ls
-  - rm Gruntfile.js
-  - rm npm-debug.log
-  - ls
-  - git stash apply
-  - ls
-  - "cp -r gh-pages/* ."
-  - rm -r gh-pages/
-  - rm index.html
-  - mkdir public
-  - mv SurfNPerf.html index.html
-  - mv demo/demo.html demo.html
-  - mv demo/visualize.html visualize.html 
-  - mv demo/public/surfnperf.html public/surfnperf.html 
-  - mv demo/public/nv.d3.js public/nv.d3.js
-  - mv demo/public/nv.d3.css public/nv.d3.css
-  - ls
-  - ls public
-  - git checkout gh-pages
-  - git checkout master
-  - git merge "https://${GH_TOKEN}:@${GH_REF}" master gh-pages
-  - git add -A
-  - git commit -m "Automated documentation update"
-  - git push "https://${GH_TOKEN}:@${GH_REF}" master:gh-pages --force
-  - git checkout master
-  - git branch -d gh-pagesg
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash deploy.sh

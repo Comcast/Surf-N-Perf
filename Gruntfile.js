@@ -40,17 +40,17 @@ module.exports = function(grunt) {
       dist: {
         src: ['./*.js', './README.md'],
         options: {
-            destination: './gh-pages',
-            configure: './jaguarjs-jsdoc/conf.json',
-            template: './jaguarjs-jsdoc',
-            'private': false
-          }
+          destination: './_build/docs',
+          configure: './jsdoc-conf.json',
+          template: './node_modules/jaguarjs-jsdoc',
+          private: false
+        }
       }
     },
     watch: {
       dev: {
         files: ['surfnperf.js', 'spec/**/*.js'],
-        tasks: ['jshint', 'jsbeautifier', 'uglify', 'jsdoc'],
+        tasks: ['jshint', 'jsbeautifier', 'uglify'],
         options: {
           spawn: false,
           atBegin: true
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-concurrent');
 
-  grunt.registerTask('default', ['jshint', 'karma:continuous', 'jsdoc']);
+  grunt.registerTask('default', ['jshint', 'karma:continuous']);
   grunt.registerTask('build', ['jshint', 'karma:continuous', 'uglify']);
   grunt.registerTask('precommit', ['jsbeautifier', 'build']);
   grunt.registerTask('dev', ['concurrent:target']);
