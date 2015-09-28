@@ -10,7 +10,7 @@ git init
 git config user.name "John Riviello"
 git config user.email "github@riviello.net"
 
-git remote add upstream "https://$GH_TOKEN@github.com/JohnRiv/Surf-N-Perf.git"
+git remote add upstream "https://$GH_TOKEN@github.com/Comcast/Surf-N-Perf.git"
 git fetch upstream
 git reset upstream/gh-pages
 
