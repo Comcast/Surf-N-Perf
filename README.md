@@ -9,7 +9,7 @@ Tired of typing `window.performance.getEntriesByName('foo')[0].startTime;` with 
 
 With Surf-N-Perf, all you need  is `surfnperf.getMark('foo')';`, and that's just the start!
 
-Check out the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API) to see all of its features.
+Check out the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API) to see all of its features and the [full documentation](http://comcast.github.io/Surf-N-Perf/docs/SurfNPerf.html) for a list of methods & how to use them.
 
 Available as both an [NPM Module](https://www.npmjs.com/package/surfnperf) and a [Ruby Gem](https://rubygems.org/gems/surfnperf).
 
