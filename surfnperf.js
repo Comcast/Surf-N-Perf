@@ -356,6 +356,31 @@
     return this.duration('navigationStart', 'loadEventEnd');
   };
 
+  /**
+   * Time to first paint (amount of time that lapses before some useful content is diplayed indicating that the browser is not stuck and is still working)
+   *
+   * @returns {integer} time in ms
+   * @memberOf SurfNPerf
+   */
+  SNPProto.getFirstPaint = function() {
+    if(window.chrome && window.chrome.loadTimes) {
+      return window.chrome.loadTimes().firstPaintTime;
+    } else if (window.msPerformance || window.mozPerformance) {
+      var winPerf = window.msPerformance || window.mozPerformance;
+      if (winPerf.timing && winPerf.navigation) {
+        if (winPerf.timing.msFirstPaint) {
+          return winPerf.timing.msFirstPaint
+        }
+      }
+    } else {
+      return null;
+    }
+  };
+
+  SNPProto.getFirstPaintFrame = function() {
+    
+  };
+
   return new SurfNPerf();
 
 }));
