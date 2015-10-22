@@ -365,13 +365,8 @@
   SNPProto.getFirstPaint = function() {
     if(window.chrome && window.chrome.loadTimes) {
       return window.chrome.loadTimes().firstPaintTime;
-    } else if (window.msPerformance || window.mozPerformance) {
-      var winPerf = window.msPerformance || window.mozPerformance;
-      if (winPerf.timing && winPerf.navigation) {
-        if (winPerf.timing.msFirstPaint) {
-          return winPerf.timing.msFirstPaint
-        }
-      }
+    } else if (window.msPerformance && window.msPerformance.timing && window.msPerformance.timing.msFirstPaint) {
+      return window.msPerformance.timing.msFirstPaint;
     } else {
       return null;
     }
