@@ -82,7 +82,7 @@
 
       this._navigationTimingEvents = {
         a: ["navigationStart", "unloadEventEnd", "unloadEventStart", "redirectStart", "redirectEnd", "fetchStart", "domainLookupStart", "domainLookupEnd", "connectStart", "secureConnectionStart", "connectEnd", "requestStart", "responseStart", "responseEnd", "domLoading"],
-        b: ["domInteractive", "domContentLoadedEventStart", "domContentLoadedEventEnd", "domComplete", "loadEventStart", "loadEventEnd"]
+        b: ["domInteractive", "domContentLoadedEventStart", "domContentLoadedEventEnd", "domComplete", "loadEventStart", "loadEventEnd", "manualFirstPaint"]
       };
 
       this.initialize();
@@ -372,8 +372,14 @@
     }
   };
 
+  /**
+   * Time to first paint (Time calculated based on window.requestAnimationFrame() for the first pixels to be rendered on the page)
+   *
+   * @returns {integer} time in ms
+   * @memberOf SurfNPerf
+   */
   SNPProto.getFirstPaintFrame = function() {
-    
+    return this.duration('navigationStart', 'manualFirstPaint');
   };
 
   return new SurfNPerf();

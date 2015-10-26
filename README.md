@@ -49,11 +49,21 @@ There are 2 pieces of code that need to be included in your webpage:
     }
   };
 
+  SURF_N_PERF.setManualFirstPaint = function() {
+    SURF_N_PERF.marks.manualFirstPaint = (new Date()).getTime();
+
+    if(window.performance && window.performance.now) {
+      SURF_N_PERF.highResMarks.manualFirstPaint = window.performance.now();
+    }
+  };
+
   if(window.addEventListener) {
     window.addEventListener('load', SURF_N_PERF.setPageLoad, false);
   } else {
     window.attachEvent('onload', SURF_N_PERF.setPageLoad);
   }
+
+  window.requestAnimationFrame(SURF_N_PERF.setManualFirstPaint);
 </script>
 ```
 
