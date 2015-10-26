@@ -1,3 +1,5 @@
+require 'middleman_extension'
+
 module SurfNPerf
   class << self
     def load!
