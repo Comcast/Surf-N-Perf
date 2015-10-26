@@ -357,16 +357,16 @@
   };
 
   /**
-   * Time to first paint (amount of time that lapses before some useful content is diplayed indicating that the browser is not stuck and is still working)
+   * Time to first paint (browser-reported time for the first pixels to be rendered on the page)
    *
    * @returns {integer} time in ms
    * @memberOf SurfNPerf
    */
   SNPProto.getFirstPaint = function() {
     if(window.chrome && window.chrome.loadTimes) {
-      return window.chrome.loadTimes().firstPaintTime;
-    } else if (window.msPerformance && window.msPerformance.timing && window.msPerformance.timing.msFirstPaint) {
-      return window.msPerformance.timing.msFirstPaint;
+      return window.chrome.loadTimes().firstPaintTime*1000 - window.performance.timing.navigationStart;
+    } else if (window.performance && window.performance.timing && window.performance.timing.msFirstPaint) {
+      return window.performance.timing.msFirstPaint - window.performance.timing.navigationStart;
     } else {
       return null;
     }
