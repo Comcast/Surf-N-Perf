@@ -82,7 +82,7 @@
 
       this._navigationTimingEvents = {
         a: ["navigationStart", "unloadEventEnd", "unloadEventStart", "redirectStart", "redirectEnd", "fetchStart", "domainLookupStart", "domainLookupEnd", "connectStart", "secureConnectionStart", "connectEnd", "requestStart", "responseStart", "responseEnd", "domLoading"],
-        b: ["domInteractive", "domContentLoadedEventStart", "domContentLoadedEventEnd", "domComplete", "loadEventStart", "loadEventEnd", "manualFirstPaint"]
+        b: ["domInteractive", "domContentLoadedEventStart", "domContentLoadedEventEnd", "domComplete", "loadEventStart", "loadEventEnd"]
       };
 
       this.initialize();
@@ -378,8 +378,8 @@
    * @returns {integer} time in ms
    * @memberOf SurfNPerf
    */
-  SNPProto.getFirstPaintFrame = function() {
-    return this.duration('navigationStart', 'manualFirstPaint');
+  SNPProto.getFirstPaintFrame = function(options) {
+    return this.duration('navigationStart', 'firstPaintFrame', options);
   };
 
   return new SurfNPerf();
