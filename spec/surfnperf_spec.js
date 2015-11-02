@@ -1096,5 +1096,31 @@ define('spec/surfnperf_spec', [
 
     });
 
+    describe('Browser built-in Time to First Paint', function() {
+      describe('when the client is using Chrome', function() {
+        it('getFirstPaint returns the same value as window.chrome.loadTimes().firstPaintTime', function() {
+          if(SurfNPerf.chromeLoadTimes()) {
+            expect(SurfNPerf.getFirstPaint()).toEqual(window.chrome.loadTimes().firstPaintTime * 1000 - window.performance.timing.navigationStart);
+          }
+        });
+      });
+
+      describe('when the client is using IE/Edge', function() {
+        it('getFirstPaint returns the same value as window.performance.timing.msFirstPaint', function() {
+          if(SurfNPerf.msFirstPaint()) {
+            expect(SurfNPerf.getFirstPaint()).toEqual(window.performance.timing.msFirstPaint - window.performance.timing.navigationStart);
+          }
+        });
+      });
+
+      describe('when the client is using browser without Time to First Paint built in support', function() {
+        it('getFirstPaint returns the same value as window.performance.timing.msFirstPaint', function() {
+          if(!SurfNPerf.chromeLoadTimes() && !SurfNPerf.msFirstPaint()) {
+            expect(SurfNPerf.getFirstPaint()).toEqual(null);
+          }
+        });
+      });
+    });
+
   });
 });
