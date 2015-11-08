@@ -363,10 +363,10 @@
    * @memberOf SurfNPerf
    */
   SNPProto.getFirstPaint = function() {
-    if(window.chrome && window.chrome.loadTimes) {
-      return window.chrome.loadTimes().firstPaintTime * 1000 - window.performance.timing.navigationStart;
-    } else if(window.performance && window.performance.timing && window.performance.timing.msFirstPaint) {
-      return window.performance.timing.msFirstPaint - window.performance.timing.navigationStart;
+    if(this.chromeLoadTimes()) {
+      return this.chromeLoadTimes().firstPaintTime * 1000 - window.performance.timing.navigationStart;
+    } else if(window.performance && window.performance.timing && this.msFirstPaint()) {
+      return this.msFirstPaint() - window.performance.timing.navigationStart;
     } else {
       return null;
     }
@@ -383,18 +383,18 @@
   };
 
   SNPProto.chromeLoadTimes = function() {
-    if(window.chrome) {
-      return true;
+    if(window.chrome && window.chrome.loadTimes()) {
+      return window.chrome.loadTimes();
     } else {
-      return false;
+      return undefined;
     }
   };
 
   SNPProto.msFirstPaint = function() {
     if(window.performance.timing.msFirstPaint) {
-      return true;
+      return window.performance.timing.msFirstPaint;
     } else {
-      return false;
+      return undefined;
     }
   };
 

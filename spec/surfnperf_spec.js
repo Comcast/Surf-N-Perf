@@ -1096,28 +1096,52 @@ define('spec/surfnperf_spec', [
 
     });
 
+
+    describe('#chromeLoadTimes', function() {
+      it('returns a reference to window.chrome.loadTimes() if the browser supports it, otherwise undefined', function() {
+        if(window.chrome && window.chrome.loadTimes()) {
+          expect(SurfNPerf.chromeLoadTimes()).toEqual(window.chrome.loadTimes());
+        } else {
+          expect(SurfNPerf.chromeLoadTimes()).toEqual(undefined);
+        }
+      });
+    });
+
+    describe('#msFirstPaint', function() {
+      it('returns a reference to window.performance.timing.msFirstPaint if the browser supports it, otherwise undefined', function() {
+        if(window.performance.timing.msFirstPaint) {
+          expect(SurfNPerf.msFirstPaint()).toEqual(window.performance.timing.msFirstPaint);
+        } else {
+          expect(SurfNPerf.msFirstPaint()).toEqual(undefined);
+        }
+      });
+    });
+
     describe('Browser built-in Time to First Paint', function() {
       describe('when the client is using Chrome', function() {
-        it('getFirstPaint returns the same value as window.chrome.loadTimes().firstPaintTime', function() {
-          if(SurfNPerf.chromeLoadTimes()) {
-            expect(SurfNPerf.getFirstPaint()).toEqual(window.chrome.loadTimes().firstPaintTime * 1000 - window.performance.timing.navigationStart);
-          }
+        it('returns the time to first paint relative to navigation start time', function() {
+          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn({
+            firstPaintTime: 1446480965.123456
+          });
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
+          expect(SurfNPerf.getFirstPaint()).toEqual(1446480965.123456 * 1000 - window.performance.timing.navigationStart);
         });
       });
 
       describe('when the client is using IE/Edge', function() {
-        it('getFirstPaint returns the same value as window.performance.timing.msFirstPaint', function() {
-          if(SurfNPerf.msFirstPaint()) {
-            expect(SurfNPerf.getFirstPaint()).toEqual(window.performance.timing.msFirstPaint - window.performance.timing.navigationStart);
-          }
+        it('returns the time to first paint relative to navigation start time', function() {
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(1776480965.123457);
+          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
+
+          expect(SurfNPerf.getFirstPaint()).toEqual(SurfNPerf.msFirstPaint() - window.performance.timing.navigationStart);
         });
       });
 
       describe('when the client is using browser without Time to First Paint built in support', function() {
-        it('getFirstPaint returns the same value as window.performance.timing.msFirstPaint', function() {
-          if(!SurfNPerf.chromeLoadTimes() && !SurfNPerf.msFirstPaint()) {
-            expect(SurfNPerf.getFirstPaint()).toEqual(null);
-          }
+        it('returns null since the browser does not have built in support', function() {
+          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
+          expect(SurfNPerf.getFirstPaint()).toEqual(null);
         });
       });
     });
