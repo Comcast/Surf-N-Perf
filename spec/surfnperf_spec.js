@@ -1117,14 +1117,26 @@ define('spec/surfnperf_spec', [
       });
     });
 
-    describe('Browser built-in Time to First Paint', function() {
+    describe('#navigationStartTiming', function() {
+      it('returns a reference to window.performance.timing.navigationStart() if the browser supports it, otherwise undefined', function() {
+        if(window.performance && window.performance.timing && window.performance.timing.navigationStart) {
+          expect(SurfNPerf.navigationStartTiming()).toEqual(window.performance.timing.navigationStart());
+        } else {
+          expect(SurfNPerf.navigationStartTiming()).toEqual(undefined);
+        }
+      });
+    });
+
+    describe('getFirstPaint', function() {
       describe('when the client is using Chrome', function() {
         it('returns the time to first paint relative to navigation start time', function() {
           spyOn(SurfNPerf, 'chromeLoadTimes').andReturn({
             firstPaintTime: 1446480965.123456
           });
           spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
-          expect(SurfNPerf.getFirstPaint()).toEqual(1446480965.123456 * 1000 - window.performance.timing.navigationStart);
+          spyOn(SurfNPerf, 'navigationStartTiming').andReturn(123789.734);
+
+          expect(SurfNPerf.getFirstPaint()).toEqual(1446480965.123456 * 1000 - SurfNPerf.navigationStartTiming());
         });
       });
 
@@ -1132,8 +1144,9 @@ define('spec/surfnperf_spec', [
         it('returns the time to first paint relative to navigation start time', function() {
           spyOn(SurfNPerf, 'msFirstPaint').andReturn(1776480965.123457);
           spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
+          spyOn(SurfNPerf, 'navigationStartTiming').andReturn(123789.734);
 
-          expect(SurfNPerf.getFirstPaint()).toEqual(SurfNPerf.msFirstPaint() - window.performance.timing.navigationStart);
+          expect(SurfNPerf.getFirstPaint()).toEqual(SurfNPerf.msFirstPaint() - SurfNPerf.navigationStartTiming());
         });
       });
 
@@ -1141,9 +1154,15 @@ define('spec/surfnperf_spec', [
         it('returns null since the browser does not have built in support', function() {
           spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
           spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
+          spyOn(SurfNPerf, 'navigationStartTiming').andReturn(123789.734);
+
           expect(SurfNPerf.getFirstPaint()).toEqual(null);
         });
       });
+    });
+
+    describe("getFirstPaintFrame", function() {
+
     });
 
   });
