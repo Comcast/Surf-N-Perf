@@ -1127,7 +1127,7 @@ define('spec/surfnperf_spec', [
       });
     });
 
-    describe('getFirstPaint', function() {
+    describe('#getFirstPaint', function() {
       describe('when the client is using Chrome', function() {
         it('returns the time to first paint relative to navigation start time', function() {
           spyOn(SurfNPerf, 'chromeLoadTimes').andReturn({
@@ -1161,7 +1161,7 @@ define('spec/surfnperf_spec', [
       });
     });
 
-    describe("getFirstPaintFrame", function() {
+    describe("#getFirstPaintFrame", function() {
 
     });
 
