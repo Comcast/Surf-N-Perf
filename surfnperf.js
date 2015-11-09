@@ -364,9 +364,9 @@
    */
   SNPProto.getFirstPaint = function() {
     if(this.chromeLoadTimes()) {
-      return this.chromeLoadTimes().firstPaintTime * 1000 - this.navigationStartTiming();
-    } else if(window.performance && window.performance.timing && this.msFirstPaint()) {
-      return this.msFirstPaint() - this.navigationStartTiming();
+      return this.chromeLoadTimes().firstPaintTime * 1000 - this.performanceTiming().navigationStart;
+    } else if(this.msFirstPaint()) {
+      return this.msFirstPaint() - this.performanceTiming().navigationStart;
     } else {
       return null;
     }
@@ -379,11 +379,20 @@
    * @memberOf SurfNPerf
    */
   SNPProto.getFirstPaintFrame = function(options) {
-    return this.duration('navigationStart', 'firstPaintFrame', options);
+    if(window.requestAnimationFrame) {
+      var timeToFirstPaint = this.duration('navigationStart', 'firstPaintFrame', options);
+      if(isNaN(timeToFirstPaint)) {
+        return undefined;
+      } else {
+        return timeToFirstPaint;
+      }
+    } else {
+      return null;
+    }
   };
 
   SNPProto.chromeLoadTimes = function() {
-    if(window.chrome && window.chrome.loadTimes()) {
+    if(window.chrome && window.chrome.loadTimes) {
       return window.chrome.loadTimes();
     } else {
       return undefined;
@@ -391,16 +400,8 @@
   };
 
   SNPProto.msFirstPaint = function() {
-    if(window.performance.timing.msFirstPaint) {
+    if(window.performance && window.performance.timing && window.performance.timing.msFirstPaint) {
       return window.performance.timing.msFirstPaint;
-    } else {
-      return undefined;
-    }
-  };
-
-  SNPProto.navigationStartTiming = function() {
-    if(window.performance && window.performance.timing && window.performance.timing.navigationStart) {
-      return window.performance.timing.navigationStart;
     } else {
       return undefined;
     }

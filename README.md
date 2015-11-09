@@ -52,14 +52,13 @@ There are 2 pieces of code that need to be included in your webpage:
   SURF_N_PERF.setFirstPaint = function() {
     SURF_N_PERF.marks.firstPaintFrame = (new Date()).getTime();
 
-    if(window.performance) {
-    if(window.performance.now) {
+    if(window.performance && window.performance.now) {
       SURF_N_PERF.highResMarks.firstPaintFrame = window.performance.now();
+      
+      if(window.performance.mark) {
+        window.performance.mark('firstPaintFrame');
+      }
     }
-    if(window.performance.mark) {
-      window.performance.mark('firstPaintFrame');
-    }
-  }
   };
 
   if(window.addEventListener) {
@@ -68,7 +67,7 @@ There are 2 pieces of code that need to be included in your webpage:
     window.attachEvent('onload', SURF_N_PERF.setPageLoad);
   }
   if (window.requestAnimationFrame) {
-    window.requestAnimationFrame(SURF_N_PERF.setManualFirstPaint);
+    window.requestAnimationFrame(SURF_N_PERF.setFirstPaint);
   }
 </script>
 ```

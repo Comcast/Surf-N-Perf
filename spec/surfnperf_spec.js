@@ -1099,7 +1099,7 @@ define('spec/surfnperf_spec', [
 
     describe('#chromeLoadTimes', function() {
       it('returns a reference to window.chrome.loadTimes() if the browser supports it, otherwise undefined', function() {
-        if(window.chrome && window.chrome.loadTimes()) {
+        if(window.chrome && window.chrome.loadTimes) {
           expect(SurfNPerf.chromeLoadTimes()).toEqual(window.chrome.loadTimes());
         } else {
           expect(SurfNPerf.chromeLoadTimes()).toEqual(undefined);
@@ -1109,20 +1109,10 @@ define('spec/surfnperf_spec', [
 
     describe('#msFirstPaint', function() {
       it('returns a reference to window.performance.timing.msFirstPaint if the browser supports it, otherwise undefined', function() {
-        if(window.performance.timing.msFirstPaint) {
+        if(window.performance && window.performance.timing && window.performance.timing.msFirstPaint) {
           expect(SurfNPerf.msFirstPaint()).toEqual(window.performance.timing.msFirstPaint);
         } else {
           expect(SurfNPerf.msFirstPaint()).toEqual(undefined);
-        }
-      });
-    });
-
-    describe('#navigationStartTiming', function() {
-      it('returns a reference to window.performance.timing.navigationStart() if the browser supports it, otherwise undefined', function() {
-        if(window.performance && window.performance.timing && window.performance.timing.navigationStart) {
-          expect(SurfNPerf.navigationStartTiming()).toEqual(window.performance.timing.navigationStart());
-        } else {
-          expect(SurfNPerf.navigationStartTiming()).toEqual(undefined);
         }
       });
     });
@@ -1134,9 +1124,11 @@ define('spec/surfnperf_spec', [
             firstPaintTime: 1446480965.123456
           });
           spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
-          spyOn(SurfNPerf, 'navigationStartTiming').andReturn(123789.734);
+          spyOn(SurfNPerf, 'performanceTiming').andReturn({
+            navigationStart: 123789.734
+          });
 
-          expect(SurfNPerf.getFirstPaint()).toEqual(1446480965.123456 * 1000 - SurfNPerf.navigationStartTiming());
+          expect(SurfNPerf.getFirstPaint()).toEqual(1446480965.123456 * 1000 - SurfNPerf.performanceTiming().navigationStart);
         });
       });
 
@@ -1144,9 +1136,11 @@ define('spec/surfnperf_spec', [
         it('returns the time to first paint relative to navigation start time', function() {
           spyOn(SurfNPerf, 'msFirstPaint').andReturn(1776480965.123457);
           spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
-          spyOn(SurfNPerf, 'navigationStartTiming').andReturn(123789.734);
+          spyOn(SurfNPerf, 'performanceTiming').andReturn({
+            navigationStart: 123789.734
+          });
 
-          expect(SurfNPerf.getFirstPaint()).toEqual(SurfNPerf.msFirstPaint() - SurfNPerf.navigationStartTiming());
+          expect(SurfNPerf.getFirstPaint()).toEqual(SurfNPerf.msFirstPaint() - SurfNPerf.performanceTiming().navigationStart);
         });
       });
 
@@ -1154,7 +1148,9 @@ define('spec/surfnperf_spec', [
         it('returns null since the browser does not have built in support', function() {
           spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
           spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
-          spyOn(SurfNPerf, 'navigationStartTiming').andReturn(123789.734);
+          spyOn(SurfNPerf, 'performanceTiming').andReturn({
+            navigationStart: 123789.734
+          });
 
           expect(SurfNPerf.getFirstPaint()).toEqual(null);
         });
@@ -1162,7 +1158,45 @@ define('spec/surfnperf_spec', [
     });
 
     describe("#getFirstPaintFrame", function() {
+      describe('when the client does not support window.requestAnimationFrame', function() {
+        it('returns null', function() {
+          expect(SurfNPerf.getFirstPaintFrame()).toEqual(null);
+        });
+      });
 
+      describe('when the client supports window.requestAnimationFrame but it has not yet been called', function() {
+        it('returns undefined', function() {
+          if(!window.requestAnimationFrame) {
+            window.requestAnimationFrame = function() {};
+          }
+          expect(SurfNPerf.getFirstPaintFrame()).toEqual(undefined);
+        });
+      });
+
+      describe('when the client supports window.requestAnimationFrame and it has been called', function() {
+        beforeEach(function() {
+          spyOn(SurfNPerf, 'performanceTiming').andReturn({
+            navigationStart: 1388595600000,
+            fetchStart: 1388595601000,
+            connectEnd: 1388595601900,
+            requestStart: 1388595602000,
+            responseStart: 1388595603000,
+            responseEnd: 1388595604000,
+            loadEventEnd: 1388595605000
+          });
+          SURF_N_PERF = {
+            marks: {
+              pageStart: 1388595604025,
+              firstPaintFrame: 1777595605005
+            }
+          };
+        });
+
+        it('returns the time to first paint calculated', function() {
+          expect(SurfNPerf.getFirstPaintFrame()).toEqual(SURF_N_PERF.marks.firstPaintFrame - SURF_N_PERF.marks.pageStart);
+        });
+
+      });
     });
 
   });
