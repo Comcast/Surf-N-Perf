@@ -1,3 +1,10 @@
+<a name="1.1.0"></a>
+### 1.1.0
+
+#### Features
+
+* [Ruby Gem](https://rubygems.org/gems/surfnperf) now has full support for [Middleman](https://middlemanapp.com/) ([d4e3208](https://github.com/Comcast/Surf-N-Perf/commit/d4e320824fa92402462840d3404259ecf7dfeb57))
+
 <a name="1.0.2"></a>
 ### 1.0.2
 

@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["John Riviello"]
   spec.email         = ["john_riviello@comcast.com"]
   spec.summary       = pkg_json["description"]
-  spec.description   = pkg_json["description"]
+  spec.description   = pkg_json["description"] + ". Includes helpers for Rails, Middleman & other frameworks that use Sprockets."
   spec.homepage      = pkg_json["homepage"]
   spec.license       = pkg_json["license"]
 

@@ -73,7 +73,7 @@ Details in the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/Java
 
 ### Using within a Rails project
 
-The [surfnperf Ruby Gem](https://rubygems.org/gems/surfnperf) allows you to quickly & easily integrate Surf-N-Perf into your Rails projects. To include the necessary files, add `surfnperf` to your `Gemfile`:
+The [surfnperf Ruby Gem](https://rubygems.org/gems/surfnperf) allows you to quickly & easily integrate Surf-N-Perf into your [Rails](http://rubyonrails.org/) projects. To include the necessary files, add `surfnperf` to your `Gemfile`:
 
 ```ruby
 gem 'surfnperf'
@@ -93,9 +93,40 @@ The necessary script for the ```<head>``` of your HTML document is also availabl
 
 Those 3 lines of code are all your need to get started using Surf-N-Perf in Rails!
 
+
+### Using within a Middleman project
+
+The [surfnperf Ruby Gem](https://rubygems.org/gems/surfnperf) also allows you to quickly & easily integrate Surf-N-Perf into your [Middleman](https://middlemanapp.com/) projects. Instructions are similar to the Rails instructions above, with one extra step. Start by adding at least v1.1.0 of `surfnperf` to your Middleman project's `Gemfile`:
+
+```ruby
+gem "surfnperf", ">=1.1.0"
+```
+
+After a `$ bundle install`, you'll be able to include the [main JavaScript file](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js) in your JavaScript manifest by simply adding:
+
+```
+//= require surfnperf
+```
+
+The necessary script for the ```<head>``` of your HTML document is also available to you via a [custom defined helper](https://middlemanapp.com/basics/helper_methods/#custom-defined-helpers) that you can include in the appropriate layout file for your page, such as `source/layouts/layout.erb` by adding this line:
+
+```erb
+<%= surfnperf_head %>
+```
+
+You will also have to configure the extension for that helper to be recognized by Middleman by adding this line to your `config.rb`:
+
+```ruby
+activate :surfnperf
+```
+
+You'll want to do that **outside** of your build-specific configuration (i.e. outside the `configure :build do` block) so that it is available when you run `$ bundle exec middleman server`
+
+Those 4 lines of code are all your need to get started using Surf-N-Perf in Middleman!
+
 ### Using within other Ruby projects that integrate with Sprockets
 
-[Sprockets](https://github.com/sstephenson/sprockets) is what powers the [Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html) in Rails, as well as other Ruby website tools such as [Middleman](https://middlemanapp.com/). For these other Ruby projects that use [Sprockets](https://middlemanapp.com/advanced/asset_pipeline/), integration is similar to the Rails instructions above, with one extra step:
+[Sprockets](https://github.com/sstephenson/sprockets) is what powers the [Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html) in Rails, Middleman, and other Ruby website tools. For these other Ruby projects that use [Sprockets](https://middlemanapp.com/advanced/asset_pipeline/), integration is similar to the Rails instructions above, with one extra step:
 
 Add `surfnperf` to your `Gemfile`:
 
@@ -109,7 +140,7 @@ After a `$ bundle install`, include [surfnperf.js](https://github.com/Comcast/Su
 //= require surfnperf
 ```
 
-For now, you'll have to manually include the [necessary script](#including-the-code-in-your-project) for the ```<head>``` of your HTML document. If someone would like to update the Ruby Gem to work as a proper [Middleman Extension](https://middlemanapp.com/advanced/custom_extensions/), we'd happily accept a [pull request](https://github.com/Comcast/Surf-N-Perf/issues/35).
+For now, you'll have to manually include the [necessary script](#including-the-code-in-your-project) for the ```<head>``` of your HTML document.
 
 ## Running Tests & Other Development Tools
 
