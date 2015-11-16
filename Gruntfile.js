@@ -7,12 +7,13 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'surfnperf.min.js': 'surfnperf.js'
+          'surfnperf.min.js': 'surfnperf.js',
+          'resource-timing.js': 'lib/resource-timing.js'
         }
       }
     },
     jshint: {
-      all: 'surfnperf.js'
+      all: ['surfnperf.js', 'lib/resource-timing.js']
     },
     jsbeautifier: {
       dist: {
@@ -49,7 +50,7 @@ module.exports = function(grunt) {
     },
     watch: {
       dev: {
-        files: ['surfnperf.js', 'spec/**/*.js'],
+        files: ['surfnperf.js', 'spec/**/*.js', 'lib/resource-timing.js'],
         tasks: ['jshint', 'jsbeautifier', 'uglify'],
         options: {
           spawn: false,

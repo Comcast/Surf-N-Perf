@@ -46,6 +46,8 @@
   "files": [
     "surfnperf.js",
     "surfnperf.min.js",
+    "lib/resource-timing.js",
+    "resource-timing.js ",
     "LICENSE",
     "NOTICE",
     "README.md"
