@@ -1151,7 +1151,7 @@ define('spec/surfnperf_spec', [
           spyOn(SurfNPerf, 'performanceTiming').andReturn({
             navigationStart: 123789.734
           });
-
+ 
           expect(SurfNPerf.getFirstPaint()).toEqual(null);
         });
       });
