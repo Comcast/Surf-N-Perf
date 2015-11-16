@@ -362,11 +362,11 @@
    * @returns {integer} time in ms
    * @memberOf SurfNPerf
    */
-  SNPProto.getFirstPaint = function() {
+  SNPProto.getFirstPaint = function(options) {
     if(this.chromeLoadTimes()) {
-      return this.chromeLoadTimes().firstPaintTime * 1000 - this.performanceTiming().navigationStart;
+      return this.duration('navigationStart', this.chromeLoadTimes().firstPaintTime * 1000, options);
     } else if(this.msFirstPaint()) {
-      return this.msFirstPaint() - this.performanceTiming().navigationStart;
+      return this.duration('navigationStart', this.msFirstPaint(), options);
     } else {
       return null;
     }
