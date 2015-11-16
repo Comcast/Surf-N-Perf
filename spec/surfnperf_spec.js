@@ -1118,31 +1118,31 @@ define('spec/surfnperf_spec', [
     });
 
     describe('#getFirstPaint', function() {
-      // describe('when the client is using Chrome', function() {
-      //   it('returns the time to first paint relative to navigation start time', function() {
-      //     spyOn(SurfNPerf, 'chromeLoadTimes').andReturn({
-      //       firstPaintTime: 1446480965.123456
-      //     });
-      //     spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
-      //     spyOn(SurfNPerf, 'performanceTiming').andReturn({
-      //       navigationStart: 123789.734
-      //     });
+      describe('when the client is using Chrome', function() {
+        it('returns the time to first paint relative to navigation start time', function() {
+          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn({
+            firstPaintTime: 1446480965.123456
+          });
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
+          spyOn(SurfNPerf, 'performanceTiming').andReturn({
+            navigationStart: 123789.734
+          });
 
-      //     expect(SurfNPerf.getFirstPaint()).toEqual(1446480965.123456 * 1000 - SurfNPerf.performanceTiming().navigationStart);
-      //   });
-      // });
+          expect(SurfNPerf.getFirstPaint()).toEqual(SurfNPerf.duration('navigationStart', 'chromePaint'));
+        });
+      });
 
-      // describe('when the client is using IE/Edge', function() {
-      //   it('returns the time to first paint relative to navigation start time', function() {
-      //     spyOn(SurfNPerf, 'msFirstPaint').andReturn(1776480965.123457);
-      //     spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
-      //     spyOn(SurfNPerf, 'performanceTiming').andReturn({
-      //       navigationStart: 123789.734
-      //     });
+      describe('when the client is using IE/Edge', function() {
+        it('returns the time to first paint relative to navigation start time', function() {
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(1776480965.123457);
+          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
+          spyOn(SurfNPerf, 'performanceTiming').andReturn({
+            navigationStart: 123789.734
+          });
 
-      //     expect(SurfNPerf.getFirstPaint()).toEqual(SurfNPerf.msFirstPaint() - SurfNPerf.performanceTiming().navigationStart);
-      //   });
-      // });
+          expect(SurfNPerf.getFirstPaint()).toEqual(SurfNPerf.duration('navigationStart', 'msPaint'));
+        });
+      });
 
       describe('when the client is using browser without Time to First Paint built in support', function() {
         it('returns null since the browser does not have built in support', function() {
@@ -1189,17 +1189,20 @@ define('spec/surfnperf_spec', [
           };
         });
 
-        // describe('and the browser supports User Timing', function() {
-        //   beforeEach(function() {
-        //     SurfNPerf._navigationTiming = true;
-        //     SurfNPerf._highResTime = true;
-        //     SurfNPerf._userTiming = true;
-        //   });
+        describe('and the browser supports User Timing', function() {
+          beforeEach(function() {
+            SurfNPerf._navigationTiming = true;
+            SurfNPerf._highResTime = true;
+            SurfNPerf._userTiming = true;
 
-        //   it('returns the time to first paint calculated', function() {
-        //     expect(SurfNPerf.getFirstPaintFrame()).toEqual(SurfNPerf.duration('navigationStart', 'firstPaintFrame'));
-        //   });
-        // });
+            spyOn(SurfNPerf, '_setMeasure');
+            spyOn(SurfNPerf, '_getMeasureDuration').andReturn(123.456789);
+          });
+
+          it('returns the time to first paint calculated', function() {
+            expect(SurfNPerf.getFirstPaintFrame()).toEqual(SurfNPerf.duration('navigationStart', 'firstPaintFrame'));
+          });
+        });
         describe('and the browser supports High Resolution Time but no User Timing', function() {
           beforeEach(function() {
             SurfNPerf._navigationTiming = true;

@@ -364,9 +364,11 @@
    */
   SNPProto.getFirstPaint = function(options) {
     if(this.chromeLoadTimes()) {
-      return this.duration('navigationStart', this.chromeLoadTimes().firstPaintTime * 1000, options);
+      this._data.marks.chromePaint = this.chromeLoadTimes().firstPaintTime * 1000;
+      return this.duration('navigationStart', 'chromePaint', options);
     } else if(this.msFirstPaint()) {
-      return this.duration('navigationStart', this.msFirstPaint(), options);
+      this._data.marks.msPaint = this.msFirstPaint();
+      return this.duration('navigationStart', 'msPaint', options);
     } else {
       return null;
     }
