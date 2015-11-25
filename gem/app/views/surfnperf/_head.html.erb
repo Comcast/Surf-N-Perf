@@ -7,6 +7,9 @@
   SURF_N_PERF.marks.pageStart = (new Date()).getTime();
 
   if(window.performance) {
+    window.performance.onresourcetimingbufferfull = function(){
+      SURF_N_PERF.resourcetimingbufferfull = true;
+    }
     if(window.performance.now) {
       SURF_N_PERF.highResMarks.pageStart = window.performance.now();
     }
