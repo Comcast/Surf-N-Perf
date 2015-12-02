@@ -51,6 +51,8 @@
         surfnperf.eventEnd('demo');
         document.getElementById('eventDuration').innerHTML = surfnperf.eventDuration('demo');
         document.getElementById('eventDurationDec').innerHTML = surfnperf.eventDuration('demo',{decimalPlaces:10});
+        document.getElementById('getOrigins').innerHTML = surfnperfRT.getOrigins();
+        document.getElementById('getResourcesFromOrigin').innerHTML = surfnperfRT.getResourcesFromOrigin("http://rawgit.com");
       }, 0);
 });
 </script>
@@ -135,6 +137,29 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="panel-heading">Resource Timings Demo</div>
+
+
+    <table class="table table-bordered" cellspacing="0" width="80%">
+      <thead>
+        <tr>
+          <th> Method </th>
+          <th> Status/Loading Time </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td> surfnperfRT.getOrigins() </td>
+          <td id="getOrigins"></td>
+        </tr>
+        <tr>
+          <td> surfnperfRT.getResourcesFromOrigin("http://rawgit.com") </td>
+          <td id="getResourcesFromOrigin"></td>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
 </body>
 </html>
