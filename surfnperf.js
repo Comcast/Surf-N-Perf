@@ -364,11 +364,9 @@
    */
   SNPProto.getFirstPaint = function(options) {
     if(this.chromeLoadTimes()) {
-      this._data.marks.chromePaint = this.chromeLoadTimes().firstPaintTime * 1000;
-      return this.duration('navigationStart', 'chromePaint', options);
+      return this._roundedDuration(this.getTimingMark('navigationStart', 'DOM'), this.chromeLoadTimes().firstPaintTime * 1000, options);
     } else if(this.msFirstPaint()) {
-      this._data.marks.msPaint = this.msFirstPaint();
-      return this.duration('navigationStart', 'msPaint', options);
+      return this._roundedDuration(this.getTimingMark('navigationStart', 'DOM'), this.msFirstPaint(), options);
     } else {
       return null;
     }
@@ -382,12 +380,7 @@
    */
   SNPProto.getFirstPaintFrame = function(options) {
     if(window.requestAnimationFrame) {
-      var timeToFirstPaint = this.duration('navigationStart', 'firstPaintFrame', options);
-      if(isNaN(timeToFirstPaint)) {
-        return undefined;
-      } else {
-        return timeToFirstPaint;
-      }
+      return this.duration('navigationStart', 'firstPaintFrame', options);
     } else {
       return null;
     }
