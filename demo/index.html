@@ -26,13 +26,28 @@
     }
   };
 
+  SURF_N_PERF.setFirstPaint = function() {
+    SURF_N_PERF.marks.firstPaintFrame = (new Date()).getTime();
+
+    if(window.performance && window.performance.now) {
+      SURF_N_PERF.highResMarks.firstPaintFrame = window.performance.now();
+
+      if(window.performance.mark) {
+        window.performance.mark('firstPaintFrame');
+      }
+    }
+  };
+
   if(window.addEventListener) {
     window.addEventListener('load', SURF_N_PERF.setPageLoad, false);
   } else {
     window.attachEvent('onload', SURF_N_PERF.setPageLoad);
   }
+  if (window.requestAnimationFrame) {
+    window.requestAnimationFrame(SURF_N_PERF.setFirstPaint);
+  }
   </script>
-  
+
   <!-- Bootstrap -->
   <link href="bootstrap.min.css" rel="stylesheet">
   <script src="http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"></script>
@@ -55,6 +70,15 @@
 	      	surfnperf.eventEnd('demo');
 	      	document.getElementById('eventDuration').innerHTML = surfnperf.eventDuration('demo');
 	      	document.getElementById('eventDurationDec').innerHTML = surfnperf.eventDuration('demo',{decimalPlaces:10});
+
+          if(window.requestAnimationFrame) {
+            window.requestAnimationFrame(function() {
+              setTimeout(function() {
+                document.getElementById('firstPaint').innerHTML = surfnperf.getFirstPaint() || 'null';
+                document.getElementById('firstPaintFrame').innerHTML = surfnperf.getFirstPaintFrame();
+              }, 10);
+            });
+          }
 		}, 0);
 	});
   </script>
@@ -104,6 +128,14 @@
       <tr>
         <td> surfnperf.getFullRequestLoadTime() </td>
         <td id="fullRequestLoadTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getFirstPaint() </td>
+        <td id="firstPaint"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getFirstPaintFrame() </td>
+        <td id="firstPaintFrame"></td>
       </tr>
       <tr>
         <td> surfnperf.getCustom('customKey') </td>
