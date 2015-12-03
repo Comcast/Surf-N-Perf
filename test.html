@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript">
+  var SURF_N_PERF = {
+    marks: {},
+    highResMarks: {}
+  };
+
+  SURF_N_PERF.marks.pageStart = (new Date()).getTime();
+
+  if(window.performance) {
+    if(window.performance.now) {
+      SURF_N_PERF.highResMarks.pageStart = window.performance.now();
+    }
+    if(window.performance.mark) {
+      window.performance.mark('pageStart');
+    }
+  }
+
+  SURF_N_PERF.setPageLoad = function() {
+    SURF_N_PERF.marks.loadEventEnd = (new Date()).getTime();
+
+    if(window.performance && window.performance.now) {
+      SURF_N_PERF.highResMarks.loadEventEnd = window.performance.now();
+    }
+  };
+
+  SURF_N_PERF.setFirstPaint = function() {
+    SURF_N_PERF.marks.firstPaintFrame = (new Date()).getTime();
+
+    if(window.performance && window.performance.now) {
+      SURF_N_PERF.highResMarks.firstPaintFrame = window.performance.now();
+
+      if(window.performance.mark) {
+        window.performance.mark('firstPaintFrame');
+      }
+    }
+  };
+
+  if(window.addEventListener) {
+    window.addEventListener('load', SURF_N_PERF.setPageLoad, false);
+  } else {
+    window.attachEvent('onload', SURF_N_PERF.setPageLoad);
+  }
+  if (window.requestAnimationFrame) {
+    window.requestAnimationFrame(SURF_N_PERF.setFirstPaint);
+  }
+  </script>
+
+  <!-- Bootstrap -->
+  <link href="http://comcast.github.io/Surf-N-Perf/demo/bootstrap.min.css" rel="stylesheet">
+  <script src="surfnperf.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript">
+  console.info(surfnperf.getFirstPaintFrame({decimalPlaces:4}));
+    $(window).load(function() {
+      setTimeout(function() {
+        surfnperf.eventStart('demo');
+        surfnperf.setCustom('customKey', 'custom value');
+          document.getElementById('networkTime').innerHTML = surfnperf.getNetworkTime();
+          document.getElementById('serverTime').innerHTML = surfnperf.getServerTime();
+          document.getElementById('networkLatency').innerHTML = surfnperf.getNetworkLatency();
+          document.getElementById('processingLoadTime').innerHTML = surfnperf.getProcessingLoadTime();
+          document.getElementById('fullRequestLoadTime').innerHTML = surfnperf.getFullRequestLoadTime();
+          document.getElementById('getCustom').innerHTML = surfnperf.getCustom('customKey');
+          surfnperf.mark('foo');
+          document.getElementById('durationStart').innerHTML = surfnperf.duration('pageStart', 'foo');
+          document.getElementById('durationEnd').innerHTML = surfnperf.duration('responseEnd','foo');
+          document.getElementById('loadEventDuration').innerHTML = surfnperf.duration('loadEventEnd','foo');
+          surfnperf.eventEnd('demo');
+          document.getElementById('eventDuration').innerHTML = surfnperf.eventDuration('demo');
+          document.getElementById('eventDurationDec').innerHTML = surfnperf.eventDuration('demo',{decimalPlaces:10});
+
+        if(window.requestAnimationFrame) {
+          window.requestAnimationFrame(function() {
+            setTimeout(function() {
+              document.getElementById('getFP').innerHTML = surfnperf.getFirstPaint({decimalPlaces:4}) || 'null';
+              document.getElementById('getFPF').innerHTML = surfnperf.getFirstPaintFrame({decimalPlaces:4});
+
+              /* not for demo*/document.getElementById('getMSFP').innerHTML = window.performance.timing.msFirstPaint
+            }, 10); // ugh, but it works
+          });
+        }
+
+    }, 0);
+  });
+  </script>
+</head>
+<body>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+   <h1>Surf-N-Perf</h1>
+
+  <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Surf-N-Perf Demo</div>
+
+  <!-- Table -->
+  <table class="table table-bordered" cellspacing="0" width="80%">
+    <thead>
+      <tr>
+        <th> Method </th>
+        <th> Status/Loading Time </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="background:#def"> surfnperf.getFirstPaint({decimalPlaces:4}) </td>
+        <td style="background:#def" id="getFP"></td>
+      </tr>
+      <tr>
+        <td style="background:#def"> surfnperf.getFirstPaintFrame({decimalPlaces:4}) </td>
+        <td style="background:#def" id="getFPF"></td>
+      </tr>
+      <tr>
+        <td style="background:#def"> window.performance.timing.msFirstPaint </td>
+        <td style="background:#def" id="getMSFP"></td>
+      </tr>
+
+
+
+
+      <tr>
+        <td> surfnperf.eventStart('demo') </td>
+        <td> <div>Event Started</div></td>
+      </tr>
+      <tr>
+        <td> surfnperf.setCustom('customKey', 'custom value') </td>
+        <td> <div>Custom Set</div></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getNetworkTime() </td>
+        <td id="networkTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getServerTime() </td>
+        <td id="serverTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getNetworkLatency() </td>
+        <td id="networkLatency"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getProcessingLoadTime() </td>
+        <td id="processingLoadTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getFullRequestLoadTime() </td>
+        <td id="fullRequestLoadTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getCustom('customKey') </td>
+        <td id="getCustom"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.mark('foo') </td>
+        <td> <div>Time Marked</div></td>
+      </tr>
+      <tr>
+        <td> surfnperf.duration('pageStart', 'foo') </td>
+        <td id="durationStart"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.duration('responseEnd','foo') </td>
+        <td id="durationEnd"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.duration('loadEventEnd','foo') </td>
+        <td id="loadEventDuration"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.eventEnd('demo') </td>
+        <td> <div> Event Ended </div></td>
+      </tr>
+      <tr>
+        <td> surfnperf.eventDuration('demo') </td>
+        <td id="eventDuration"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.eventDuration('demo',{decimalPlaces:10}) </td>
+        <td id="eventDurationDec"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!--
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?0" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?1" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?2" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?3" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?4" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?5" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?6" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?7" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?8" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?9" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?10" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?11" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?12" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?13" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?14" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?15" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?16" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?17" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?18" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?19" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?20" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?21" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?22" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?23" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?24" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?25" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?26" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?27" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?28" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?29" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?30" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?31" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?32" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?33" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?34" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?35" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?36" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?37" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?38" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?39" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?40" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?41" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?42" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?43" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?44" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?45" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?46" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?47" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?48" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?49" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?50" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?51" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?52" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?53" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?54" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?55" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?56" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?57" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?58" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?59" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?60" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?61" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?62" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?63" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?64" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?65" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?66" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?67" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?68" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?69" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?70" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?71" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?72" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?73" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?74" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?75" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?76" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?77" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?78" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?79" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?80" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?81" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?82" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?83" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?84" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?85" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?86" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?87" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?88" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?89" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?90" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?91" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?92" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?93" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?94" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?95" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?96" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?97" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?98" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?99" />
+
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?110" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?111" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?112" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?113" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?114" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?115" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?116" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?117" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?118" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?119" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?120" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?121" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?122" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?123" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?124" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?125" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?126" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?127" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?128" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?129" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?130" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?131" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?132" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?133" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?134" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?135" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?136" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?137" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?138" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?139" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?140" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?141" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?142" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?143" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?144" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?145" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?146" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?147" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?148" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?149" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?150" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?151" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?152" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?153" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?154" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?155" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?156" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?157" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?158" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?159" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?160" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?161" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?162" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?163" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?164" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?165" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?166" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?167" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?168" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?169" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?170" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?171" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?172" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?173" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?174" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?175" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?176" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?177" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?178" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?179" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?180" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?181" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?182" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?183" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?184" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?185" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?186" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?187" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?188" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?189" />
+
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?190" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?191" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?192" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?193" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?194" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?195" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?196" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?197" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?198" />
+<img src="http://my.xfinity.com/assets/weather/34-7bd05ab9334d2af03ad1acc65e82ab46.png?199" />
+-->
+</body>
+</html>
