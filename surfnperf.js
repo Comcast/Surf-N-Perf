@@ -356,6 +356,52 @@
     return this.duration('navigationStart', 'loadEventEnd');
   };
 
+  /**
+   * Time to first paint (browser-reported time for the first pixels to be rendered on the page)
+   *
+   * @returns {integer} time in ms
+   * @memberOf SurfNPerf
+   */
+  SNPProto.getFirstPaint = function(options) {
+    if(this.chromeLoadTimes()) {
+      return this._roundedDuration(this.getTimingMark('navigationStart', 'DOM'), this.chromeLoadTimes().firstPaintTime * 1000, options);
+    } else if(this.msFirstPaint()) {
+      return this._roundedDuration(this.getTimingMark('navigationStart', 'DOM'), this.msFirstPaint(), options);
+    } else {
+      return null;
+    }
+  };
+
+  /**
+   * Time to first paint (Time calculated based on window.requestAnimationFrame() for the first pixels to be rendered on the page)
+   *
+   * @returns {integer} time in ms
+   * @memberOf SurfNPerf
+   */
+  SNPProto.getFirstPaintFrame = function(options) {
+    if(window.requestAnimationFrame) {
+      return this.duration('navigationStart', 'firstPaintFrame', options);
+    } else {
+      return null;
+    }
+  };
+
+  SNPProto.chromeLoadTimes = function() {
+    if(window.chrome && window.chrome.loadTimes) {
+      return window.chrome.loadTimes();
+    } else {
+      return undefined;
+    }
+  };
+
+  SNPProto.msFirstPaint = function() {
+    if(window.performance && window.performance.timing && window.performance.timing.msFirstPaint) {
+      return window.performance.timing.msFirstPaint;
+    } else {
+      return undefined;
+    }
+  };
+
   return new SurfNPerf();
 
 }));
