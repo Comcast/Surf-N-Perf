@@ -1,3 +1,10 @@
+<a name="1.2.0"></a>
+### 1.2.0
+
+#### Features
+
+* Adds new Time To First Paint methods: `getFirstPaint` & `getFirstPaintFrame` ([e6dab25](https://github.com/Comcast/Surf-N-Perf/commit/e6dab2585b3f993e482e86f096ed1efed295b717))
+
 <a name="1.1.0"></a>
 ### 1.1.0
 

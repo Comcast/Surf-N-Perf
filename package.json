@@ -1,6 +1,6 @@
 {
   "name": "surfnperf",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Micro-library for gathering frontend web page performance data",
   "main": "surfnperf.min",
   "engines": {
