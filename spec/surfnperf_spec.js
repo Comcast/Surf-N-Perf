@@ -1096,5 +1096,135 @@ define('spec/surfnperf_spec', [
 
     });
 
+
+    describe('#chromeLoadTimes', function() {
+      it('returns a reference to window.chrome.loadTimes() if the browser supports it, otherwise undefined', function() {
+        if(window.chrome && window.chrome.loadTimes) {
+          expect(SurfNPerf.chromeLoadTimes()).toEqual(window.chrome.loadTimes());
+        } else {
+          expect(SurfNPerf.chromeLoadTimes()).toEqual(undefined);
+        }
+      });
+    });
+
+    describe('#msFirstPaint', function() {
+      it('returns a reference to window.performance.timing.msFirstPaint if the browser supports it, otherwise undefined', function() {
+        if(window.performance && window.performance.timing && window.performance.timing.msFirstPaint) {
+          expect(SurfNPerf.msFirstPaint()).toEqual(window.performance.timing.msFirstPaint);
+        } else {
+          expect(SurfNPerf.msFirstPaint()).toEqual(undefined);
+        }
+      });
+    });
+
+    describe('#getFirstPaint', function() {
+      beforeEach(function() {
+        SurfNPerf._navigationTiming = true;
+        spyOn(SurfNPerf, 'performanceTiming').andReturn({
+          navigationStart: 1388595600000
+        });
+      });
+
+      describe('when the client is using Chrome', function() {
+        it('returns the time to first paint relative to navigation start time', function() {
+          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn({
+            firstPaintTime: 1388595601.000123
+          });
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
+
+          expect(SurfNPerf.getFirstPaint()).toEqual(1000);
+        });
+      });
+
+      describe('when the client is using IE/Edge', function() {
+        it('returns the time to first paint relative to navigation start time', function() {
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(1388595601005);
+          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
+
+          expect(SurfNPerf.getFirstPaint()).toEqual(1005);
+        });
+      });
+
+      describe('when the client is using browser without Time to First Paint built in support', function() {
+        it('returns null since the browser does not have built in support', function() {
+          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
+
+          expect(SurfNPerf.getFirstPaint()).toEqual(null);
+        });
+      });
+    });
+
+    describe("#getFirstPaintFrame", function() {
+      describe('when the client does not support window.requestAnimationFrame', function() {
+        it('returns null', function() {
+          expect(SurfNPerf.getFirstPaintFrame()).toEqual(null);
+        });
+      });
+
+      describe('when the client supports window.requestAnimationFrame but it has not yet been called', function() {
+        it('returns undefined', function() {
+          SurfNPerf._navigationTiming = true;
+
+          if(!window.requestAnimationFrame) {
+            window.requestAnimationFrame = function() {};
+          }
+          expect(isNaN(SurfNPerf.getFirstPaintFrame())).toBe(true);
+        });
+      });
+
+      describe('when the client supports window.requestAnimationFrame and it has been called', function() {
+        beforeEach(function() {
+          spyOn(SurfNPerf, 'performanceTiming').andReturn({
+            navigationStart: 1388595600000
+          });
+          SURF_N_PERF = {
+            marks: {
+              pageStart: 1388595604025,
+              firstPaintFrame: 1388595601025
+            },
+            highResMarks: {
+              firstPaintFrame: 1111.2222333344
+            }
+          };
+          spyOn(SurfNPerf, '_setMeasure');
+          spyOn(SurfNPerf, '_getMeasureDuration').andReturn(1234.12345);
+        });
+
+        describe('and the browser supports User Timing', function() {
+          beforeEach(function() {
+            SurfNPerf._navigationTiming = true;
+            SurfNPerf._highResTime = true;
+            SurfNPerf._userTiming = true;
+          });
+
+          it('returns the time to first paint calculated', function() {
+            expect(SurfNPerf.getFirstPaintFrame()).toEqual(1234);
+          });
+        });
+        describe('and the browser supports High Resolution Time but no User Timing', function() {
+          beforeEach(function() {
+            SurfNPerf._navigationTiming = true;
+            SurfNPerf._highResTime = true;
+            SurfNPerf._userTiming = false;
+          });
+
+          it('returns the time to first paint calculated', function() {
+            expect(SurfNPerf.getFirstPaintFrame()).toEqual(1111);
+          });
+        });
+        describe('and the browser supports neither High Resolution Time nor User Timing', function() {
+          beforeEach(function() {
+            SurfNPerf._navigationTiming = true;
+            SurfNPerf._highResTime = false;
+            SurfNPerf._userTiming = false;
+          });
+
+          it('returns the time to first paint calculated', function() {
+            expect(SurfNPerf.getFirstPaintFrame()).toEqual(1025);
+          });
+        });
+      });
+    });
   });
 });
