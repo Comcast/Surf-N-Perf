@@ -1,5 +1,5 @@
 define('spec/surfnperfRT_spec', [
-  'surfnperfRT'
+  'surfnperf'
 ], function(
   SurfNPerfRT
 ) {
@@ -42,55 +42,63 @@ define('spec/surfnperfRT_spec', [
     });
 
     describe('#_inList', function() {
-      
+      // Minsu
     });
 
     describe('#_getURLOrigin', function() {
-
+      // Ros
     });
 
     describe('#getOrigins', function() {
+      // Minsu
+      beforeEach(function() {
+        SurfNPerfRT.initialize();
+      });
 
     });
 
     describe('#getResourcesFromOrigin', function() {
+      // Ros
+      beforeEach(function() {
+        SurfNPerfRT.initialize();
+      });
 
     });
 
     describe('#_name', function() {
-
+      // Minsu
     });
 
     describe('#getResource', function() {
-
+      // Ros
     });
 
     describe('#duration', function() {
-
+      // Minsu
     });
 
     describe('#start', function() {
-
+      // Ros
     });
 
     describe('#end', function() {
-
+      // Minsu
     });
 
     describe('#getFullRequestLoadTime', function() {
-
+      // Ros
     });
 
     describe('#getNetworkTime', function() {
-
+      // Minsu
     });
 
     describe('#getServerTime', function() {
-
+      // Ros
     });
 
     describe('#getBlockingTime', function() {
-
+      // Minsu
     });
 
   });
