@@ -1,5 +1,5 @@
 define('spec/surfnperfRT_spec', [
-  'surfnperf'
+  'resource-timing'
 ], function(
   SurfNPerfRT
 ) {
