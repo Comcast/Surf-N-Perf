@@ -36,23 +36,62 @@ define('spec/surfnperfRT_spec', [
       });
 
       it('sets the Performance API properties appropriately', function() {
-        expect(SurfNPerfRT._navigationTiming).not.toBeNull();
-        expect(SurfNPerfRT._highResTime).not.toBeNull();
-        expect(SurfNPerfRT._userTiming).not.toBeNull();
-      });
-
-      it('ensures the SURF_N_PERF global object exists', function() {
-        expect(window.SURF_N_PERF.marks).toBeDefined();
-        expect(window.SURF_N_PERF.highResMarks).toBeDefined();;
-      });
-
-      it('stores the URL pathname as "initialUrl"', function() {
-        expect(SurfNPerfRT.getCustom('initialUrl')).toEqual(window.location.pathname);
+        expect(SurfNPerfRT._resourceTiming).not.toBeNull();
       });
 
     });
 
-    
+    describe('#_inList', function() {
+      
+    });
+
+    describe('#_getURLOrigin', function() {
+
+    });
+
+    describe('#getOrigins', function() {
+
+    });
+
+    describe('#getResourcesFromOrigin', function() {
+
+    });
+
+    describe('#_name', function() {
+
+    });
+
+    describe('#getResource', function() {
+
+    });
+
+    describe('#duration', function() {
+
+    });
+
+    describe('#start', function() {
+
+    });
+
+    describe('#end', function() {
+
+    });
+
+    describe('#getFullRequestLoadTime', function() {
+
+    });
+
+    describe('#getNetworkTime', function() {
+
+    });
+
+    describe('#getServerTime', function() {
+
+    });
+
+    describe('#getBlockingTime', function() {
+
+    });
 
   });
 });
