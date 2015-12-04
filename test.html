@@ -53,6 +53,7 @@
         document.getElementById('eventDurationDec').innerHTML = surfnperf.eventDuration('demo',{decimalPlaces:10});
         document.getElementById('getOrigins').innerHTML = surfnperfRT.getOrigins();
         document.getElementById('getResourcesFromOrigin').innerHTML = surfnperfRT.getResourcesFromOrigin("http://rawgit.com");
+        document.getElementById('getResource').innerHTML = surfnperfRT.getResource("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js");
       }, 0);
 });
 </script>
@@ -156,6 +157,10 @@
         <tr>
           <td> surfnperfRT.getResourcesFromOrigin("http://rawgit.com") </td>
           <td id="getResourcesFromOrigin"></td>
+        </tr>
+        <tr>
+          <td> surfnperfRT.getResource("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
+          <td id="getResource"></td>
         </tr>
       </tbody>
     </table>
