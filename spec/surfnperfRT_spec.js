@@ -71,6 +71,9 @@ define('spec/surfnperfRT_spec', [
         SurfNPerfRT._resourceTiming = false;
         expect(SurfNPerfRT.getResourcesFromOrigin("http://johnriv.github.io:3000")).toEqual(null);
       });
+      describe('when the browser supports resource timings', function() {
+
+      });
     });
 
     describe('#_name', function() {
