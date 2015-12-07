@@ -67,11 +67,10 @@ define('spec/surfnperfRT_spec', [
     });
 
     describe('#getResourcesFromOrigin', function() {
-      // Ros
-      beforeEach(function() {
-        SurfNPerfRT.initialize();
+      describe('when the browser does not support resource timings', function() {
+        SurfNPerfRT._resourceTiming = false;
+        expect(SurfNPerfRT.getResourcesFromOrigin("http://johnriv.github.io:3000")).toEqual(null);
       });
-
     });
 
     describe('#_name', function() {
