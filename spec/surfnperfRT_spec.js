@@ -27,23 +27,6 @@ define('spec/surfnperfRT_spec', [
 
     describe('#_inList', function() {
       // Minsu
-      it('returns true if option does not have neither list keys', function() {
-        options = {};
-        expect(SurfNPerfRT._inList("a",options)).toEqual(true);
-        expect(SurfNPerfRT._inList("d",options)).toEqual(true);
-      });
-
-      it('returns true only if option contains given origin, if the list key is whitelist', function() {
-        whiteOptions = {"whitelist" : ["a", "b", "c"]};
-        expect(SurfNPerfRT._inList("a",whiteOptions)).toEqual(true);
-        expect(SurfNPerfRT._inList("d",whiteOptions)).toEqual(false);
-      });
-
-      it('returns true only if option does not contain given origin, if the list key is blacklist', function() {
-        blackOptions = {"blackList" : ["a", "b", "c"]};
-        expect(SurfNPerfRT._inList("a",blackOptions)).toEqual(false);
-        expect(SurfNPerfRT._inList("d",blackOptions)).toEqual(true);
-      });
     });
 
     describe('#_getURLOrigin', function() {
@@ -61,15 +44,8 @@ define('spec/surfnperfRT_spec', [
 
     describe('#getOrigins', function() {
       // Minsu
- 	  beforeEach(function() {
+      beforeEach(function() {
         SurfNPerfRT.initialize();
-      });
-      it('returns null if brower does not support resource timing', function() {
-
-      });
-
-      it('', function() {
-
       });
 
     });
@@ -77,7 +53,9 @@ define('spec/surfnperfRT_spec', [
     describe('#getResourcesFromOrigin', function() {
       describe('when the browser does not support resource timings', function() {
         SurfNPerfRT._resourceTiming = false;
-        expect(SurfNPerfRT.getResourcesFromOrigin("http://johnriv.github.io:3000")).toEqual(null);
+        it('returns null', function() {
+          expect(SurfNPerfRT.getResourcesFromOrigin("http://johnriv.github.io:3000")).toEqual(null);
+        });
       });
       describe('when the browser supports resource timings', function() {
 
@@ -90,47 +68,58 @@ define('spec/surfnperfRT_spec', [
 
     describe('#getResource', function() {
       // Ros
+      describe('when the browser does not support resource timings', function() {
+        SurfNPerfRT._resourceTiming = false;
+        it('returns null', function() {
+          expect(SurfNPerfRT.getResource(name)).toEqual(null);
+        });
+      });
     });
 
     describe('#duration', function() {
       // Minsu
-      it('returns null if brower does not support resource timing', function() {
-        
-      });
-
     });
 
     describe('#start', function() {
       // Ros
+      describe('when the browser does not support resource timings', function() {
+        SurfNPerfRT._resourceTiming = false;
+        it('returns null', function() {
+          expect(SurfNPerfRT.start(name)).toEqual(null);
+        });
+      });
     });
 
     describe('#end', function() {
       // Minsu
-      it('returns null if brower does not support resource timing', function() {
-        
-      });
     });
 
     describe('#getFullRequestLoadTime', function() {
       // Ros
+      describe('when the browser does not support resource timings', function() {
+        SurfNPerfRT._resourceTiming = false;
+        it('returns null', function() {
+          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(null);
+        });
+      });
     });
 
     describe('#getNetworkTime', function() {
       // Minsu
-      it('returns null if brower does not support resource timing', function() {
-        
-      });
     });
 
     describe('#getServerTime', function() {
       // Ros
+      describe('when the browser does not support resource timings', function() {
+        SurfNPerfRT._resourceTiming = false;
+        it('returns null', function() {
+          expect(SurfNPerfRT.getServerTime(name)).toEqual(null);
+        });
+      });
     });
 
     describe('#getBlockingTime', function() {
       // Minsu
-      it('returns null if brower does not support resource timing', function() {
-        
-      });
     });
 
   });
