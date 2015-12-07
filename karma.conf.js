@@ -15,11 +15,12 @@ module.exports = function(config) {
 
 
     // list of files / patterns to load in the browser
-    files: [{
-      pattern: 'surfnperf.js'
-    }, {
-      pattern: 'spec/**/*.js'
-    }],
+    files: [
+      'surfnperf.js',
+      'lib/resource-timing.js', {
+        pattern: 'spec/**/*.js'
+      }
+    ],
 
 
     // list of files to exclude

@@ -1,5 +1,5 @@
 define('spec/surfnperfRT_spec', [
-  'resource-timing'
+  'surfnperf/resource-timing'
 ], function(
   SurfNPerfRT
 ) {
@@ -23,8 +23,8 @@ define('spec/surfnperfRT_spec', [
 
     describe('Singleton Behavior', function() {
       it('is only instantiated once, even if the library is attempted to be instantiated more than once (as good singletons do)', function() {
-        var a = SurfNPerf,
-          b = SurfNPerf;
+        var a = SurfNPerfRT,
+          b = SurfNPerfRT;
         expect(a).toBe(b);
       });
     });
@@ -35,7 +35,7 @@ define('spec/surfnperfRT_spec', [
         SurfNPerfRT.initialize();
       });
 
-      it('sets the Performance API properties appropriately', function() {
+      it('sets the Resource Timing API properties appropriately', function() {
         expect(SurfNPerfRT._resourceTiming).not.toBeNull();
       });
 
@@ -46,7 +46,16 @@ define('spec/surfnperfRT_spec', [
     });
 
     describe('#_getURLOrigin', function() {
-      // Ros
+      describe('when the provided URL has no port', function() {
+        it('returns the origin', function() {
+          expect(SurfNPerfRT._getURLOrigin("http://johnriv.github.io/Surf-N-Perf/")).toEqual("http://johnriv.github.io");
+        });
+      });
+      describe('when the provided URL has a port', function() {
+        it('returns the origin', function() {
+          expect(SurfNPerfRT._getURLOrigin("http://johnriv.github.io:3000/Surf-N-Perf/")).toEqual("http://johnriv.github.io:3000");
+        });
+      });
     });
 
     describe('#getOrigins', function() {
