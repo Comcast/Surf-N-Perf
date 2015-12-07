@@ -4,6 +4,10 @@ define('spec/surfnperfRT_spec', [
   SurfNPerfRT
 ) {
   describe('SurfNPerfRT', function() {
+    
+    beforeEach(function() {
+      SurfNPerfRT.initialize();
+    });
 
     describe('Singleton Behavior', function() {
       it('is only instantiated once, even if the library is attempted to be instantiated more than once (as good singletons do)', function() {
@@ -15,11 +19,15 @@ define('spec/surfnperfRT_spec', [
 
     describe('#initialize', function() {
 
+<<<<<<< HEAD
+      it('sets the Performance API properties appropriately', function() {
+=======
       beforeEach(function() {
         SurfNPerfRT.initialize();
       });
 
       it('sets the Resource Timing API properties appropriately', function() {
+>>>>>>> 5bc0a415399788ccfdd6fd686c6ae04333263fbc
         expect(SurfNPerfRT._resourceTiming).not.toBeNull();
       });
 
@@ -61,9 +69,6 @@ define('spec/surfnperfRT_spec', [
 
     describe('#getOrigins', function() {
       // Minsu
- 	  beforeEach(function() {
-        SurfNPerfRT.initialize();
-      });
       it('returns null if brower does not support resource timing', function() {
 
       });
@@ -75,13 +80,7 @@ define('spec/surfnperfRT_spec', [
     });
 
     describe('#getResourcesFromOrigin', function() {
-      describe('when the browser does not support resource timings', function() {
-        SurfNPerfRT._resourceTiming = false;
-        expect(SurfNPerfRT.getResourcesFromOrigin("http://johnriv.github.io:3000")).toEqual(null);
-      });
-      describe('when the browser supports resource timings', function() {
-
-      });
+      // Ros
     });
 
     describe('#_name', function() {
