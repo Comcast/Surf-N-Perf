@@ -43,25 +43,25 @@ define('spec/surfnperfRT_spec', [
     describe('#_inList', function() {
       // Minsu
       describe('whitelist as a key', function() {
-        options = {
+        var options = {
           "whitelist": ["A", "B", "C"]
         }
         it('returns true if the given origin is listed in whitelist', function() {
-          expect(SurfNPerfRT._inList("A", options)).toBe(true);
+          expect(SurfNPerfRT._inList("A", options)).toEqual(true);
         });
         it('returns false if the given origin is not listed in whitelist', function() {
-          // expect(SurfNPerfRT._inList("D", options)).toBe(false);
+          expect(SurfNPerfRT._inList("D", options)).toEqual(false);
         });
       });
       describe('blackList as a key', function() {
-        options = {
+        var options = {
           "blacklist": ["A", "B", "C"]
         }
         it('returns true if the given origin is not listed in blacklist', function() {
-          expect(SurfNPerfRT._inList("D", options)).toBe(true);
+          expect(SurfNPerfRT._inList("D", options)).toEqual(true);
         });
         it('returns false if the given origin is listed in blacklist', function() {
-          // expect(SurfNPerfRT._inList("A", options)).toBe(false);
+          expect(SurfNPerfRT._inList("A", options)).toEqual(false);
         });
       });
       describe('none specific key', function() {
