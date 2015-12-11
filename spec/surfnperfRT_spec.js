@@ -136,17 +136,19 @@ define('spec/surfnperfRT_spec', [
     describe('#start', function() {
       // Ros
       describe('when the browser does not support resource timings', function() {
-        SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
           expect(SurfNPerfRT.start(name)).toEqual(null);
         });
       });
       describe('when the browser supports resource timings', function() {
         it("returns the start time of the resource", function() {
+          SurfNPerfRT._resourceTiming = true;
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             startTime: 487.05
           }]);
-          expect(SurfNPerfRT.start(name)).toEqual(487.05);
+          expect(SurfNPerfRT._resourceTiming).toEqual(true)
+          expect(SurfNPerfRT.start(name)).toEqual(487);
         });
       });
     });
@@ -154,17 +156,18 @@ define('spec/surfnperfRT_spec', [
     describe('#end', function() {
       // Minsu
       describe('when the browser does not support resource timings', function() {
-        SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
           expect(SurfNPerfRT.end("http://johnriv.github.io:3000")).toEqual(null);
         });
       });
       describe('when the browser supports resource timings', function() {
         it("returns the end time of the resource response", function() {
+          SurfNPerfRT._resourceTiming = true;
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             responseEnd: 487.05
           }]);
-          expect(SurfNPerfRT.end(name)).toEqual(487.05);
+          expect(SurfNPerfRT.end(name)).toEqual(487);
         });
       });
     });
@@ -172,17 +175,18 @@ define('spec/surfnperfRT_spec', [
     describe('#getFullRequestLoadTime', function() {
       // Ros
       describe('when the browser does not support resource timings', function() {
-        SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
           expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(null);
         });
       });
       describe('when the browser supports resource timings', function() {
         it("returns the duration of the resource load time", function() {
+          SurfNPerfRT._resourceTiming = true;
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             duration: 487.05
           }]);
-          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(487.05);
+          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(487);
         });
 
       });
@@ -191,13 +195,14 @@ define('spec/surfnperfRT_spec', [
     describe('#getNetworkTime', function() {
       // Minsu
       describe('when the browser does not support resource timings', function() {
-        SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
           expect(SurfNPerfRT.getNetworkTime("http://johnriv.github.io:3000", {})).toEqual(null);
         });
       });
       describe('when the browser supports resource timings', function() {
         it("returns the network time while loading the resource", function() {
+          SurfNPerfRT._resourceTiming = true;
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             fetchStart: 480.05,
             connectEnd: 490.05
@@ -210,13 +215,14 @@ define('spec/surfnperfRT_spec', [
     describe('#getServerTime', function() {
       // Ros
       describe('when the browser does not support resource timings', function() {
-        SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
           expect(SurfNPerfRT.getServerTime(name)).toEqual(null);
         });
       });
       describe('when the browser supports resource timings', function() {
         it("returns the server time while loading the resource", function() {
+          SurfNPerfRT._resourceTiming = true;
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             requestStart: 480.05,
             responseEnd: 490.05
@@ -229,13 +235,13 @@ define('spec/surfnperfRT_spec', [
     describe('#getBlockingTime', function() {
       // Minsu
       describe('when the browser does not support resource timings', function() {
-        SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
           expect(SurfNPerfRT.getBlockingTime("http://johnriv.github.io:3000", {})).toEqual(null);
         });
       });
       describe('when the browser supports resource timings', function() {
-
+        SurfNPerfRT._resourceTiming = true;
       });
     });
 
