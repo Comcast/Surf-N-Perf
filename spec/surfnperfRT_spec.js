@@ -152,7 +152,7 @@ define('spec/surfnperfRT_spec', [
       });
       describe('when the browser supports resource timings', function() {
         describe('and none of the resources are from the origin in the parameter', function() {
-          it('returns a list of the resources from the specified origin', function() {
+          it('returns an empty list', function() {
             SurfNPerfRT._resourceTiming = true;
             var resources = [{
               name: "http://minsu.com/hi"
@@ -166,7 +166,24 @@ define('spec/surfnperfRT_spec', [
           });
         });
         describe('and there are resources from the origin in the parameter', function() {
-
+          it('returns a list of the resources from the specified origin', function() {
+            SurfNPerfRT._resourceTiming = true;
+            var resources = [{
+              name: "http://minsu.com/hi"
+            }, {
+              name: "http://ros.com/hi"
+            }, {
+              name: "http://john.com/hi"
+            }, {
+              name: "http://john.com/bye"
+            }];
+            spyOn(window.performance, "getEntriesByType").andReturn(resources);
+            expect(SurfNPerfRT.getResourcesFromOrigin("http://john.com")).toEqual([{
+              name: "http://john.com/hi"
+            }, {
+              name: "http://john.com/bye"
+            }]);
+          });
         });
       });
     });
