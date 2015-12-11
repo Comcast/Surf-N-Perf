@@ -153,15 +153,16 @@ define('spec/surfnperfRT_spec', [
       describe('when the browser supports resource timings', function() {
         describe('and none of the resources are from the origin in the parameter', function() {
           SurfNPerfRT._resourceTiming = true;
-          spyOn(window.performance, "getEntriesByType").andReturn([{
+          var resources = [{
             name: "http://minsu.com/hi"
           }, {
             name: "http://ros.com/hi"
           }, {
             name: "http://john.com/hi"
-          }]);
+          }]
+          spyOn(window.performance, "getEntriesByType").andReturn(resources);
           it('returns a list of the resources from the specified origin', function() {
-
+            expect(SurfNPerfRT.getResourcesFromOrigin(name)).toEqual([]);
           });
         });
         describe('and there are resources from the origin in the parameter', function() {
@@ -194,7 +195,19 @@ define('spec/surfnperfRT_spec', [
         });
       });
       describe('when the browser supports resource timings', function() {
-
+        it("returns the first resource in the list of resources returned by window.performance.getEntriesByName", function() {
+          SurfNPerfRT._resourceTiming = true;
+          var resource = {
+            startTime: 487.05
+          }
+          var resources = [
+            resource, {
+              startTime: 491.38
+            }
+          ]
+          spyOn(window.performance, 'getEntriesByName').andReturn(resources);
+          expect(SurfNPerfRT.getResource(name)).toEqual(resource);
+        });
       });
     });
 
