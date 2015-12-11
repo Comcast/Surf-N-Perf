@@ -179,10 +179,17 @@ define('spec/surfnperfRT_spec', [
         });
       });
       describe('when name argument is not a full request', function() {
-        // spyOn(window.location, "protocol").andReturn("http://");
-        // it("returns a full request version by using the page's current origin", function() {
-        //   expect(SurfNPerfRT._name("/A")).toEqual("http://github.com/A");
-        // })
+        it("returns a full request version by using the page's current origin", function() {
+          spyOn(SurfNPerfRT, "getLocation").andReturn({
+            protocol: "http:",
+            host: "github.com"
+          });
+          expect(SurfNPerfRT.getLocation()).toEqual({
+            protocol: "http:",
+            host: "github.com"
+          });
+          expect(SurfNPerfRT._name("/A")).toEqual("http://github.com/A");
+        })
       });
     });
 
