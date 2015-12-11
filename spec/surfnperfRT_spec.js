@@ -16,7 +16,7 @@ define('spec/surfnperfRT_spec', [
             return NOW_HIGH_RES;
           },
           getEntriesByName: function(name) {},
-          getEntriesByType: function(name) {},
+          getEntriesByType: function(type) {},
           timing: {}
         };
       }
@@ -151,6 +151,22 @@ define('spec/surfnperfRT_spec', [
         });
       });
       describe('when the browser supports resource timings', function() {
+        describe('and none of the resources are from the origin in the parameter', function() {
+          SurfNPerfRT._resourceTiming = true;
+          spyOn(window.performance, "getEntriesByType").andReturn([{
+            name: "http://minsu.com/hi"
+          }, {
+            name: "http://ros.com/hi"
+          }, {
+            name: "http://john.com/hi"
+          }]);
+          it('returns a list of the resources from the specified origin', function() {
+
+          });
+        });
+        describe('and there are resources from the origin in the parameter', function() {
+
+        });
       });
     });
 
