@@ -121,7 +121,46 @@ define('spec/surfnperfRT_spec', [
     });
 
     describe('#duration', function() {
-      
+      // Minsu
+      describe('when the browser does not support resource timings', function() {
+        it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
+          expect(SurfNPerfRT.duration(name, "A", "B", {})).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+        // it('returns the diff between 2 resource timing marks, not rounded if optional 4th param not included', function() {
+        //   SurfNPerfRT._resourceTiming = true;
+        //   spyOn(window.performance, 'getEntriesByName').andReturn([{
+        //     eventA: 480.04,
+        //     eventB: 490.05
+        //   }]);
+        //   expect(SurfNPerfRT.duration(name, "eventA", "eventB")).toEqual(10.01);
+        // });
+        it('returns false if either eventA or eventB is 0', function() {
+          SurfNPerfRT._resourceTiming = true;
+          spyOn(window.performance, 'getEntriesByName').andReturn([{
+            eventA: 0,
+            eventB: 0,
+            eventC: 10
+          }]);
+          expect(SurfNPerfRT.duration(name, "eventA", "eventC")).toEqual(false);
+          expect(SurfNPerfRT.duration(name, "eventC", "eventB")).toEqual(false);
+        });
+        // it('returns the diff between 2 resource timing marks, rounded when optional 4th param decimalPlaces included', function() {
+        //   SurfNPerfRT._resourceTiming = true;
+        //   spyOn(window.performance, 'getEntriesByName').andReturn([{
+        //     eventA: 480.04,
+        //     eventB: 490.05
+        //   }]);
+        //   expect(SurfNPerfRT.duration(name, "eventA", "eventB", {
+        //     "decimalPlaces": 1
+        //   })).toEqual(10.0);
+        //   expect(SurfNPerfRT.duration(name, "eventA", "eventB", {
+        //     "decimalPlaces": 2
+        //   })).toEqual(10.01);
+        // });
+      });
     });
 
     describe('#start', function() {
