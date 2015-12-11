@@ -93,8 +93,8 @@ define('spec/surfnperfRT_spec', [
 
     describe('#getResourcesFromOrigin', function() {
       describe('when the browser does not support resource timings', function() {
-        SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
           expect(SurfNPerfRT.getResourcesFromOrigin("http://johnriv.github.io:3000")).toEqual(null);
         });
       });
@@ -110,8 +110,8 @@ define('spec/surfnperfRT_spec', [
     describe('#getResource', function() {
       // Ros
       describe('when the browser does not support resource timings', function() {
-        SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
           expect(SurfNPerfRT.getResource(name)).toEqual(null);
         });
       });
@@ -121,16 +121,7 @@ define('spec/surfnperfRT_spec', [
     });
 
     describe('#duration', function() {
-      // Minsu
-      describe('when the browser does not support resource timings', function() {
-        SurfNPerfRT._resourceTiming = false;
-        it('returns null', function() {
-          expect(SurfNPerfRT.duration("http://johnriv.github.io:3000", "A", "B", {})).toEqual(null);
-        });
-      });
-      describe('when the browser supports resource timings', function() {
-
-      });
+      
     });
 
     describe('#start', function() {
@@ -147,8 +138,7 @@ define('spec/surfnperfRT_spec', [
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             startTime: 487.05
           }]);
-          expect(SurfNPerfRT._resourceTiming).toEqual(true)
-          expect(SurfNPerfRT.start(name)).toEqual(487);
+          expect(SurfNPerfRT.start(name)).toEqual(487.05);
         });
       });
     });
@@ -167,7 +157,7 @@ define('spec/surfnperfRT_spec', [
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             responseEnd: 487.05
           }]);
-          expect(SurfNPerfRT.end(name)).toEqual(487);
+          expect(SurfNPerfRT.end(name)).toEqual(487.05);
         });
       });
     });
@@ -186,7 +176,7 @@ define('spec/surfnperfRT_spec', [
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             duration: 487.05
           }]);
-          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(487);
+          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(487.05);
         });
 
       });
