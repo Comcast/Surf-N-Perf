@@ -28,27 +28,31 @@ define('spec/surfnperfRT_spec', [
     describe('#_inList', function() {
       // Minsu
       describe('whitelist as a key', function() {
-        options = {"whitelist" : ["A", "B", "C"]}
+        options = {
+          "whitelist": ["A", "B", "C"]
+        }
         it('returns true if the given origin is listed in whitelist', function() {
-          expect(SurfNPerfRT._inList("A", options)).tobe(true);
+          expect(SurfNPerfRT._inList("A", options)).toBe(true);
         });
         it('returns false if the given origin is not listed in whitelist', function() {
-          expect(SurfNPerfRT._inList("D", options)).tobe(false);
+          expect(SurfNPerfRT._inList("D", options)).toBe(false);
         });
       });
       describe('blackList as a key', function() {
-        options = {"blacklist" : ["A", "B", "C"]}
+        options = {
+          "blacklist": ["A", "B", "C"]
+        }
         it('returns true if the given origin is not listed in blacklist', function() {
-          expect(SurfNPerfRT._inList("D", options)).tobe(true);
+          expect(SurfNPerfRT._inList("D", options)).toBe(true);
         });
         it('returns false if the given origin is listed in blacklist', function() {
-          expect(SurfNPerfRT._inList("A", options)).tobe(false);
+          expect(SurfNPerfRT._inList("A", options)).toBe(false);
         });
       });
       describe('none specific key', function() {
         options = {}
         it('returns true no matter what if options does not have any key', function() {
-          expect(SurfNPerfRT._inList("A", options)).tobe(true);
+          expect(SurfNPerfRT._inList("A", options)).toBe(true);
         });
       });
 
