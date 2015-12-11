@@ -88,7 +88,33 @@ define('spec/surfnperfRT_spec', [
 
     describe('#getOrigins', function() {
       // Minsu
+      describe('when the browser does not support resource timings', function() {
+        it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
+          expect(SurfNPerfRT.getOrigins()).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+        describe('when no option is given', function() {
+          it('returns list of all the origins', function() {
+            SurfNPerfRT._resourceTiming = true;
+            spyOn(window.performance, "getEntriesByType").andReturn([{
+              name: "http://minsu.com/hi"
+            }, {
+              name: "http://ros.com/hi"
+            }, {
+              name: "http://john.com/hi"
+            }]);
+            expect(SurfNPerfRT.getOrigins()).toEqual(["http://minsu.com", "http://ros.com", "http://john.com"]);
+          });
+        });
+        describe('when option with whitelist is given', function() {
 
+        });
+        describe('when option with blacklist is given', function() {
+
+        });
+      });
     });
 
     describe('#getResourcesFromOrigin', function() {
@@ -105,6 +131,17 @@ define('spec/surfnperfRT_spec', [
 
     describe('#_name', function() {
       // Minsu
+      describe('when name argument is a full request', function() {
+        it('returns name as it is', function() {
+          expect(SurfNPerfRT._name("A")).toEqual("A");
+        });
+      });
+      describe('when name argument is not a full request', function() {
+        // spyOn(window.location, "protocol").andReturn("http://");
+        // it("returns a full request version by using the page's current origin", function() {
+        //   expect(SurfNPerfRT._name("/A")).toEqual("http://github.com/A");
+        // })
+      });
     });
 
     describe('#getResource', function() {
