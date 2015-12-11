@@ -109,10 +109,34 @@ define('spec/surfnperfRT_spec', [
           });
         });
         describe('when option with whitelist is given', function() {
-
+          it('returns list of the origins included in the whitelist', function() {
+            SurfNPerfRT._resourceTiming = true;
+            spyOn(window.performance, "getEntriesByType").andReturn([{
+              name: "http://minsu.com/hi"
+            }, {
+              name: "http://ros.com/hi"
+            }, {
+              name: "http://john.com/hi"
+            }]);
+            expect(SurfNPerfRT.getOrigins({
+              "whitelist": ["http://minsu.com", "http://ros.com"]
+            })).toEqual(["http://minsu.com", "http://ros.com"]);
+          });
         });
         describe('when option with blacklist is given', function() {
-
+          it('returns list of the origins not included in the blacklist', function() {
+            SurfNPerfRT._resourceTiming = true;
+            spyOn(window.performance, "getEntriesByType").andReturn([{
+              name: "http://minsu.com/hi"
+            }, {
+              name: "http://ros.com/hi"
+            }, {
+              name: "http://john.com/hi"
+            }]);
+            expect(SurfNPerfRT.getOrigins({
+              "blacklist": ["http://minsu.com", "http://ros.com"]
+            })).toEqual(["http://john.com"]);
+          });
         });
       });
     });
