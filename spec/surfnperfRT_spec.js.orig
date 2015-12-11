@@ -4,9 +4,20 @@ define('spec/surfnperfRT_spec', [
   SurfNPerfRT
 ) {
   describe('SurfNPerfRT', function() {
-    
+    var NOW_TS = 1388595600000, // Wed Jan 01 2014 12:00:00 GMT-0500 (EST)
+      NOW_HIGH_RES = 3.1415926;
+
     beforeEach(function() {
-      SurfNPerfRT.initialize();
+      var name = "a";
+      if(!window.performance) {
+        window.performance = {
+          now: function() {
+            return NOW_HIGH_RES;
+          },
+          getEntriesByName: function(name) {},
+          timing: {}
+        };
+      }
     });
 
     describe('Singleton Behavior', function() {
@@ -19,15 +30,11 @@ define('spec/surfnperfRT_spec', [
 
     describe('#initialize', function() {
 
-<<<<<<< HEAD
-      it('sets the Performance API properties appropriately', function() {
-=======
       beforeEach(function() {
         SurfNPerfRT.initialize();
       });
 
       it('sets the Resource Timing API properties appropriately', function() {
->>>>>>> 5bc0a415399788ccfdd6fd686c6ae04333263fbc
         expect(SurfNPerfRT._resourceTiming).not.toBeNull();
       });
 
@@ -35,23 +42,35 @@ define('spec/surfnperfRT_spec', [
 
     describe('#_inList', function() {
       // Minsu
-      it('returns true if option does not have neither list keys', function() {
-        options = {};
-        expect(SurfNPerfRT._inList("a",options)).toEqual(true);
-        expect(SurfNPerfRT._inList("d",options)).toEqual(true);
+      describe('whitelist as a key', function() {
+        var options = {
+          "whitelist": ["A", "B", "C"]
+        }
+        it('returns true if the given origin is listed in whitelist', function() {
+          expect(SurfNPerfRT._inList("A", options)).toEqual(true);
+        });
+        it('returns false if the given origin is not listed in whitelist', function() {
+          expect(SurfNPerfRT._inList("D", options)).toEqual(false);
+        });
+      });
+      describe('blackList as a key', function() {
+        var options = {
+          "blacklist": ["A", "B", "C"]
+        }
+        it('returns true if the given origin is not listed in blacklist', function() {
+          expect(SurfNPerfRT._inList("D", options)).toEqual(true);
+        });
+        it('returns false if the given origin is listed in blacklist', function() {
+          expect(SurfNPerfRT._inList("A", options)).toEqual(false);
+        });
+      });
+      describe('none specific key', function() {
+        options = {}
+        it('returns true no matter what if options does not have any key', function() {
+          expect(SurfNPerfRT._inList("A", options)).toBe(true);
+        });
       });
 
-      it('returns true only if option contains given origin, if the list key is whitelist', function() {
-        whiteOptions = {"whitelist" : ["a", "b", "c"]};
-        expect(SurfNPerfRT._inList("a",whiteOptions)).toEqual(true);
-        expect(SurfNPerfRT._inList("d",whiteOptions)).toEqual(false);
-      });
-
-      it('returns true only if option does not contain given origin, if the list key is blacklist', function() {
-        blackOptions = {"blackList" : ["a", "b", "c"]};
-        expect(SurfNPerfRT._inList("a",blackOptions)).toEqual(false);
-        expect(SurfNPerfRT._inList("d",blackOptions)).toEqual(true);
-      });
     });
 
     describe('#_getURLOrigin', function() {
@@ -69,18 +88,19 @@ define('spec/surfnperfRT_spec', [
 
     describe('#getOrigins', function() {
       // Minsu
-      it('returns null if brower does not support resource timing', function() {
-
-      });
-
-      it('', function() {
-
-      });
 
     });
 
     describe('#getResourcesFromOrigin', function() {
-      // Ros
+      describe('when the browser does not support resource timings', function() {
+        it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
+          expect(SurfNPerfRT.getResourcesFromOrigin("http://johnriv.github.io:3000")).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+
+      });
     });
 
     describe('#_name', function() {
@@ -89,46 +109,148 @@ define('spec/surfnperfRT_spec', [
 
     describe('#getResource', function() {
       // Ros
+      describe('when the browser does not support resource timings', function() {
+        it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
+          expect(SurfNPerfRT.getResource(name)).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+
+      });
     });
 
     describe('#duration', function() {
-      // Minsu
-      it('returns null if brower does not support resource timing', function() {
-        
-      });
-
+      
     });
 
     describe('#start', function() {
       // Ros
+      describe('when the browser does not support resource timings', function() {
+        it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
+          expect(SurfNPerfRT.start(name)).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+        it("returns the start time of the resource", function() {
+          SurfNPerfRT._resourceTiming = true;
+          spyOn(window.performance, 'getEntriesByName').andReturn([{
+            startTime: 487.05
+          }]);
+<<<<<<< HEAD
+          expect(SurfNPerfRT.start(name)).toEqual(487.05);
+=======
+          expect(SurfNPerfRT._resourceTiming).toEqual(true)
+          expect(SurfNPerfRT.start(name, {
+            decimalPlaces: 2
+          })).toEqual(487.05);
+>>>>>>> b01d5ee73ebb7a83b4084e1e6b87c6127ac456dc
+        });
+      });
     });
 
     describe('#end', function() {
       // Minsu
-      it('returns null if brower does not support resource timing', function() {
-        
+      describe('when the browser does not support resource timings', function() {
+        it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
+          expect(SurfNPerfRT.end("http://johnriv.github.io:3000")).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+        it("returns the end time of the resource response", function() {
+          SurfNPerfRT._resourceTiming = true;
+          spyOn(window.performance, 'getEntriesByName').andReturn([{
+            responseEnd: 487.05
+          }]);
+<<<<<<< HEAD
+          expect(SurfNPerfRT.end(name)).toEqual(487.05);
+=======
+          expect(SurfNPerfRT.end(name, {
+            decimalPlaces: 2
+          })).toEqual(487.05);
+>>>>>>> b01d5ee73ebb7a83b4084e1e6b87c6127ac456dc
+        });
       });
     });
 
     describe('#getFullRequestLoadTime', function() {
       // Ros
+      describe('when the browser does not support resource timings', function() {
+        it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
+          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+        it("returns the duration of the resource load time", function() {
+          SurfNPerfRT._resourceTiming = true;
+          spyOn(window.performance, 'getEntriesByName').andReturn([{
+            duration: 487.05
+          }]);
+<<<<<<< HEAD
+          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(487.05);
+=======
+          expect(SurfNPerfRT.getFullRequestLoadTime(name, {
+            decimalPlaces: 2
+          })).toEqual(487.05);
+>>>>>>> b01d5ee73ebb7a83b4084e1e6b87c6127ac456dc
+        });
+
+      });
     });
 
     describe('#getNetworkTime', function() {
       // Minsu
-      it('returns null if brower does not support resource timing', function() {
-        
+      describe('when the browser does not support resource timings', function() {
+        it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
+          expect(SurfNPerfRT.getNetworkTime("http://johnriv.github.io:3000", {})).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+        it("returns the network time while loading the resource", function() {
+          SurfNPerfRT._resourceTiming = true;
+          spyOn(window.performance, 'getEntriesByName').andReturn([{
+            fetchStart: 480.05,
+            connectEnd: 490.05
+          }]);
+          expect(SurfNPerfRT.getNetworkTime(name)).toEqual(10.0);
+        });
       });
     });
 
     describe('#getServerTime', function() {
       // Ros
+      describe('when the browser does not support resource timings', function() {
+        it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
+          expect(SurfNPerfRT.getServerTime(name)).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+        it("returns the server time while loading the resource", function() {
+          SurfNPerfRT._resourceTiming = true;
+          spyOn(window.performance, 'getEntriesByName').andReturn([{
+            requestStart: 480.05,
+            responseEnd: 490.05
+          }]);
+          expect(SurfNPerfRT.getServerTime(name)).toEqual(10.0);
+        });
+      });
     });
 
     describe('#getBlockingTime', function() {
       // Minsu
-      it('returns null if brower does not support resource timing', function() {
-        
+      describe('when the browser does not support resource timings', function() {
+        it('returns null', function() {
+          SurfNPerfRT._resourceTiming = false;
+          expect(SurfNPerfRT.getBlockingTime("http://johnriv.github.io:3000", {})).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+        SurfNPerfRT._resourceTiming = true;
       });
     });
 
