@@ -27,6 +27,10 @@ define('spec/surfnperfRT_spec', [
 
     describe('#_inList', function() {
       // Minsu
+      beforeEach(function() {
+        SurfNPerfRT.initialize();
+      });
+
       describe('whitelist as a key', function() {
         options = {"whitelist" : ["A", "B", "C"]}
         it('returns true if the given origin is listed in whitelist', function() {
@@ -89,6 +93,9 @@ define('spec/surfnperfRT_spec', [
 
     describe('#_name', function() {
       // Minsu
+      beforeEach(function() {
+        SurfNPerfRT.initialize();
+      });
     });
 
     describe('#getResource', function() {
@@ -103,6 +110,9 @@ define('spec/surfnperfRT_spec', [
 
     describe('#duration', function() {
       // Minsu
+      beforeEach(function() {
+        SurfNPerfRT.initialize();
+      });
       describe('when the browser does not support resource timings', function() {
         SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
@@ -126,6 +136,9 @@ define('spec/surfnperfRT_spec', [
 
     describe('#end', function() {
       // Minsu
+      beforeEach(function() {
+        SurfNPerfRT.initialize();
+      });
       describe('when the browser does not support resource timings', function() {
         SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
@@ -149,6 +162,9 @@ define('spec/surfnperfRT_spec', [
 
     describe('#getNetworkTime', function() {
       // Minsu
+      beforeEach(function() {
+        SurfNPerfRT.initialize();
+      });
       describe('when the browser does not support resource timings', function() {
         SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
@@ -172,6 +188,9 @@ define('spec/surfnperfRT_spec', [
 
     describe('#getBlockingTime', function() {
       // Minsu
+      beforeEach(function() {
+        SurfNPerfRT.initialize();
+      });
       describe('when the browser does not support resource timings', function() {
         SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
