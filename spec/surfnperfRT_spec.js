@@ -74,6 +74,9 @@ define('spec/surfnperfRT_spec', [
           expect(SurfNPerfRT.getResource(name)).toEqual(null);
         });
       });
+      describe('when the browser supports resource timings', function() {
+
+      });
     });
 
     describe('#duration', function() {
@@ -86,6 +89,17 @@ define('spec/surfnperfRT_spec', [
         SurfNPerfRT._resourceTiming = false;
         it('returns null', function() {
           expect(SurfNPerfRT.start(name)).toEqual(null);
+        });
+      });
+      describe('when the browser supports resource timings', function() {
+        beforeEach(function() {
+          var name = "a";
+          spyOn(window.performance, "getEntriesByName").andReturn({
+            startTime: 487.05
+          });
+        });
+        it("returns the start time of the resource", function() {
+          expect(SurfNPerfRT.start(name)).toEqual(487.05);
         });
       });
     });
@@ -102,6 +116,9 @@ define('spec/surfnperfRT_spec', [
           expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(null);
         });
       });
+      describe('when the browser supports resource timings', function() {
+
+      });
     });
 
     describe('#getNetworkTime', function() {
@@ -115,6 +132,9 @@ define('spec/surfnperfRT_spec', [
         it('returns null', function() {
           expect(SurfNPerfRT.getServerTime(name)).toEqual(null);
         });
+      });
+      describe('when the browser supports resource timings', function() {
+
       });
     });
 
