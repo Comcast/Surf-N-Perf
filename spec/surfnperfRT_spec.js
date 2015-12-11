@@ -148,7 +148,9 @@ define('spec/surfnperfRT_spec', [
             startTime: 487.05
           }]);
           expect(SurfNPerfRT._resourceTiming).toEqual(true)
-          expect(SurfNPerfRT.start(name)).toEqual(487);
+          expect(SurfNPerfRT.start(name, {
+            decimalPlaces: 2
+          })).toEqual(487.05);
         });
       });
     });
@@ -167,7 +169,9 @@ define('spec/surfnperfRT_spec', [
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             responseEnd: 487.05
           }]);
-          expect(SurfNPerfRT.end(name)).toEqual(487);
+          expect(SurfNPerfRT.end(name, {
+            decimalPlaces: 2
+          })).toEqual(487.05);
         });
       });
     });
@@ -186,7 +190,9 @@ define('spec/surfnperfRT_spec', [
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             duration: 487.05
           }]);
-          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(487);
+          expect(SurfNPerfRT.getFullRequestLoadTime(name, {
+            decimalPlaces: 2
+          })).toEqual(487.05);
         });
 
       });
