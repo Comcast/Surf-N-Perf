@@ -9,12 +9,14 @@ define('spec/surfnperfRT_spec', [
 
     beforeEach(function() {
       var name = "a";
+      var type = "resource"
       if(!window.performance) {
         window.performance = {
           now: function() {
             return NOW_HIGH_RES;
           },
           getEntriesByName: function(name) {},
+          getEntriesByType: function(name) {},
           timing: {}
         };
       }
@@ -99,7 +101,6 @@ define('spec/surfnperfRT_spec', [
         });
       });
       describe('when the browser supports resource timings', function() {
-
       });
     });
 
@@ -139,7 +140,7 @@ define('spec/surfnperfRT_spec', [
             "decimalPlaces": 2
           })).toEqual(10.01);
         });
-        it('returns false if either eventA or eventB is 0', function() {
+        it('returns false if eventA is 0', function() {
           SurfNPerfRT._resourceTiming = true;
           spyOn(window.performance, 'getEntriesByName').andReturn([{
             eventA: 0,
@@ -147,7 +148,24 @@ define('spec/surfnperfRT_spec', [
             eventC: 10
           }]);
           expect(SurfNPerfRT.duration(name, "eventA", "eventC")).toEqual(false);
+        });
+        it('returns false if eventB is 0', function() {
+          SurfNPerfRT._resourceTiming = true;
+          spyOn(window.performance, 'getEntriesByName').andReturn([{
+            eventA: 0,
+            eventB: 0,
+            eventC: 10
+          }]);
           expect(SurfNPerfRT.duration(name, "eventC", "eventB")).toEqual(false);
+        });
+        it('returns false if both events are 0', function() {
+          SurfNPerfRT._resourceTiming = true;
+          spyOn(window.performance, 'getEntriesByName').andReturn([{
+            eventA: 0,
+            eventB: 0,
+            eventC: 10
+          }]);
+          expect(SurfNPerfRT.duration(name, "eventA", "eventB")).toEqual(false);
         });
         it('returns the diff between 2 resource timing marks, rounded when optional 4th param decimalPlaces included', function() {
           SurfNPerfRT._resourceTiming = true;
