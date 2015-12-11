@@ -410,7 +410,42 @@ define('spec/surfnperfRT_spec', [
         });
       });
       describe('when the browser supports resource timings', function() {
-        SurfNPerfRT._resourceTiming = true;
+        describe('if connectEnd is equal to fetchStart', function() {
+          it('returns diff between requestStart and connectEnd as blockingTime', function() {
+            SurfNPerfRT._resourceTiming = true;
+            spyOn(window.performance, 'getEntriesByName').andReturn([{
+              connectEnd: 480.05,
+              fetchStart: 480.05,
+              requestStart: 490.06
+            }]);
+            expect(SurfNPerfRT.getBlockingTime(name, {
+              decimalPlaces: 2
+            })).toEqual(10.01);
+          });
+        });
+        describe('else if domainLookupStart exists', function() {
+          it('returns diff between domainLookupStart and fetchStart as blockingTime', function() {
+            SurfNPerfRT._resourceTiming = true;
+            spyOn(window.performance, 'getEntriesByName').andReturn([{
+              connectEnd: 480.05,
+              fetchStart: 480.06,
+              domainLookupStart: 490.07
+            }]);
+            expect(SurfNPerfRT.getBlockingTime(name, {
+              decimalPlaces: 2
+            })).toEqual(10.01);
+          });
+        });
+        describe('else', function() {
+          it('returns 0 as blockingTime', function() {
+            SurfNPerfRT._resourceTiming = true;
+            spyOn(window.performance, 'getEntriesByName').andReturn([{
+              connectEnd: 480.05,
+              fetchStart: 480.06
+            }]);
+            expect(SurfNPerfRT.getBlockingTime(name)).toEqual(0);
+          });
+        });
       });
     });
 
