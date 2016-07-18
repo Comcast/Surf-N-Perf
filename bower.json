@@ -1,0 +1,22 @@
+{
+  "name": "surfnperf",
+  "description": "Micro-library for gathering frontend web page performance data",
+  "main": "surfnperf.min.js",
+  "authors": [
+    "John Riviello <github@riviello.net>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "performance"
+  ],
+  "homepage": "http://comcast.github.io/Surf-N-Perf/",
+  "ignore": [
+    "**/.*",
+    "gem",
+    "spec",
+    "*.json",
+    "*.sh",
+    "Gruntfile.js",
+    "karma.conf.js"
+  ]
+}
