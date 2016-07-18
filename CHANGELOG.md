@@ -1,3 +1,10 @@
+<a name="1.3.0"></a>
+### 1.3.0
+
+#### Features
+
+* Adds proper [Bower](https://bower.io/) support ([45b83ab](https://github.com/Comcast/Surf-N-Perf/commit/45b83abdbb58ac95d23d2ec7b450293cb54fb63d))
+
 <a name="1.2.0"></a>
 ### 1.2.0
 
