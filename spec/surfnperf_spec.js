@@ -1155,9 +1155,16 @@ define('spec/surfnperf_spec', [
       });
     });
 
+    describe("#_supportsRequestAnimationFrame", function() {
+      it('returns a boolean based on the existence of window.requestAnimationFrame', function() {
+        expect(SurfNPerf._supportsRequestAnimationFrame()).toEqual(!!window.requestAnimationFrame);
+      });
+    });
+
     describe("#getFirstPaintFrame", function() {
       describe('when the client does not support window.requestAnimationFrame', function() {
         it('returns null', function() {
+          spyOn(SurfNPerf, '_supportsRequestAnimationFrame').andReturn(false);
           expect(SurfNPerf.getFirstPaintFrame()).toEqual(null);
         });
       });
@@ -1165,6 +1172,7 @@ define('spec/surfnperf_spec', [
       describe('when the client supports window.requestAnimationFrame but it has not yet been called', function() {
         it('returns undefined', function() {
           SurfNPerf._navigationTiming = true;
+          spyOn(SurfNPerf, '_supportsRequestAnimationFrame').andReturn(true);
 
           if(!window.requestAnimationFrame) {
             window.requestAnimationFrame = function() {};
@@ -1175,6 +1183,7 @@ define('spec/surfnperf_spec', [
 
       describe('when the client supports window.requestAnimationFrame and it has been called', function() {
         beforeEach(function() {
+          spyOn(SurfNPerf, '_supportsRequestAnimationFrame').andReturn(true);
           spyOn(SurfNPerf, 'performanceTiming').andReturn({
             navigationStart: 1388595600000
           });
