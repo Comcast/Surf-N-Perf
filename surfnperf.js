@@ -372,6 +372,10 @@
     }
   };
 
+  SNPProto._supportsRequestAnimationFrame = function() {
+    return !!window.requestAnimationFrame;
+  };
+
   /**
    * Time to first paint (Time calculated based on window.requestAnimationFrame() for the first pixels to be rendered on the page)
    *
@@ -379,7 +383,7 @@
    * @memberOf SurfNPerf
    */
   SNPProto.getFirstPaintFrame = function(options) {
-    if(window.requestAnimationFrame) {
+    if(this._supportsRequestAnimationFrame()) {
       return this.duration('navigationStart', 'firstPaintFrame', options);
     } else {
       return null;
