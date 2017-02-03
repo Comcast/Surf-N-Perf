@@ -199,6 +199,46 @@
     return mark || this._data.marks[eventKey] || window.SURF_N_PERF.marks[eventKey];
   };
 
+  /**
+   * Removes all user-set marks (or just the specified one) and their associated time values. Will not remove the loadEventEnd mark.
+   *
+   * @arguments {String} [eventKey] removes all time values for the given eventKey
+   * @memberOf SurfNPerf
+   */
+  SNPProto.clearMarks = function(eventKey) {
+    var loadEventEndHighRes = window.SURF_N_PERF.highResMarks.loadEventEnd,
+      loadEventEnd = window.SURF_N_PERF.marks.loadEventEnd;
+
+    if(this._userTiming) {
+      this.userTiming().clearMarks(eventKey);
+    }
+    if(eventKey) {
+      if(eventKey !== 'loadEventEnd') {
+        delete this._data.highResMarks[eventKey];
+        delete this._data.marks[eventKey];
+        delete window.SURF_N_PERF.highResMarks[eventKey];
+        delete window.SURF_N_PERF.marks[eventKey];
+      }
+    } else {
+      this._data.highResMarks = {};
+      this._data.marks = {};
+      if(loadEventEndHighRes) {
+        window.SURF_N_PERF.highResMarks = {
+          loadEventEnd: loadEventEndHighRes
+        };
+      } else {
+        window.SURF_N_PERF.highResMarks = {};
+      }
+      if(loadEventEnd) {
+        window.SURF_N_PERF.marks = {
+          loadEventEnd: loadEventEnd
+        };
+      } else {
+        window.SURF_N_PERF.marks = {};
+      }
+    }
+  };
+
   SNPProto._isTimingMark = function(eventKey) {
     return contains(this._navigationTimingEvents.a.concat(this._navigationTimingEvents.b), eventKey);
   };

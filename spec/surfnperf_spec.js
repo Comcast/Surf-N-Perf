@@ -8,6 +8,32 @@ define('spec/surfnperf_spec', [
     var NOW_TS = 1388595600000, // Wed Jan 01 2014 12:00:00 GMT-0500 (EST)
       NOW_HIGH_RES = 3.1415926;
 
+    // Object.assign() Polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+    if(typeof Object.assign != 'function') {
+      Object.assign = function(target, varArgs) { // .length of function is 2
+        'use strict';
+        if(target == null) { // TypeError if undefined or null
+          throw new TypeError('Cannot convert undefined or null to object');
+        }
+
+        var to = Object(target);
+
+        for(var index = 1; index < arguments.length; index++) {
+          var nextSource = arguments[index];
+
+          if(nextSource != null) { // Skip over if undefined or null
+            for(var nextKey in nextSource) {
+              // Avoid bugs when hasOwnProperty is shadowed
+              if(Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+                to[nextKey] = nextSource[nextKey];
+              }
+            }
+          }
+        }
+        return to;
+      };
+    }
+
     beforeEach(function() {
       if(typeof window.performance === 'undefined') {
         window.performance = {
@@ -426,6 +452,156 @@ define('spec/surfnperf_spec', [
           expect(SurfNPerf.getMark('test', 'DOM')).toEqual(TS_PROP);
         });
 
+      });
+
+    });
+
+    describe('#clearMarks', function() {
+
+      var utClearMarksSpy,
+        fullyLoadedMark = 1388595607010,
+        fullyLoadedHighResMark = 7000.0678,
+        loadEventEndMark = 1388595605005,
+        loadEventEndHighResMark = 5000.0195,
+        originalDataMarks = {
+          mark_above_the_fold: 1388595606910,
+          mark_fully_loaded: fullyLoadedMark
+        },
+        originalDataHighResMarks = {
+          mark_above_the_fold: 6905.0234,
+          mark_fully_loaded: fullyLoadedHighResMark
+        },
+        originalMarks = {
+          pageStart: 1388595604025,
+          firstPaintFrame: 1388595604050,
+          loadEventEnd: loadEventEndMark
+        },
+        originalHighResMarks = {
+          pageStart: 12.3456,
+          firstPaintFrame: 45.6789,
+          loadEventEnd: loadEventEndHighResMark
+        };
+
+      beforeEach(function() {
+        utClearMarksSpy = jasmine.createSpy();
+        spyOn(SurfNPerf, 'userTiming').andReturn({
+          clearMarks: utClearMarksSpy
+        });
+        SurfNPerf._data.marks = Object.assign({}, originalDataMarks);
+        SurfNPerf._data.highResMarks = Object.assign({}, originalDataHighResMarks);
+        SURF_N_PERF = {
+          marks: Object.assign({}, originalMarks),
+          highResMarks: Object.assign({}, originalHighResMarks)
+        };
+      });
+
+      it('does nothing with User Timing marks if the API is not supported', function() {
+        SurfNPerf._userTiming = false;
+        SurfNPerf.clearMarks();
+        SurfNPerf.clearMarks('mark_fully_loaded');
+        SurfNPerf.clearMarks('not_a_real_mark');
+        expect(utClearMarksSpy).not.toHaveBeenCalled();
+      });
+
+      describe('calling clearMarks with no arguments', function() {
+        beforeEach(function() {
+          SurfNPerf._userTiming = true;
+          SurfNPerf.clearMarks();
+        });
+
+        it('clears all User Timing marks if the API is supported', function() {
+          expect(utClearMarksSpy).toHaveBeenCalledWith(undefined);
+        });
+
+        it('clears all "highResMarks" (except for loadEventEnd)', function() {
+          expect(SurfNPerf._data.highResMarks).toEqual({});
+          expect(SURF_N_PERF.highResMarks).toEqual({
+            loadEventEnd: loadEventEndHighResMark
+          });
+        });
+
+        it('clears all "marks" (except for loadEventEnd)', function() {
+          expect(SurfNPerf._data.marks).toEqual({});
+          expect(SURF_N_PERF.marks).toEqual({
+            loadEventEnd: loadEventEndMark
+          });
+        });
+      });
+
+      describe('calling clearMarks with no arguments before loadEventEnd is set', function() {
+        beforeEach(function() {
+          delete window.SURF_N_PERF.highResMarks['loadEventEnd'];
+          delete window.SURF_N_PERF.marks['loadEventEnd'];
+          SurfNPerf.clearMarks();
+        });
+
+        it('clears all "highResMarks"', function() {
+          expect(SurfNPerf._data.highResMarks).toEqual({});
+          expect(SURF_N_PERF.highResMarks).toEqual({});
+        });
+
+        it('clears all "marks"', function() {
+          expect(SurfNPerf._data.marks).toEqual({});
+          expect(SURF_N_PERF.marks).toEqual({});
+        });
+      });
+
+      describe('calling clearMarks with a mark that exists', function() {
+        beforeEach(function() {
+          SurfNPerf._userTiming = true;
+          SurfNPerf.clearMarks('mark_above_the_fold');
+        });
+
+        it('clears that User Timing marks if the API is supported', function() {
+          SurfNPerf._userTiming = true;
+          expect(utClearMarksSpy).toHaveBeenCalledWith('mark_above_the_fold');
+        });
+
+        it('deletes that "highResMark"', function() {
+          expect(SurfNPerf._data.highResMarks).toEqual({
+            mark_fully_loaded: fullyLoadedHighResMark
+          });
+          expect(SURF_N_PERF.highResMarks).toEqual(originalHighResMarks);
+        });
+
+        it('deletes that "mark"', function() {
+          expect(SurfNPerf._data.marks).toEqual({
+            mark_fully_loaded: fullyLoadedMark
+          });
+          expect(SURF_N_PERF.marks).toEqual(originalMarks);
+        });
+      });
+
+      describe('calling clearMarks with a mark that does not exist', function() {
+        beforeEach(function() {
+          SurfNPerf.clearMarks('not_a_real_mark');
+        });
+
+        it('has no effect on "highResMarks"', function() {
+          expect(SurfNPerf._data.highResMarks).toEqual(originalDataHighResMarks);
+          expect(SURF_N_PERF.highResMarks).toEqual(originalHighResMarks);
+        });
+
+        it('has no effect on "marks"', function() {
+          expect(SurfNPerf._data.marks).toEqual(originalDataMarks);
+          expect(SURF_N_PERF.marks).toEqual(originalMarks);
+        });
+      });
+
+      describe('calling clearMarks with "loadEventEnd"', function() {
+        beforeEach(function() {
+          SurfNPerf.clearMarks('loadEventEnd');
+        });
+
+        it('has no effect on "highResMarks"', function() {
+          expect(SurfNPerf._data.highResMarks).toEqual(originalDataHighResMarks);
+          expect(SURF_N_PERF.highResMarks).toEqual(originalHighResMarks);
+        });
+
+        it('has no effect on "marks"', function() {
+          expect(SurfNPerf._data.marks).toEqual(originalDataMarks);
+          expect(SURF_N_PERF.marks).toEqual(originalMarks);
+        });
       });
 
     });
