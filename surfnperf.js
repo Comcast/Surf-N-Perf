@@ -123,7 +123,7 @@
   /**
    * Returns the timing data for a particular eventKey
    *
-   * @arguments {String} timeType 'highRes' (to return a DOMHighResTimeStamp, if available) or 'DOM' (to return a DOMTimeStamp's value) - optional. Defaults to 'highRes'
+   * @param {String} timeType 'highRes' (to return a DOMHighResTimeStamp, if available) or 'DOM' (to return a DOMTimeStamp's value) - optional. Defaults to 'highRes'
    * @returns {DOMHighResTimeStamp | integer} time value
    * @memberOf SurfNPerf
    */
@@ -151,8 +151,8 @@
   /**
    * Returns the timing data for a particular eventKey
    *
-   * @arguments {String} eventKey name of the timing event
-   * @arguments {String} timeType 'highRes' (to return a DOMHighResTimeStamp, if available) or 'DOM' (to return a DOMTimeStamp's value) - optional. Defaults to 'DOM'
+   * @param {String} eventKey name of the timing event
+   * @param {String} timeType 'highRes' (to return a DOMHighResTimeStamp, if available) or 'DOM' (to return a DOMTimeStamp's value) - optional. Defaults to 'DOM'
    * @returns {DOMHighResTimeStamp | integer} time value
    * @memberOf SurfNPerf
    */
@@ -202,7 +202,7 @@
   /**
    * Removes all user-set marks (or just the specified one) and their associated time values. Will not remove the loadEventEnd mark.
    *
-   * @arguments {String} [eventKey] removes all time values for the given eventKey
+   * @param {String} [eventKey] removes all time values for the given eventKey
    * @memberOf SurfNPerf
    */
   SNPProto.clearMarks = function(eventKey) {
