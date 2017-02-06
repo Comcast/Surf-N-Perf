@@ -1,3 +1,10 @@
+<a name="1.4.0"></a>
+### 1.4.0
+
+#### Features
+
+* Add support for [clearMarks](https://www.w3.org/TR/user-timing/#dom-performance-clearmarks) ([4a6a5c6](https://github.com/Comcast/Surf-N-Perf/commit/4a6a5c6c1006cf4f48e48b65fa20b47978fd6975))
+
 <a name="1.3.0"></a>
 ### 1.3.0
 
