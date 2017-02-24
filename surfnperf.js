@@ -262,37 +262,59 @@
     return this._round(b - a, options);
   };
 
-  SNPProto._measureName = function(a, b) {
-    return '_SNP_' + a + '_TO_' + b;
+  SNPProto._measureName = function(startMark, endMark) {
+    return '_SNP_' + startMark + '_TO_' + endMark;
   };
 
-  SNPProto._setMeasure = function(a, b) {
+  SNPProto._setMeasure = function(startMark, endMark) {
     try {
-      this.userTiming().measure(this._measureName(a, b), a, b);
+      this.userTiming().measure(this._measureName(startMark, endMark), startMark, endMark);
     } catch(e) {
       if(window.console && window.console.error) {
         if(e && e.message) {
           console.error("Surf-N-Perf Exception:", e.message);
         } else {
-          console.error("Surf-N-Perf Exception: at least one of these events/marks is not available yet", a, b);
+          console.error("Surf-N-Perf Exception: at least one of these events/marks is not available yet", startMark, endMark);
         }
       }
     }
   };
 
-  SNPProto._getMeasureDuration = function(a, b) {
-    var measure = this.userTiming().getEntriesByName(this._measureName(a, b))[0] || {};
+  SNPProto._getMeasureDuration = function(startMark, endMark) {
+    var measure = this.userTiming().getEntriesByName(this._measureName(startMark, endMark))[0] || {};
     return measure.duration;
   };
 
-  SNPProto.duration = function(a, b, options) {
+  /**
+   * Marks the current time
+   *
+   * @returns {String} name generated for the mark
+   * @memberOf SurfNPerf
+   */
+  SNPProto.markNow = function() {
+    var eventKey = '_NOW_' + this.now('DOM');
+    this.mark(eventKey);
+    return eventKey;
+  };
+
+  /**
+   * Returns the duration between two marks
+   *
+   * @param {String} startMark name of the first mark
+   * @param {String} [endMark] optional name of the second mark
+   * @returns {Number} duration between the two specified marks. If the endMark is not specified, returns the duration between the startMark and the current time
+   * @memberOf SurfNPerf
+   */
+  SNPProto.duration = function(startMark, endMark, options) {
+    endMark = endMark || this.markNow();
+
     if(this._userTiming) {
-      this._setMeasure(a, b);
-      return this._round(this._getMeasureDuration(a, b), options);
-    } else if(this._highResTime && a === 'navigationStart' && !this._isTimingMark(b)) {
-      return this._round(this.getMark(b), options);
+      this._setMeasure(startMark, endMark);
+      return this._round(this._getMeasureDuration(startMark, endMark), options);
+    } else if(this._highResTime && startMark === 'navigationStart' && !this._isTimingMark(endMark)) {
+      return this._round(this.getMark(endMark), options);
     } else {
-      return this._roundedDuration(this._getDurationMark(a), this._getDurationMark(b), options);
+      return this._roundedDuration(this._getDurationMark(startMark), this._getDurationMark(endMark), options);
     }
   };
 
@@ -443,6 +465,56 @@
       return window.performance.timing.msFirstPaint;
     } else {
       return undefined;
+    }
+  };
+
+  /**
+   * Is the page hidden or not, as reported by the Page Visibility API
+   *
+   * @returns {boolean} true if the page is in a state considered to be hidden to the user, and false otherwise.
+   * @memberOf SurfNPerf
+   */
+  SNPProto.isHidden = function() {
+    if(SURF_N_PERF.visibility && SURF_N_PERF.visibility.hiddenProperty) {
+      return document[SURF_N_PERF.visibility.hiddenProperty];
+    } else {
+      return null;
+    }
+  };
+
+  /**
+   * Total time a page is not visible, as reported by the Page Visibility API
+   *
+   * @returns {integer} time in ms
+   * @memberOf SurfNPerf
+   */
+  SNPProto.getHiddenTime = function(options) {
+    var total = 0,
+      states = [],
+      i,
+      length,
+      getMarkName = function(index) {
+        return index === 0 ? 'navigationStart' : 'visibility' + (index - 1);
+      };
+
+    if(SURF_N_PERF.visibility && SURF_N_PERF.visibility.initialState && SURF_N_PERF.visibility.stateUpdates) {
+      states = states.concat(SURF_N_PERF.visibility.initialState, SURF_N_PERF.visibility.stateUpdates);
+      length = states.length;
+      for(i = 1; i < length; i++) {
+        if(states[i - 1] !== 'visible' && states[i] === 'visible') {
+          total += this.duration(getMarkName(i - 1), getMarkName(i), {
+            decimalPlaces: 10
+          });
+        }
+      }
+      if(states[length - 1] !== 'visible') {
+        total += this.duration(getMarkName(length - 1), null, {
+          decimalPlaces: 10
+        });
+      }
+      return this._round(total, options);
+    } else {
+      return null;
     }
   };
 
