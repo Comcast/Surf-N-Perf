@@ -18,6 +18,42 @@
     }
   }
 
+  SURF_N_PERF.visibility = {
+    initialState: document.visibilityState,
+    stateUpdates: [],
+    hiddenProperty: null,
+    stateProperty: null,
+    eventName: null,
+    markChange: function() {
+      var markName = 'visibility' + SURF_N_PERF.visibility.stateUpdates.length;
+
+      if (window.performance) {
+        if (window.performance.mark) {
+          window.performance.mark(markName);
+        }
+
+        if (window.performance.now) {
+          SURF_N_PERF.highResMarks[markName] = window.performance.now();
+        }
+      }
+
+      SURF_N_PERF.marks[markName] = new Date().getTime();
+
+      SURF_N_PERF.visibility.stateUpdates.push(document[SURF_N_PERF.visibility.stateProperty]);
+    },
+  };
+
+  if('hidden' in document) {
+    SURF_N_PERF.visibility.hiddenProperty = 'hidden';
+    SURF_N_PERF.visibility.stateProperty = 'visibilityState';
+    SURF_N_PERF.visibility.eventName = 'visibilitychange';
+  } else if('webkitHidden' in document) {
+    SURF_N_PERF.visibility.hiddenProperty = 'webkitHidden';
+    SURF_N_PERF.visibility.stateProperty = 'webkitVisibilityState';
+    SURF_N_PERF.visibility.eventName = 'webkitvisibilitychange';
+    SURF_N_PERF.visibility.initialState = document[SURF_N_PERF.visibility.stateProperty];
+  }
+
   SURF_N_PERF.setPageLoad = function() {
     SURF_N_PERF.marks.loadEventEnd = (new Date()).getTime();
 
@@ -39,6 +75,9 @@
   };
 
   if(window.addEventListener) {
+    if (SURF_N_PERF.visibility.stateProperty) {
+      document.addEventListener(SURF_N_PERF.visibility.eventName, SURF_N_PERF.visibility.markChange, false);
+    }
     window.addEventListener('load', SURF_N_PERF.setPageLoad, false);
   } else {
     window.attachEvent('onload', SURF_N_PERF.setPageLoad);
@@ -57,28 +96,31 @@
 	  	setTimeout(function() {
 	  		surfnperf.eventStart('demo');
 	  		surfnperf.setCustom('customKey', 'custom value');
-	      	document.getElementById('networkTime').innerHTML = surfnperf.getNetworkTime();
-	      	document.getElementById('serverTime').innerHTML = surfnperf.getServerTime();
-	      	document.getElementById('networkLatency').innerHTML = surfnperf.getNetworkLatency();
-	      	document.getElementById('processingLoadTime').innerHTML = surfnperf.getProcessingLoadTime();
-	      	document.getElementById('fullRequestLoadTime').innerHTML = surfnperf.getFullRequestLoadTime();
-	      	document.getElementById('getCustom').innerHTML = surfnperf.getCustom('customKey');
-	      	surfnperf.mark('foo');
-	      	document.getElementById('durationStart').innerHTML = surfnperf.duration('pageStart', 'foo');
-	      	document.getElementById('durationEnd').innerHTML = surfnperf.duration('responseEnd','foo');
-	      	document.getElementById('loadEventDuration').innerHTML = surfnperf.duration('loadEventEnd','foo');
-	      	surfnperf.eventEnd('demo');
-	      	document.getElementById('eventDuration').innerHTML = surfnperf.eventDuration('demo');
-	      	document.getElementById('eventDurationDec').innerHTML = surfnperf.eventDuration('demo',{decimalPlaces:10});
+        document.getElementById('networkTime').innerHTML = surfnperf.getNetworkTime();
+        document.getElementById('serverTime').innerHTML = surfnperf.getServerTime();
+        document.getElementById('networkLatency').innerHTML = surfnperf.getNetworkLatency();
+        document.getElementById('processingLoadTime').innerHTML = surfnperf.getProcessingLoadTime();
+        document.getElementById('fullRequestLoadTime').innerHTML = surfnperf.getFullRequestLoadTime();
+        document.getElementById('getCustom').innerHTML = surfnperf.getCustom('customKey');
+        surfnperf.mark('foo');
+        document.getElementById('durationStart').innerHTML = surfnperf.duration('pageStart', 'foo');
+        document.getElementById('durationEnd').innerHTML = surfnperf.duration('responseEnd','foo');
+        document.getElementById('loadEventDuration').innerHTML = surfnperf.duration('loadEventEnd','foo');
+        surfnperf.eventEnd('demo');
+        document.getElementById('eventDuration').innerHTML = surfnperf.eventDuration('demo');
+        document.getElementById('eventDurationDec').innerHTML = surfnperf.eventDuration('demo',{decimalPlaces:10});
 
-          if(window.requestAnimationFrame) {
-            window.requestAnimationFrame(function() {
-              setTimeout(function() {
-                document.getElementById('firstPaint').innerHTML = surfnperf.getFirstPaint() || 'null';
-                document.getElementById('firstPaintFrame').innerHTML = surfnperf.getFirstPaintFrame();
-              }, 10);
-            });
-          }
+        if(window.requestAnimationFrame) {
+          window.requestAnimationFrame(function() {
+            setTimeout(function() {
+              document.getElementById('firstPaint').innerHTML = surfnperf.getFirstPaint() || 'null';
+              document.getElementById('firstPaintFrame').innerHTML = surfnperf.getFirstPaintFrame();
+            }, 10);
+          });
+        }
+
+        document.getElementById('isHidden').innerHTML = surfnperf.isHidden();
+        document.getElementById('getHiddenTime').innerHTML = surfnperf.getHiddenTime();
 		}, 0);
 	});
   </script>
@@ -168,6 +210,14 @@
       <tr>
         <td> surfnperf.eventDuration('demo',{decimalPlaces:10}) </td>
         <td id="eventDurationDec"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.isHidden() </td>
+        <td id="isHidden"></td>
+      </tr>
+      <tr>
+        <td> surfnperf.getHiddenTime() </td>
+        <td id="getHiddenTime"></td>
       </tr>
     </tbody>
   </table>
