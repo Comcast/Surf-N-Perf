@@ -57,17 +57,24 @@
             <ul class="typedefs itemMembers">
             
             </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
             
                 <li data-name="SurfNPerf.SNPProto.clearMarks"><a href="SurfNPerf.html#.SNPProto.clearMarks">SNPProto.clearMarks</a></li>
             
+                <li data-name="SurfNPerf.SNPProto.duration"><a href="SurfNPerf.html#.SNPProto.duration">SNPProto.duration</a></li>
+            
                 <li data-name="SurfNPerf.SNPProto.getFirstPaint"><a href="SurfNPerf.html#.SNPProto.getFirstPaint">SNPProto.getFirstPaint</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.getFirstPaintFrame"><a href="SurfNPerf.html#.SNPProto.getFirstPaintFrame">SNPProto.getFirstPaintFrame</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.getFullRequestLoadTime"><a href="SurfNPerf.html#.SNPProto.getFullRequestLoadTime">SNPProto.getFullRequestLoadTime</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.getHiddenTime"><a href="SurfNPerf.html#.SNPProto.getHiddenTime">SNPProto.getHiddenTime</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.getNetworkLatency"><a href="SurfNPerf.html#.SNPProto.getNetworkLatency">SNPProto.getNetworkLatency</a></li>
             
@@ -78,6 +85,10 @@
                 <li data-name="SurfNPerf.SNPProto.getServerTime"><a href="SurfNPerf.html#.SNPProto.getServerTime">SNPProto.getServerTime</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.getTimingMark"><a href="SurfNPerf.html#.SNPProto.getTimingMark">SNPProto.getTimingMark</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.isHidden"><a href="SurfNPerf.html#.SNPProto.isHidden">SNPProto.isHidden</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.markNow"><a href="SurfNPerf.html#.SNPProto.markNow">SNPProto.markNow</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.now"><a href="SurfNPerf.html#.SNPProto.now">SNPProto.now</a></li>
             
@@ -112,7 +123,7 @@
 
 
     <section>
-        <article class="readme"><h1>Surf-N-Perf </h1><p>Micro-library for gathering frontend web page performance data. </p>
+        <article class="readme"><h1>Surf-N-Perf</h1><p>Micro-library for gathering frontend web page performance data.</p>
 <p>Surf-N-Perf provides a simple to use API to gather <a target="_blank" href="http://www.w3.org/TR/user-timing/">User Timing</a> and other important performance data in any browser.</p>
 <p>Tired of typing <code>window.performance.getEntriesByName('foo')[0].startTime;</code> with your User Timing Polyfill?</p>
 <p>With Surf-N-Perf, all you need  is <code>surfnperf.getMark('foo')';</code>, and that's just the start!</p>
@@ -138,6 +149,42 @@
     }
   }
 
+  SURF_N_PERF.visibility = {
+    initialState: document.visibilityState,
+    stateUpdates: [],
+    hiddenProperty: null,
+    stateProperty: null,
+    eventName: null,
+    markChange: function() {
+      var markName = 'visibility' + SURF_N_PERF.visibility.stateUpdates.length;
+
+      if (window.performance) {
+        if (window.performance.mark) {
+          window.performance.mark(markName);
+        }
+
+        if (window.performance.now) {
+          SURF_N_PERF.highResMarks[markName] = window.performance.now();
+        }
+      }
+
+      SURF_N_PERF.marks[markName] = new Date().getTime();
+
+      SURF_N_PERF.visibility.stateUpdates.push(document[SURF_N_PERF.visibility.stateProperty]);
+    },
+  };
+
+  if('hidden' in document) {
+    SURF_N_PERF.visibility.hiddenProperty = 'hidden';
+    SURF_N_PERF.visibility.stateProperty = 'visibilityState';
+    SURF_N_PERF.visibility.eventName = 'visibilitychange';
+  } else if('webkitHidden' in document) {
+    SURF_N_PERF.visibility.hiddenProperty = 'webkitHidden';
+    SURF_N_PERF.visibility.stateProperty = 'webkitVisibilityState';
+    SURF_N_PERF.visibility.eventName = 'webkitvisibilitychange';
+    SURF_N_PERF.visibility.initialState = document[SURF_N_PERF.visibility.stateProperty];
+  }
+
   SURF_N_PERF.setPageLoad = function() {
     SURF_N_PERF.marks.loadEventEnd = (new Date()).getTime();
 
@@ -159,6 +206,9 @@
   };
 
   if(window.addEventListener) {
+    if (SURF_N_PERF.visibility.stateProperty) {
+      document.addEventListener(SURF_N_PERF.visibility.eventName, SURF_N_PERF.visibility.markChange, false);
+    }
     window.addEventListener('load', SURF_N_PERF.setPageLoad, false);
   } else {
     window.attachEvent('onload', SURF_N_PERF.setPageLoad);
@@ -168,11 +218,12 @@
   }
 &lt;/script></code></pre><p>That provides support for the following:</p>
 <ul>
-<li>A &quot;pageStart&quot; mark for browsers that do not support <a target="_blank" href="http://www.w3.org/TR/navigation-timing/">Navigation Timing</a> which can be used to compute durations from when the page first started loading (specifically, this mark falls between the <a target="_blank" href="http://www.w3.org/TR/navigation-timing/#dom-performancetiming-domloading">domLoading</a> and <a target="_blank" href="http://www.w3.org/TR/navigation-timing/#dom-performancetiming-dominteractive">domInteractive</a> attributes of Navigation Timing)</li>
-<li>&quot;pageStart&quot; marks for browsers that support <a target="_blank" href="http://www.w3.org/TR/hr-time/">High Resolution Time</a> and/or <a target="_blank" href="http://www.w3.org/TR/user-timing/">User Timing</a> so that &quot;pageStart&quot; can be used as a consistent starting point for duration calculations across all browsers regardless of their supported features</li>
-<li>A &quot;loadEventEnd&quot; mark for browsers that do not support <a target="_blank" href="http://www.w3.org/TR/navigation-timing/">Navigation Timing</a> which can be used to compute durations from when the load event of the document is completed (<a target="_blank" href="http://www.w3.org/TR/navigation-timing/#dom-performancetiming-loadend">loadEventEnd</a>)</li>
-<li>A &quot;loadEventEnd&quot; <a target="_blank" href="http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp">DOMHighResTimeStamp</a> mark for calculating high resolution durations between a Navigation Timing mark and a user mark in browsers that support <a target="_blank" href="http://www.w3.org/TR/hr-time/">High Resolution Time</a> but don't support <a target="_blank" href="http://www.w3.org/TR/user-timing/">User Timing</a></li>
-<li>A &quot;firstPaintFrame&quot; mark (available in the best possible format for the browser, either a <a target="_blank" href="http://www.w3.org/TR/user-timing/#performancemark">User Timing Mark</a>, <a target="_blank" href="http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp">DOMHighResTimeStamp</a>, or <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/DOMTimeStamp">DOMTimeStamp</a>) that approximates the Time To First Paint in browsers that <a target="_blank" href="http://caniuse.com/#feat=requestanimationframe">support <code>window.requestAnimationFrame</code></a>.</li>
+<li>A <code>&quot;pageStart&quot;</code> mark for browsers that do not support <a target="_blank" href="http://www.w3.org/TR/navigation-timing/">Navigation Timing</a> which can be used to compute durations from when the page first started loading (specifically, this mark falls between the <a target="_blank" href="http://www.w3.org/TR/navigation-timing/#dom-performancetiming-domloading"><code>domLoading</code></a> and <a target="_blank" href="http://www.w3.org/TR/navigation-timing/#dom-performancetiming-dominteractive"><code>domInteractive</code></a> attributes of Navigation Timing)</li>
+<li><code>&quot;pageStart&quot;</code> marks for browsers that support <a target="_blank" href="http://www.w3.org/TR/hr-time/">High Resolution Time</a> and/or <a target="_blank" href="http://www.w3.org/TR/user-timing/">User Timing</a> so that <code>&quot;pageStart&quot;</code> can be used as a consistent starting point for duration calculations across all browsers regardless of their supported features</li>
+<li>A <code>&quot;loadEventEnd&quot;</code> mark for browsers that do not support <a target="_blank" href="http://www.w3.org/TR/navigation-timing/">Navigation Timing</a> which can be used to compute durations from when the load event of the document is completed (<a target="_blank" href="http://www.w3.org/TR/navigation-timing/#dom-performancetiming-loadend"><code>loadEventEnd</code></a>)</li>
+<li>A <code>&quot;loadEventEnd&quot;</code> <a target="_blank" href="http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp">DOMHighResTimeStamp</a> mark for calculating high resolution durations between a Navigation Timing mark and a user mark in browsers that support <a target="_blank" href="http://www.w3.org/TR/hr-time/">High Resolution Time</a> but don't support <a target="_blank" href="http://www.w3.org/TR/user-timing/">User Timing</a></li>
+<li>A <code>&quot;firstPaintFrame&quot;</code> mark (available in the best possible format for the browser, either a <a target="_blank" href="http://www.w3.org/TR/user-timing/#performancemark">User Timing Mark</a>, <a target="_blank" href="http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp">DOMHighResTimeStamp</a>, or <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/DOMTimeStamp">DOMTimeStamp</a>) that approximates the Time To First Paint in browsers that <a target="_blank" href="http://caniuse.com/#feat=requestanimationframe">support <code>window.requestAnimationFrame</code></a>.</li>
+<li>The initial <code>visibilityState</code> as well as listeners for the <code>&quot;visibilitychange&quot;</code> event, enabling the ability to calculate how much time the page was hidden when you call <code>surfnperf.getHiddenTime()</code>. This is of particular importance as <a target="_blank" href="https://developers.google.com/web/updates/2017/03/background_tabs">Chrome as of version 57</a> and <a target="_blank" href="https://blog.mozilla.org/blog/2017/09/26/firefox-quantum-beta-developer-edition/">Firefox as of version 57</a> limit the resources assigned to background (hidden) tabs.</li>
 </ul>
 <p><strong>2.</strong> Then just drop the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.min.js">surfnperf.min.js</a> in your codebase and reference that JavaScript file in your HTML document. If you're using <a target="_blank" href="http://requirejs.org/">RequireJS</a> or <a target="_blank" href="http://browserify.org/">Browserify</a>, it registers itself as 'surfnperf'.</p>
 <h3>Storing &amp; Retrieving Performance Data</h3><p>Details in the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API">JavaScript API</a> page in the wiki</p>
@@ -207,7 +258,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Apr 12 2017 18:09:18 GMT+0000 (UTC)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Oct 13 2017 18:00:12 GMT+0000 (UTC)
         </footer>
     </div>
 </div>

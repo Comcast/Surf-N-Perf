@@ -57,17 +57,24 @@
             <ul class="typedefs itemMembers">
             
             </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
             
                 <li data-name="SurfNPerf.SNPProto.clearMarks"><a href="SurfNPerf.html#.SNPProto.clearMarks">SNPProto.clearMarks</a></li>
             
+                <li data-name="SurfNPerf.SNPProto.duration"><a href="SurfNPerf.html#.SNPProto.duration">SNPProto.duration</a></li>
+            
                 <li data-name="SurfNPerf.SNPProto.getFirstPaint"><a href="SurfNPerf.html#.SNPProto.getFirstPaint">SNPProto.getFirstPaint</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.getFirstPaintFrame"><a href="SurfNPerf.html#.SNPProto.getFirstPaintFrame">SNPProto.getFirstPaintFrame</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.getFullRequestLoadTime"><a href="SurfNPerf.html#.SNPProto.getFullRequestLoadTime">SNPProto.getFullRequestLoadTime</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.getHiddenTime"><a href="SurfNPerf.html#.SNPProto.getHiddenTime">SNPProto.getHiddenTime</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.getNetworkLatency"><a href="SurfNPerf.html#.SNPProto.getNetworkLatency">SNPProto.getNetworkLatency</a></li>
             
@@ -78,6 +85,10 @@
                 <li data-name="SurfNPerf.SNPProto.getServerTime"><a href="SurfNPerf.html#.SNPProto.getServerTime">SNPProto.getServerTime</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.getTimingMark"><a href="SurfNPerf.html#.SNPProto.getTimingMark">SNPProto.getTimingMark</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.isHidden"><a href="SurfNPerf.html#.SNPProto.isHidden">SNPProto.isHidden</a></li>
+            
+                <li data-name="SurfNPerf.SNPProto.markNow"><a href="SurfNPerf.html#.SNPProto.markNow">SNPProto.markNow</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.now"><a href="SurfNPerf.html#.SNPProto.now">SNPProto.now</a></li>
             
@@ -324,6 +335,186 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".SNPProto.duration">
+            
+            <span class="type-signature static">static</span>SurfNPerf.SNPProto.duration<span class="signature">(startMark, <span class="optional">endMark</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line308">line 308</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns the duration between two marks</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>startMark</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>name of the first mark</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>endMark</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>optional name of the second mark</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Number
+                        
+                    
+            </td>
+            <td class="description last">duration between the two specified marks. If the endMark is not specified, returns the duration between the startMark and the current time</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id=".SNPProto.getFirstPaint">
             
             <span class="type-signature static">static</span>SurfNPerf.SNPProto.getFirstPaint<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{integer}</span>
@@ -331,7 +522,7 @@
     
         
         <div class="tag-source">
-            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line405">line 405</a>
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line427">line 427</a>
         </div>
         
     </div>
@@ -431,7 +622,7 @@
     
         
         <div class="tag-source">
-            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line425">line 425</a>
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line447">line 447</a>
         </div>
         
     </div>
@@ -531,7 +722,7 @@
     
         
         <div class="tag-source">
-            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line395">line 395</a>
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line417">line 417</a>
         </div>
         
     </div>
@@ -624,6 +815,106 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".SNPProto.getHiddenTime">
+            
+            <span class="type-signature static">static</span>SurfNPerf.SNPProto.getHiddenTime<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{integer}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line491">line 491</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Total time a page is not visible, as reported by the Page Visibility API</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        integer
+                        
+                    
+            </td>
+            <td class="description last">time in ms</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id=".SNPProto.getNetworkLatency">
             
             <span class="type-signature static">static</span>SurfNPerf.SNPProto.getNetworkLatency<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{integer}</span>
@@ -631,7 +922,7 @@
     
         
         <div class="tag-source">
-            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line375">line 375</a>
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line397">line 397</a>
         </div>
         
     </div>
@@ -731,7 +1022,7 @@
     
         
         <div class="tag-source">
-            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line355">line 355</a>
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line377">line 377</a>
         </div>
         
     </div>
@@ -831,7 +1122,7 @@
     
         
         <div class="tag-source">
-            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line385">line 385</a>
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line407">line 407</a>
         </div>
         
     </div>
@@ -931,7 +1222,7 @@
     
         
         <div class="tag-source">
-            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line365">line 365</a>
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line387">line 387</a>
         </div>
         
     </div>
@@ -1195,6 +1486,206 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".SNPProto.isHidden">
+            
+            <span class="type-signature static">static</span>SurfNPerf.SNPProto.isHidden<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line477">line 477</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Is the page hidden or not, as reported by the Page Visibility API</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        boolean
+                        
+                    
+            </td>
+            <td class="description last">true if the page is in a state considered to be hidden to the user, and false otherwise.</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".SNPProto.markNow">
+            
+            <span class="type-signature static">static</span>SurfNPerf.SNPProto.markNow<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{String}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html">/home/travis/build/Comcast/Surf-N-Perf/surfnperf.js</a>, <a href="-_home_travis_build_Comcast_Surf-N-Perf_surfnperf.js.html#line294">line 294</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Marks the current time</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        String
+                        
+                    
+            </td>
+            <td class="description last">name generated for the mark</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id=".SNPProto.now">
             
             <span class="type-signature static">static</span>SurfNPerf.SNPProto.now<span class="signature">(timeType)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{DOMHighResTimeStamp|integer}</span>
@@ -1345,6 +1836,8 @@
     
     
     
+
+    
 </article>
 
 </section>  
@@ -1356,7 +1849,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Apr 12 2017 18:09:18 GMT+0000 (UTC)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Oct 13 2017 18:00:12 GMT+0000 (UTC)
         </footer>
     </div>
 </div>
