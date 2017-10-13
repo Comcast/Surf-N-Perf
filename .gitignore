@@ -7,3 +7,8 @@
 
 ## Documentation cache and generated files:
 /_build/
+
+## Ruby stuff ignored on master branch that may still be on your filesystem
+.ruby-version
+.ruby-gemset
+gem/
