@@ -1,7 +1,7 @@
-Surf-N-Perf 
+Surf-N-Perf
 ==============
 
-Micro-library for gathering frontend web page performance data. 
+Micro-library for gathering frontend web page performance data.
 
 Surf-N-Perf provides a simple to use API to gather [User Timing](http://www.w3.org/TR/user-timing/) and other important performance data in any browser.
 
@@ -41,6 +41,42 @@ There are 2 pieces of code that need to be included in your webpage:
     }
   }
 
+  SURF_N_PERF.visibility = {
+    initialState: document.visibilityState,
+    stateUpdates: [],
+    hiddenProperty: null,
+    stateProperty: null,
+    eventName: null,
+    markChange: function() {
+      var markName = 'visibility' + SURF_N_PERF.visibility.stateUpdates.length;
+
+      if (window.performance) {
+        if (window.performance.mark) {
+          window.performance.mark(markName);
+        }
+
+        if (window.performance.now) {
+          SURF_N_PERF.highResMarks[markName] = window.performance.now();
+        }
+      }
+
+      SURF_N_PERF.marks[markName] = new Date().getTime();
+
+      SURF_N_PERF.visibility.stateUpdates.push(document[SURF_N_PERF.visibility.stateProperty]);
+    },
+  };
+
+  if('hidden' in document) {
+    SURF_N_PERF.visibility.hiddenProperty = 'hidden';
+    SURF_N_PERF.visibility.stateProperty = 'visibilityState';
+    SURF_N_PERF.visibility.eventName = 'visibilitychange';
+  } else if('webkitHidden' in document) {
+    SURF_N_PERF.visibility.hiddenProperty = 'webkitHidden';
+    SURF_N_PERF.visibility.stateProperty = 'webkitVisibilityState';
+    SURF_N_PERF.visibility.eventName = 'webkitvisibilitychange';
+    SURF_N_PERF.visibility.initialState = document[SURF_N_PERF.visibility.stateProperty];
+  }
+
   SURF_N_PERF.setPageLoad = function() {
     SURF_N_PERF.marks.loadEventEnd = (new Date()).getTime();
 
@@ -54,7 +90,7 @@ There are 2 pieces of code that need to be included in your webpage:
 
     if(window.performance && window.performance.now) {
       SURF_N_PERF.highResMarks.firstPaintFrame = window.performance.now();
-      
+
       if(window.performance.mark) {
         window.performance.mark('firstPaintFrame');
       }
@@ -62,6 +98,9 @@ There are 2 pieces of code that need to be included in your webpage:
   };
 
   if(window.addEventListener) {
+    if (SURF_N_PERF.visibility.stateProperty) {
+      document.addEventListener(SURF_N_PERF.visibility.eventName, SURF_N_PERF.visibility.markChange, false);
+    }
     window.addEventListener('load', SURF_N_PERF.setPageLoad, false);
   } else {
     window.attachEvent('onload', SURF_N_PERF.setPageLoad);
@@ -73,11 +112,13 @@ There are 2 pieces of code that need to be included in your webpage:
 ```
 
 That provides support for the following:
-- A "pageStart" mark for browsers that do not support [Navigation Timing](http://www.w3.org/TR/navigation-timing/) which can be used to compute durations from when the page first started loading (specifically, this mark falls between the [domLoading](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-domloading) and [domInteractive](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-dominteractive) attributes of Navigation Timing)
-- "pageStart" marks for browsers that support [High Resolution Time](http://www.w3.org/TR/hr-time/) and/or [User Timing](http://www.w3.org/TR/user-timing/) so that "pageStart" can be used as a consistent starting point for duration calculations across all browsers regardless of their supported features
-- A "loadEventEnd" mark for browsers that do not support [Navigation Timing](http://www.w3.org/TR/navigation-timing/) which can be used to compute durations from when the load event of the document is completed ([loadEventEnd](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-loadend))
-- A "loadEventEnd" [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp) mark for calculating high resolution durations between a Navigation Timing mark and a user mark in browsers that support [High Resolution Time](http://www.w3.org/TR/hr-time/) but don't support [User Timing](http://www.w3.org/TR/user-timing/)
-- A "firstPaintFrame" mark (available in the best possible format for the browser, either a [User Timing Mark](http://www.w3.org/TR/user-timing/#performancemark), [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp), or [DOMTimeStamp](https://developer.mozilla.org/en-US/docs/Web/API/DOMTimeStamp)) that approximates the Time To First Paint in browsers that [support `window.requestAnimationFrame`](http://caniuse.com/#feat=requestanimationframe).
+
+- A `"pageStart"` mark for browsers that do not support [Navigation Timing](http://www.w3.org/TR/navigation-timing/) which can be used to compute durations from when the page first started loading (specifically, this mark falls between the [`domLoading`](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-domloading) and [`domInteractive`](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-dominteractive) attributes of Navigation Timing)
+- `"pageStart"` marks for browsers that support [High Resolution Time](http://www.w3.org/TR/hr-time/) and/or [User Timing](http://www.w3.org/TR/user-timing/) so that `"pageStart"` can be used as a consistent starting point for duration calculations across all browsers regardless of their supported features
+- A `"loadEventEnd"` mark for browsers that do not support [Navigation Timing](http://www.w3.org/TR/navigation-timing/) which can be used to compute durations from when the load event of the document is completed ([`loadEventEnd`](http://www.w3.org/TR/navigation-timing/#dom-performancetiming-loadend))
+- A `"loadEventEnd"` [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp) mark for calculating high resolution durations between a Navigation Timing mark and a user mark in browsers that support [High Resolution Time](http://www.w3.org/TR/hr-time/) but don't support [User Timing](http://www.w3.org/TR/user-timing/)
+- A `"firstPaintFrame"` mark (available in the best possible format for the browser, either a [User Timing Mark](http://www.w3.org/TR/user-timing/#performancemark), [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp), or [DOMTimeStamp](https://developer.mozilla.org/en-US/docs/Web/API/DOMTimeStamp)) that approximates the Time To First Paint in browsers that [support `window.requestAnimationFrame`](http://caniuse.com/#feat=requestanimationframe).
+- The initial `visibilityState` as well as listeners for the `"visibilitychange"` event, enabling the ability to calculate how much time the page was hidden when you call `surfnperf.getHiddenTime()`. This is of particular importance as [Chrome as of version 57](https://developers.google.com/web/updates/2017/03/background_tabs) and [Firefox as of version 57](https://blog.mozilla.org/blog/2017/09/26/firefox-quantum-beta-developer-edition/) limit the resources assigned to background (hidden) tabs.
 
 **2.** Then just drop the [surfnperf.min.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.min.js) in your codebase and reference that JavaScript file in your HTML document. If you're using [RequireJS](http://requirejs.org/) or [Browserify](http://browserify.org/), it registers itself as 'surfnperf'.
 

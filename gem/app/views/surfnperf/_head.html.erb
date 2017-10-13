@@ -15,6 +15,42 @@
     }
   }
 
+  SURF_N_PERF.visibility = {
+    initialState: document.visibilityState,
+    stateUpdates: [],
+    hiddenProperty: null,
+    stateProperty: null,
+    eventName: null,
+    markChange: function() {
+      var markName = 'visibility' + SURF_N_PERF.visibility.stateUpdates.length;
+
+      if (window.performance) {
+        if (window.performance.mark) {
+          window.performance.mark(markName);
+        }
+
+        if (window.performance.now) {
+          SURF_N_PERF.highResMarks[markName] = window.performance.now();
+        }
+      }
+
+      SURF_N_PERF.marks[markName] = new Date().getTime();
+
+      SURF_N_PERF.visibility.stateUpdates.push(document[SURF_N_PERF.visibility.stateProperty]);
+    },
+  };
+
+  if('hidden' in document) {
+    SURF_N_PERF.visibility.hiddenProperty = 'hidden';
+    SURF_N_PERF.visibility.stateProperty = 'visibilityState';
+    SURF_N_PERF.visibility.eventName = 'visibilitychange';
+  } else if('webkitHidden' in document) {
+    SURF_N_PERF.visibility.hiddenProperty = 'webkitHidden';
+    SURF_N_PERF.visibility.stateProperty = 'webkitVisibilityState';
+    SURF_N_PERF.visibility.eventName = 'webkitvisibilitychange';
+    SURF_N_PERF.visibility.initialState = document[SURF_N_PERF.visibility.stateProperty];
+  }
+
   SURF_N_PERF.setPageLoad = function() {
     SURF_N_PERF.marks.loadEventEnd = (new Date()).getTime();
 
@@ -28,7 +64,7 @@
 
     if(window.performance && window.performance.now) {
       SURF_N_PERF.highResMarks.firstPaintFrame = window.performance.now();
-      
+
       if(window.performance.mark) {
         window.performance.mark('firstPaintFrame');
       }
@@ -36,13 +72,14 @@
   };
 
   if(window.addEventListener) {
+    if (SURF_N_PERF.visibility.stateProperty) {
+      document.addEventListener(SURF_N_PERF.visibility.eventName, SURF_N_PERF.visibility.markChange, false);
+    }
     window.addEventListener('load', SURF_N_PERF.setPageLoad, false);
   } else {
     window.attachEvent('onload', SURF_N_PERF.setPageLoad);
   }
-
   if (window.requestAnimationFrame) {
     window.requestAnimationFrame(SURF_N_PERF.setFirstPaint);
   }
-
 </script>

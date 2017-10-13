@@ -6,7 +6,8 @@ define('spec/surfnperf_spec', [
   describe('SurfNPerf', function() {
 
     var NOW_TS = 1388595600000, // Wed Jan 01 2014 12:00:00 GMT-0500 (EST)
-      NOW_HIGH_RES = 3.1415926;
+      NOW_HIGH_RES = 3.1415926,
+      EXPECTED_NOW_MARK_NAME = '_NOW_' + NOW_TS;
 
     // Object.assign() Polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
     if(typeof Object.assign != 'function') {
@@ -608,7 +609,7 @@ define('spec/surfnperf_spec', [
 
     describe('#_setMeasure', function() {
 
-      it('calls the User Timing #mark method with the appropriate name and marks', function() {
+      it('calls the User Timing #measure method with the appropriate name and marks', function() {
         var measureSpy = jasmine.createSpy();
         spyOn(SurfNPerf, 'userTiming').andReturn({
           measure: measureSpy
@@ -670,6 +671,23 @@ define('spec/surfnperf_spec', [
 
     });
 
+    describe('#markNow', function() {
+
+      beforeEach(function() {
+        spyOn(SurfNPerf, 'mark');
+      });
+
+      it('returns the generated mark name based on the current DOM timestamp', function() {
+        expect(SurfNPerf.markNow()).toEqual(EXPECTED_NOW_MARK_NAME);
+      });
+
+      it('marks the current time with the generated mark name', function() {
+        SurfNPerf.markNow();
+        expect(SurfNPerf.mark).toHaveBeenCalledWith(EXPECTED_NOW_MARK_NAME);
+      });
+
+    });
+
     describe('#duration', function() {
 
       beforeEach(function() {
@@ -706,7 +724,13 @@ define('spec/surfnperf_spec', [
           SurfNPerf._userTiming = true;
 
           spyOn(SurfNPerf, '_setMeasure');
-          spyOn(SurfNPerf, '_getMeasureDuration').andReturn(123.456789);
+          spyOn(SurfNPerf, '_getMeasureDuration').andCallFake(function(startMark, endMark) {
+            if(endMark === EXPECTED_NOW_MARK_NAME) {
+              return 987.654321;
+            } else {
+              return 123.456789;
+            }
+          });
         });
 
         it('calls #_setMeasure for the 2 marks', function() {
@@ -716,6 +740,34 @@ define('spec/surfnperf_spec', [
 
         it('returns the User Timing calculation of the duration between the 2 marks', function() {
           expect(SurfNPerf.duration('markA', 'markB')).toEqual(123);
+        });
+
+        describe('when the second mark is falsy', function() {
+
+          beforeEach(function() {
+            spyOn(SurfNPerf, 'markNow').andReturn(EXPECTED_NOW_MARK_NAME);
+          });
+
+          it('calls #markNow', function() {
+            SurfNPerf.duration('markA');
+            expect(SurfNPerf.markNow).toHaveBeenCalled();
+          });
+
+          it('calls #_setMeasure for the first mark and newly generated "NOW" mark', function() {
+            SurfNPerf.duration('markA');
+            expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('markA', EXPECTED_NOW_MARK_NAME);
+          });
+
+          it('returns the User Timing calculation of the duration between the first mark and the present time', function() {
+            expect(SurfNPerf.duration('markA')).toEqual(988);
+          });
+
+          it('rounds to the number of decimal places specified', function() {
+            expect(SurfNPerf.duration('markA', null, {
+              decimalPlaces: 2
+            })).toEqual(987.65);
+          });
+
         });
 
         describe('decimal place rounding', function() {
@@ -783,6 +835,36 @@ define('spec/surfnperf_spec', [
           })).toEqual(6905.0234);
         });
 
+        describe('when the second mark is falsy', function() {
+
+          beforeEach(function() {
+            spyOn(SurfNPerf, 'markNow').andReturn(EXPECTED_NOW_MARK_NAME);
+            spyOn(SurfNPerf, 'getMark').andCallFake(function(eventKey) {
+              if(eventKey === EXPECTED_NOW_MARK_NAME) {
+                return 7987.654321;
+              } else {
+                return SurfNPerf._data.highResMarks[eventKey] || SURF_N_PERF.highResMarks[eventKey];
+              }
+            });
+          });
+
+          it('calls #markNow', function() {
+            SurfNPerf.duration('mark_above_the_fold');
+            expect(SurfNPerf.markNow).toHaveBeenCalled();
+          });
+
+          it('can calculate the high resolution duration between the first mark and the present time', function() {
+            expect(SurfNPerf.duration('mark_above_the_fold')).toEqual(1083);
+          });
+
+          it('rounds to the number of decimal places specified', function() {
+            expect(SurfNPerf.duration('mark_above_the_fold', null, {
+              decimalPlaces: 2
+            })).toEqual(1082.63);
+          });
+
+        });
+
         describe('decimal place rounding', function() {
 
           it('rounds to the nearest integer by default', function() {
@@ -817,6 +899,9 @@ define('spec/surfnperf_spec', [
           SurfNPerf._navigationTiming = true;
           SurfNPerf._highResTime = false;
           SurfNPerf._userTiming = false;
+          /* highRes Marks won't exist: */
+          SURF_N_PERF.highResMarks = {};
+          SurfNPerf._data.highResMarks = {};
         });
 
         it('can calculate the duration between 2 Navigation Timing marks', function() {
@@ -829,6 +914,24 @@ define('spec/surfnperf_spec', [
 
         it('can calculate the duration between a Navigation Timing mark and a user mark', function() {
           expect(SurfNPerf.duration('navigationStart', 'mark_fully_loaded')).toEqual(7010);
+        });
+
+        describe('when the second mark is falsy', function() {
+
+          beforeEach(function() {
+            spyOn(SurfNPerf, 'markNow').andReturn(EXPECTED_NOW_MARK_NAME);
+            SurfNPerf._data.marks[EXPECTED_NOW_MARK_NAME] = 1388595607987;
+          });
+
+          it('calls #markNow', function() {
+            SurfNPerf.duration('mark_above_the_fold');
+            expect(SurfNPerf.markNow).toHaveBeenCalled();
+          });
+
+          it('can calculate the high resolution duration between the first mark and the present time', function() {
+            expect(SurfNPerf.duration('mark_above_the_fold')).toEqual(1077);
+          });
+
         });
 
       });
@@ -1407,6 +1510,542 @@ define('spec/surfnperf_spec', [
 
           it('returns the time to first paint calculated', function() {
             expect(SurfNPerf.getFirstPaintFrame()).toEqual(1025);
+          });
+        });
+      });
+    });
+
+    describe("#isHidden", function() {
+      it('returns a boolean based on if the page is hidden or not', function() {
+        if('hidden' in document) {
+          SURF_N_PERF.visibility = {
+            hiddenProperty: 'hidden'
+          };
+          expect(SurfNPerf.isHidden()).toBe(document.hidden);
+        } else if('webkitHidden' in document) {
+          SURF_N_PERF.visibility = {
+            hiddenProperty: 'webkitHidden'
+          };
+          expect(SurfNPerf.isHidden()).toBe(document.webkitHidden);
+        } else {
+          expect(SurfNPerf.isHidden()).toBeNull();
+        }
+      });
+
+      it('returns null if visibility details were not captured', function() {
+        delete SURF_N_PERF.visibility;
+        expect(SurfNPerf.isHidden()).toBeNull();
+      });
+    });
+
+    describe('#getHiddenTime', function() {
+      describe('when visibility details were not captured', function() {
+        beforeEach(function() {
+          delete SURF_N_PERF.visibility;
+        });
+
+        it('returns null', function() {
+          expect(SurfNPerf.getHiddenTime()).toBeNull();
+        });
+      });
+
+      describe('when visibility details were captured', function() {
+        beforeEach(function() {
+          SURF_N_PERF.visibility = {
+            initialState: document.visibilityState || document.webkitVisibilityState,
+            stateUpdates: [],
+            hiddenProperty: null,
+            stateProperty: null,
+            eventName: null,
+          };
+          spyOn(SurfNPerf, 'mark');
+        });
+
+        it('returns 0 when the page was visible the entire time', function() {
+          SURF_N_PERF.visibility = {
+            initialState: 'visible',
+            stateUpdates: []
+          };
+
+          expect(SurfNPerf.getHiddenTime()).toBe(0);
+        });
+
+        describe('when the browser supports User Timing', function() {
+          beforeEach(function() {
+            SurfNPerf._navigationTiming = true;
+            SurfNPerf._highResTime = true;
+            SurfNPerf._userTiming = true;
+
+            spyOn(SurfNPerf, '_setMeasure');
+            spyOn(SurfNPerf, '_getMeasureDuration').andCallFake(function(startMark, endMark) {
+              if(endMark === EXPECTED_NOW_MARK_NAME) {
+                return 987.654321;
+              }
+            });
+          });
+
+          it('returns the current time on page when the page was hidden the entire time', function() {
+            SURF_N_PERF.visibility = {
+              initialState: 'hidden',
+              stateUpdates: []
+            };
+
+            expect(SurfNPerf.getHiddenTime({
+              decimalPlaces: 3
+            })).toBe(987.654);
+          });
+
+          describe('and the page was initially visible', function() {
+            beforeEach(function() {
+              SURF_N_PERF.visibility = {
+                initialState: 'visible'
+              };
+            });
+
+            it('returns the time the page was hidden if it was hidden once & still is hidden', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['hidden'];
+
+              SurfNPerf._getMeasureDuration.andCallFake(function(startMark, endMark) {
+                if(startMark === 'visibility0' && endMark === EXPECTED_NOW_MARK_NAME) {
+                  return 700.432109;
+                }
+              });
+
+              expect(SurfNPerf.getHiddenTime()).toBe(700);
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('visibility0', EXPECTED_NOW_MARK_NAME);
+            });
+
+            it('returns the time the page was hidden if it was hidden once & then made visible', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['hidden', 'visible'];
+              SurfNPerf._getMeasureDuration.andCallFake(function(startMark, endMark) {
+                if(startMark === 'visibility0' && endMark === 'visibility1') {
+                  return 500.34567;
+                }
+              });
+
+              expect(SurfNPerf.getHiddenTime()).toBe(500);
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('visibility0', 'visibility1');
+            });
+
+            it('returns the time the page was hidden if it was hidden multiple times', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['hidden', 'visible', 'hidden', 'visible'];
+              SurfNPerf._getMeasureDuration.andCallFake(function(startMark, endMark) {
+                if(startMark === 'visibility0' && endMark === 'visibility1') {
+                  return 500.34567;
+                }
+                if(startMark === 'visibility2' && endMark === 'visibility3') {
+                  return 600.98765;
+                }
+              });
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1101);
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('visibility0', 'visibility1');
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('visibility2', 'visibility3');
+            });
+          });
+
+          describe('and the page was initially hidden', function() {
+            beforeEach(function() {
+              SURF_N_PERF.visibility = {
+                initialState: 'hidden'
+              };
+            });
+
+            it('returns the time the page was hidden if it made visible & not hidden again', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible'];
+              SurfNPerf._getMeasureDuration.andCallFake(function(startMark, endMark) {
+                if(startMark === 'navigationStart' && endMark === 'visibility0') {
+                  return 500.34567;
+                }
+              });
+
+              expect(SurfNPerf.getHiddenTime()).toBe(500);
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('navigationStart', 'visibility0');
+            });
+
+            it('returns the time the page was hidden if it was visible once & still is hidden', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden'];
+
+              SurfNPerf._getMeasureDuration.andCallFake(function(startMark, endMark) {
+                if(startMark === 'navigationStart' && endMark === 'visibility0') {
+                  return 500.34567;
+                }
+                if(startMark === 'visibility1' && endMark === EXPECTED_NOW_MARK_NAME) {
+                  return 600.98765;
+                }
+              });
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1101);
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('navigationStart', 'visibility0');
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('visibility1', EXPECTED_NOW_MARK_NAME);
+            });
+
+            it('returns the time the page was hidden if it was hidden multiple times', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden', 'visible'];
+              SurfNPerf._getMeasureDuration.andCallFake(function(startMark, endMark) {
+                if(startMark === 'navigationStart' && endMark === 'visibility0') {
+                  return 500.34567;
+                }
+                if(startMark === 'visibility1' && endMark === 'visibility2') {
+                  return 600.98765;
+                }
+              });
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1101);
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('navigationStart', 'visibility0');
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('visibility1', 'visibility2');
+            });
+          });
+
+          describe('and the page was initially prerendered', function() {
+            beforeEach(function() {
+              SURF_N_PERF.visibility = {
+                initialState: 'prerender'
+              };
+            });
+
+            it('returns the time the page was hidden if it made visible & not hidden again', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible'];
+              SurfNPerf._getMeasureDuration.andCallFake(function(startMark, endMark) {
+                if(startMark === 'navigationStart' && endMark === 'visibility0') {
+                  return 500.34567;
+                }
+              });
+
+              expect(SurfNPerf.getHiddenTime()).toBe(500);
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('navigationStart', 'visibility0');
+            });
+
+            it('returns the time the page was hidden if it was visible once & still is hidden', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden'];
+
+              SurfNPerf._getMeasureDuration.andCallFake(function(startMark, endMark) {
+                if(startMark === 'navigationStart' && endMark === 'visibility0') {
+                  return 500.34567;
+                }
+                if(startMark === 'visibility1' && endMark === EXPECTED_NOW_MARK_NAME) {
+                  return 600.98765;
+                }
+              });
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1101);
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('navigationStart', 'visibility0');
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('visibility1', EXPECTED_NOW_MARK_NAME);
+            });
+
+            it('returns the time the page was hidden if it was hidden multiple times', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden', 'visible'];
+              SurfNPerf._getMeasureDuration.andCallFake(function(startMark, endMark) {
+                if(startMark === 'navigationStart' && endMark === 'visibility0') {
+                  return 500.34567;
+                }
+                if(startMark === 'visibility1' && endMark === 'visibility2') {
+                  return 600.98765;
+                }
+              });
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1101);
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('navigationStart', 'visibility0');
+              expect(SurfNPerf._setMeasure).toHaveBeenCalledWith('visibility1', 'visibility2');
+            });
+          });
+        });
+
+        describe('when the browser supports High Resolution Time but no User Timing', function() {
+          beforeEach(function() {
+            SurfNPerf._navigationTiming = true;
+            SurfNPerf._highResTime = true;
+            SurfNPerf._userTiming = false;
+          });
+
+          it('returns the current time on page when the page was hidden the entire time', function() {
+            SURF_N_PERF.visibility = {
+              initialState: 'hidden',
+              stateUpdates: []
+            };
+
+            SurfNPerf._data.highResMarks[EXPECTED_NOW_MARK_NAME] = 987.654321;
+
+            expect(SurfNPerf.getHiddenTime({
+              decimalPlaces: 3
+            })).toBe(987.654);
+          });
+
+          describe('and the page was initially visible', function() {
+            beforeEach(function() {
+              SURF_N_PERF.visibility = {
+                initialState: 'visible'
+              };
+            });
+
+            it('returns the time the page was hidden if it was hidden once & still is hidden', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['hidden'];
+
+              SurfNPerf._data.highResMarks = {
+                visibility0: 1000.00000,
+              };
+              SurfNPerf._data.highResMarks[EXPECTED_NOW_MARK_NAME] = 1600.34567;
+
+              expect(SurfNPerf.getHiddenTime()).toBe(600);
+            });
+
+            it('returns the time the page was hidden if it was hidden once & then made visible', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['hidden', 'visible'];
+              SurfNPerf._data.highResMarks = {
+                visibility0: 1000.00000,
+                visibility1: 1500.34567,
+              };
+
+              expect(SurfNPerf.getHiddenTime()).toBe(500);
+            });
+
+            it('returns the time the page was hidden if it was hidden multiple times', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['hidden', 'visible', 'hidden', 'visible'];
+              SurfNPerf._data.highResMarks = {
+                visibility0: 1000.00000,
+                visibility1: 1500.34567,
+                visibility2: 2000.00000,
+                visibility3: 2600.98765,
+              };
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1101);
+            });
+          });
+
+          describe('and the page was initially hidden', function() {
+            beforeEach(function() {
+              SURF_N_PERF.visibility = {
+                initialState: 'hidden'
+              };
+            });
+
+            it('returns the time the page was hidden if it made visible & not hidden again', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible'];
+              SurfNPerf._data.highResMarks = {
+                visibility0: 500.34567,
+              };
+
+              expect(SurfNPerf.getHiddenTime()).toBe(500);
+            });
+
+            it('returns the time the page was hidden if it was visible once & still is hidden', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden'];
+              SurfNPerf._data.highResMarks = {
+                visibility0: 1000.00000,
+                visibility1: 1500.34567,
+              };
+              SurfNPerf._data.highResMarks[EXPECTED_NOW_MARK_NAME] = 2000.00000;
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1500);
+            });
+
+            it('returns the time the page was hidden if it was hidden multiple times', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden', 'visible'];
+              SurfNPerf._data.highResMarks = {
+                visibility0: 500.34567,
+                visibility1: 1000.00000,
+                visibility2: 1600.98765,
+              };
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1101);
+            });
+          });
+
+          describe('and the page was initially prerendered', function() {
+            beforeEach(function() {
+              SURF_N_PERF.visibility = {
+                initialState: 'prerender'
+              };
+            });
+
+            it('returns the time the page was hidden if it made visible & not hidden again', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible'];
+              SurfNPerf._data.highResMarks = {
+                visibility0: 500.34567,
+              };
+
+              expect(SurfNPerf.getHiddenTime()).toBe(500);
+            });
+
+            it('returns the time the page was hidden if it was visible once & still is hidden', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden'];
+
+              SurfNPerf._data.highResMarks = {
+                visibility0: 1000.00000,
+                visibility1: 1500.34567,
+              };
+              SurfNPerf._data.highResMarks[EXPECTED_NOW_MARK_NAME] = 2000.00000;
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1500);
+            });
+
+            it('returns the time the page was hidden if it was hidden multiple times', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden', 'visible'];
+              SurfNPerf._data.highResMarks = {
+                visibility0: 500.34567,
+                visibility1: 1000.00000,
+                visibility2: 1600.98765,
+              }
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1101);
+            });
+          });
+        });
+
+        describe('when the browser supports neither High Resolution Time nor User Timing', function() {
+          beforeEach(function() {
+            SurfNPerf._navigationTiming = true;
+            SurfNPerf._highResTime = false;
+            SurfNPerf._userTiming = false;
+            SURF_N_PERF.highResMarks = {};
+            SurfNPerf._data.highResMarks = {};
+          });
+
+
+          it('returns the current time on page when the page was hidden the entire time', function() {
+            SURF_N_PERF.visibility = {
+              initialState: 'hidden',
+              stateUpdates: []
+            };
+
+            spyOn(SurfNPerf, 'performanceTiming').andReturn({
+              navigationStart: 1388595598765
+            });
+
+            SURF_N_PERF.marks = {};
+            SURF_N_PERF.marks[EXPECTED_NOW_MARK_NAME] = NOW_TS;
+
+            expect(SurfNPerf.getHiddenTime({
+              decimalPlaces: 3
+            })).toBe(1235);
+          });
+
+          describe('and the page was initially visible', function() {
+            beforeEach(function() {
+              SURF_N_PERF.visibility = {
+                initialState: 'visible'
+              };
+            });
+
+            it('returns the time the page was hidden if it was hidden once & still is hidden', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['hidden'];
+
+              SURF_N_PERF.marks = {
+                visibility0: 1388595599500
+              };
+
+              SurfNPerf._data.marks[EXPECTED_NOW_MARK_NAME] = NOW_TS;
+
+              expect(SurfNPerf.getHiddenTime()).toBe(500);
+            });
+
+            it('returns the time the page was hidden if it was hidden once & then made visible', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['hidden', 'visible'];
+              SURF_N_PERF.marks = {
+                visibility0: 1388595601000,
+                visibility1: 1388595601500,
+              }
+
+              expect(SurfNPerf.getHiddenTime()).toBe(500);
+            });
+
+            it('returns the time the page was hidden if it was hidden multiple times', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['hidden', 'visible', 'hidden', 'visible'];
+              SURF_N_PERF.marks = {
+                visibility0: 1388595601000,
+                visibility1: 1388595601500,
+                visibility2: 1388595602000,
+                visibility3: 1388595602600,
+              }
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1100);
+            });
+          });
+
+          describe('and the page was initially hidden', function() {
+            beforeEach(function() {
+              SURF_N_PERF.visibility = {
+                initialState: 'hidden'
+              };
+              spyOn(SurfNPerf, 'performanceTiming').andReturn({
+                navigationStart: 1388595598000
+              });
+            });
+
+            it('returns the time the page was hidden if it made visible & not hidden again', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible'];
+              SURF_N_PERF.marks = {
+                visibility0: 1388595598500,
+              }
+
+              expect(SurfNPerf.getHiddenTime()).toBe(500);
+            });
+
+            it('returns the time the page was hidden if it was visible once & still is hidden', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden'];
+              SURF_N_PERF.marks = {
+                visibility0: 1388595598500,
+                visibility1: 1388595599000
+              };
+
+              SurfNPerf._data.marks[EXPECTED_NOW_MARK_NAME] = NOW_TS;
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1500);
+            });
+
+            it('returns the time the page was hidden if it was hidden multiple times', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden', 'visible'];
+              SURF_N_PERF.marks = {
+                visibility0: 1388595598500,
+                visibility1: 1388595599000,
+                visibility2: 1388595599600,
+              }
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1100);
+            });
+          });
+
+          describe('and the page was initially prerendered', function() {
+            beforeEach(function() {
+              SURF_N_PERF.visibility = {
+                initialState: 'prerender'
+              };
+              spyOn(SurfNPerf, 'performanceTiming').andReturn({
+                navigationStart: 1388595598000
+              });
+            });
+
+            it('returns the time the page was hidden if it made visible & not hidden again', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible'];
+              SURF_N_PERF.marks = {
+                visibility0: 1388595598500,
+              }
+
+              expect(SurfNPerf.getHiddenTime()).toBe(500);
+            });
+
+            it('returns the time the page was hidden if it was visible once & still is hidden', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden'];
+              SURF_N_PERF.marks = {
+                visibility0: 1388595598500,
+                visibility1: 1388595599000
+              };
+
+              SurfNPerf._data.marks[EXPECTED_NOW_MARK_NAME] = NOW_TS;
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1500);
+            });
+
+            it('returns the time the page was hidden if it was hidden multiple times', function() {
+              SURF_N_PERF.visibility.stateUpdates = ['visible', 'hidden', 'visible'];
+              SURF_N_PERF.marks = {
+                visibility0: 1388595598500,
+                visibility1: 1388595599000,
+                visibility2: 1388595599600,
+              }
+
+              expect(SurfNPerf.getHiddenTime()).toBe(1100);
+            });
           });
         });
       });
