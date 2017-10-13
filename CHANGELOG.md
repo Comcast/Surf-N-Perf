@@ -1,3 +1,10 @@
+<a name="1.5.0"></a>
+### 1.5.0
+
+#### Features
+
+* Adds `isHidden` & `getHiddenTime` functions based on the [Page Visibility API](https://w3c.github.io/page-visibility/) ([a920ab0](https://github.com/Comcast/Surf-N-Perf/commit/a920ab08c62c481372d371674f2d6c59d2ab0d0d))
+
 <a name="1.4.0"></a>
 ### 1.4.0
 
