@@ -26,7 +26,7 @@
       window.attachEvent('onload', SURF_N_PERF.setPageLoad);
     }
   </script>
-  
+
   <!-- Bootstrap -->
   <link href="bootstrap.min.css" rel="stylesheet">
   <script src="http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"></script>
@@ -50,10 +50,12 @@
         surfnperf.eventEnd('demo');
         document.getElementById('eventDuration').innerHTML = surfnperf.eventDuration('demo');
         document.getElementById('eventDurationDec').innerHTML = surfnperf.eventDuration('demo',{decimalPlaces:10});
+
         document.getElementById('getOrigins').innerHTML = surfnperfRT.getOrigins();
         document.getElementById('getResourcesFromOrigin').innerHTML = surfnperfRT.getResourcesFromOrigin("http://rawgit.com");
-        document.getElementById('getResource').innerHTML = surfnperfRT.getResource("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
-        document.getElementById('duration').innerHTML = surfnperfRT.getResource("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
+        document.getElementById('getResource').innerHTML = JSON.stringify(surfnperfRT.getResource("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"));
+        document.getElementById('duration').innerHTML = surfnperfRT.duration("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js", "responseStart", "responseEnd");
+        document.getElementById('duration2').innerHTML = surfnperfRT.duration("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js", "fetchStart", "responseEnd");
         document.getElementById('start').innerHTML = surfnperfRT.start("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
         document.getElementById('end').innerHTML = surfnperfRT.end("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
         document.getElementById('getFullRequestLoadTime').innerHTML = surfnperfRT.getFullRequestLoadTime("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
@@ -169,8 +171,12 @@
           <td id="getResource"></td>
         </tr>
         <tr>
-          <td> surfnperfRT.duration("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
+          <td> surfnperfRT.duration("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js", "responseStart", "responseEnd") </td>
           <td id="duration"></td>
+        </tr>
+        <tr>
+          <td> surfnperfRT.duration("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js", "fetchStart", "responseEnd") </td>
+          <td id="duration2"></td>
         </tr>
         <tr>
           <td> surfnperfRT.start("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
