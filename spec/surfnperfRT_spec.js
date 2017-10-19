@@ -184,6 +184,12 @@ define('spec/surfnperfRT_spec', [
       });
     });
 
+    describe('#getLocation', function() {
+      it('returns window.locatiom', function() {
+        expect(SurfNPerfRT.getLocation()).toEqual(window.location);
+      });
+    });
+
     describe('#_name', function() {
       it('returns the same URL when passed an absolute URL', function() {
         var absoluteURL = 'http://comcast.github.io/Surf-N-Perf/';
@@ -329,15 +335,15 @@ define('spec/surfnperfRT_spec', [
         });
 
         it('getNetworkTime returns null', function() {
-          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(null);
+          expect(SurfNPerfRT.getNetworkTime(name)).toEqual(null);
         });
 
         it('getServerTime returns null', function() {
-          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(null);
+          expect(SurfNPerfRT.getServerTime(name)).toEqual(null);
         });
 
         it('getBlockingTime returns null', function() {
-          expect(SurfNPerfRT.getFullRequestLoadTime(name)).toEqual(null);
+          expect(SurfNPerfRT.getBlockingTime(name)).toEqual(null);
         });
       });
 
