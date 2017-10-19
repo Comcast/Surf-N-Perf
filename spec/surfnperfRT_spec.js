@@ -100,23 +100,45 @@ define('spec/surfnperfRT_spec', [
           spyOn(SurfNPerfRT._perf(), 'getEntriesByType').andReturn([{
             name: 'http://minsu.com/hi'
           }, {
+            name: 'http://minsu.com/bye'
+          }, {
             name: 'http://ros.com/hi'
           }, {
+            name: 'http://ros.com/bye'
+          }, {
             name: 'http://john.com/hi'
+          }, {
+            name: 'http://john.com/bye'
+          }, {
+            name: 'about:blank'
+          }, {
+            name: 'javascript:void(0)'
           }]);
         });
 
-        it('returns an array of all the origins when no option is given', function() {
+        it('returns an array of all the origins (with duplicates & non-http|https URLs filtered out) when no option is given', function() {
           expect(SurfNPerfRT.getOrigins()).toEqual(['http://minsu.com', 'http://ros.com', 'http://john.com']);
         });
 
-        it('returns an array of the origins included in the whitelist when option with whitelist is given', function() {
+        it('returns an array of the origin included in the whitelist when an option with a single whitelist is given', function() {
+          expect(SurfNPerfRT.getOrigins({
+            'whitelist': 'http://minsu.com'
+          })).toEqual(['http://minsu.com']);
+        });
+
+        it('returns an array of the origins included in the whitelist when an option with multiple whitelisted origins is given', function() {
           expect(SurfNPerfRT.getOrigins({
             'whitelist': ['http://minsu.com', 'http://ros.com']
           })).toEqual(['http://minsu.com', 'http://ros.com']);
         });
 
-        it('returns an array of the origins not included in the blacklist when option with blacklist is given', function() {
+        it('returns an array of the origin not included in the blacklist when option with a single blacklist is given', function() {
+          expect(SurfNPerfRT.getOrigins({
+            'blacklist': 'http://minsu.com'
+          })).toEqual(['http://ros.com', 'http://john.com']);
+        });
+
+        it('returns an array of the origins not included in the blacklist when an option with multiple blacklisted origins is given', function() {
           expect(SurfNPerfRT.getOrigins({
             'blacklist': ['http://minsu.com', 'http://ros.com']
           })).toEqual(['http://john.com']);
@@ -182,28 +204,42 @@ define('spec/surfnperfRT_spec', [
         beforeEach(function() {
           SurfNPerfRT._resourceTiming = false;
         });
+
         it('returns null', function() {
           expect(SurfNPerfRT.getResource(name)).toEqual(null);
         });
       });
 
       describe('when the browser supports the Resource Timing APIs', function() {
+        var firstResource,
+          secondResource;
+
         beforeEach(function() {
           SurfNPerfRT._resourceTiming = true;
+          firstResource = {
+            duration: 200,
+            entryType: 'resource',
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+          };
+          secondResource = {
+            duration: 100,
+            entryType: 'resource',
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+          };
         });
+
         it('returns the first resource in the array of resources returned by window.performance.getEntriesByName', function() {
-          var firstResource = {
-              duration: 200,
-              entryType: 'resource',
-              name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
-            },
-            secondResource = {
-              duration: 100,
-              entryType: 'resource',
-              name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
-            };
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource]);
           expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(firstResource);
+        });
+
+        it('returns the proper value when passed a relative URL for the resource', function() {
+          spyOn(SurfNPerfRT, 'getLocation').andReturn({
+            protocol: 'http:',
+            host: 'rawgit.com'
+          });
+          spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource]);
+          expect(SurfNPerfRT.getResource('/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(firstResource);
         });
       });
     });
@@ -264,6 +300,10 @@ define('spec/surfnperfRT_spec', [
             'decimalPlaces': 2
           })).toEqual(300.03);
         });
+        it('returns undefined if the resource is not found', function() {
+          spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([]);
+          expect(SurfNPerfRT.duration(name, 'requestStart', 'responseEnd')).toBeUndefined();
+        });
       });
     });
 
@@ -305,59 +345,90 @@ define('spec/surfnperfRT_spec', [
         beforeEach(function() {
           SurfNPerfRT._resourceTiming = true;
           name = 'https://comcast.github.io/Surf-N-Perf/assets/waves.jpg';
-          spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([{
-            connectEnd: 186.674,
-            connectStart: 186.673,
-            decodedBodySize: 70661,
-            domainLookupEnd: 186.672,
-            domainLookupStart: 186.671,
-            duration: 65.495,
-            encodedBodySize: 70661,
-            entryType: "resource",
-            fetchStart: 186.670,
-            initiatorType: "css",
-            name: "https://comcast.github.io/Surf-N-Perf/assets/waves.jpg",
-            nextHopProtocol: "h2",
-            redirectEnd: 0,
-            redirectStart: 0,
-            requestStart: 187.675,
-            responseEnd: 252.165,
-            responseStart: 244.545,
-            secureConnectionStart: 0,
-            startTime: 186.670,
-            transferSize: 70879,
-            workerStart: 0
-          }]);
         });
 
-        it('start returns the startTime attribute of the resource', function() {
-          expect(SurfNPerfRT.start(name, {
-            decimalPlaces: 3
-          })).toEqual(186.670);
+        describe('when the resource is found', function() {
+          beforeEach(function() {
+            spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([{
+              connectEnd: 186.674,
+              connectStart: 186.673,
+              decodedBodySize: 70661,
+              domainLookupEnd: 186.672,
+              domainLookupStart: 186.671,
+              duration: 65.495,
+              encodedBodySize: 70661,
+              entryType: "resource",
+              fetchStart: 186.670,
+              initiatorType: "css",
+              name: "https://comcast.github.io/Surf-N-Perf/assets/waves.jpg",
+              nextHopProtocol: "h2",
+              redirectEnd: 0,
+              redirectStart: 0,
+              requestStart: 187.675,
+              responseEnd: 252.165,
+              responseStart: 244.545,
+              secureConnectionStart: 0,
+              startTime: 186.670,
+              transferSize: 70879,
+              workerStart: 0
+            }]);
+          });
+
+          it('start returns the startTime attribute of the resource', function() {
+            expect(SurfNPerfRT.start(name, {
+              decimalPlaces: 3
+            })).toEqual(186.670);
+          });
+
+          it('end returns the responseEnd attribute of the resource', function() {
+            expect(SurfNPerfRT.end(name, {
+              decimalPlaces: 3
+            })).toEqual(252.165);
+          });
+
+          it('getFullRequestLoadTime returns the duration attribute of the resource', function() {
+            expect(SurfNPerfRT.getFullRequestLoadTime(name, {
+              decimalPlaces: 3
+            })).toEqual(65.495);
+          });
+
+          it('getNetworkTime returns the duration between fetchStart & connectEnd for the resource', function() {
+            expect(SurfNPerfRT.getNetworkTime(name, {
+              decimalPlaces: 3
+            })).toEqual(0.004);
+          });
+
+          it('getServerTime returns the duration between requestStart & responseEnd for the resource', function() {
+            expect(SurfNPerfRT.getServerTime(name, {
+              decimalPlaces: 3
+            })).toEqual(64.49);
+          });
         });
 
-        it('end returns the responseEnd attribute of the resource', function() {
-          expect(SurfNPerfRT.end(name, {
-            decimalPlaces: 3
-          })).toEqual(252.165);
-        });
+        describe('when the resource is not found', function() {
+          beforeEach(function() {
+            spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([]);
+          });
 
-        it('getFullRequestLoadTime returns the duration attribute of the resource', function() {
-          expect(SurfNPerfRT.getFullRequestLoadTime(name, {
-            decimalPlaces: 3
-          })).toEqual(65.495);
-        });
+          it('start returns undefined', function() {
+            expect(SurfNPerfRT.start(name)).toBeUndefined();
+          });
 
-        it('getNetworkTime returns the duration between fetchStart & connectEnd for the resource', function() {
-          expect(SurfNPerfRT.getNetworkTime(name, {
-            decimalPlaces: 3
-          })).toEqual(0.004);
-        });
+          it('end returns undefined', function() {
+            expect(SurfNPerfRT.end(name)).toBeUndefined();
+          });
 
-        it('getServerTime returns the duration between requestStart & responseEnd for the resource', function() {
-          expect(SurfNPerfRT.getServerTime(name, {
-            decimalPlaces: 3
-          })).toEqual(64.49);
+          it('getFullRequestLoadTime returns undefined', function() {
+            expect(SurfNPerfRT.getFullRequestLoadTime(name)).toBeUndefined();
+          });
+
+          it('getNetworkTime returns undefined', function() {
+            expect(SurfNPerfRT.getNetworkTime(name)).toBeUndefined();
+          });
+
+          it('getServerTime returns undefined', function() {
+            expect(SurfNPerfRT.getServerTime(name)).toBeUndefined();
+          });
         });
       });
     });
@@ -406,14 +477,85 @@ define('spec/surfnperfRT_spec', [
           })).toEqual(0.04);
         });
 
-        it('returns 0 if the request is a cross-origin request without a Timing-Allow-Origin HTTP response header', function() {
+        it('returns undefined if the resource is not found', function() {
+          spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([]);
+          expect(SurfNPerfRT.getBlockingTime(name)).toBeUndefined();
+        });
+
+        it('returns false if the request is a cross-origin request without a Timing-Allow-Origin HTTP response header', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([{
             connectEnd: 0,
             domainLookupStart: 0,
             fetchStart: 0,
             requestStart: 0
           }]);
-          expect(SurfNPerfRT.getBlockingTime(name)).toEqual(0);
+          expect(SurfNPerfRT.getBlockingTime(name)).toEqual(false);
+        });
+      });
+    });
+
+    describe('#getNetworkDuration', function() {
+      // Note: Logic based on http://www.stevesouders.com/blog/2014/11/25/serious-confusion-with-resource-timing/
+      var name;
+
+      describe('when the browser does not support the Resource Timing API', function() {
+        beforeEach(function() {
+          SurfNPerfRT._resourceTiming = false;
+          name = 'https://comcast.github.io/Surf-N-Perf/assets/waves.jpg';
+        });
+
+        it('returns null', function() {
+          expect(SurfNPerfRT.getNetworkDuration('http://comcast.github.io:3000', {})).toEqual(null);
+        });
+      });
+
+      describe('when the browser supports the Resource Timing APIs', function() {
+        beforeEach(function() {
+          SurfNPerfRT._resourceTiming = true;
+          name = 'https://comcast.github.io/Surf-N-Perf/assets/waves.jpg';
+        });
+
+        it('returns the duration of the request minus the blocking time', function() {
+          spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([{
+            connectEnd: 106.006,
+            connectStart: 105.005,
+            domainLookupEnd: 101.002,
+            domainLookupStart: 100.001,
+            duration: 50.000,
+            entryType: "resource",
+            fetchStart: 100.000,
+            name: "https://comcast.github.io/Surf-N-Perf/assets/waves.jpg",
+            requestStart: 111.111,
+            responseEnd: 150.000,
+            responseStart: 123.456,
+            startTime: 100.00,
+          }]);
+          expect(SurfNPerfRT.getNetworkDuration(name, {
+            decimalPlaces: 3
+          })).toEqual(40.891);
+        });
+
+        it('returns undefined if the resource is not found', function() {
+          spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([]);
+          expect(SurfNPerfRT.getNetworkDuration(name)).toBeUndefined();
+        });
+
+        it('returns false if the request is a cross-origin request without a Timing-Allow-Origin HTTP response header', function() {
+          spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([{
+            connectEnd: 0,
+            connectStart: 0,
+            domainLookupEnd: 0,
+            domainLookupStart: 0,
+            duration: 50.000,
+            entryType: "resource",
+            fetchStart: 100.000,
+            name: "https://comcast.github.io/Surf-N-Perf/assets/waves.jpg",
+            requestStart: 0,
+            responseEnd: 150.000,
+            responseStart: 0,
+            startTime: 100.00,
+          }]);
+          expect(SurfNPerfRT.getNetworkDuration(name)).toEqual(false);
         });
       });
     });

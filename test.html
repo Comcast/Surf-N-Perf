@@ -62,19 +62,18 @@
         document.getElementById('getResource').innerHTML = JSON.stringify(surfnperfRT.getResource("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"));
         document.getElementById('duration').innerHTML = surfnperfRT.duration("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js", "responseStart", "responseEnd");
         document.getElementById('duration2').innerHTML = surfnperfRT.duration("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js", "fetchStart", "responseEnd");
-        document.getElementById('start').innerHTML = surfnperfRT.start("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
-        document.getElementById('end').innerHTML = surfnperfRT.end("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
-        document.getElementById('getFullRequestLoadTime').innerHTML = surfnperfRT.getFullRequestLoadTime("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
-        document.getElementById('getNetworkTime').innerHTML = surfnperfRT.getNetworkTime("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
-        document.getElementById('getServerTime').innerHTML = surfnperfRT.getServerTime("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
-        document.getElementById('getBlockingTime').innerHTML = surfnperfRT.getBlockingTime("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
+        document.getElementById('start').innerHTML = surfnperfRT.start("/lib/resource-timing.js");
+        document.getElementById('end').innerHTML = surfnperfRT.end("/lib/resource-timing.js");
+        document.getElementById('getFullRequestLoadTime').innerHTML = surfnperfRT.getFullRequestLoadTime("/lib/resource-timing.js");
+        document.getElementById('getNetworkTime').innerHTML = surfnperfRT.getNetworkTime("/lib/resource-timing.js");
+        document.getElementById('getServerTime').innerHTML = surfnperfRT.getServerTime("/lib/resource-timing.js");
+        document.getElementById('getBlockingTime').innerHTML = surfnperfRT.getBlockingTime("/lib/resource-timing.js");
+        document.getElementById('getNetworkDuration').innerHTML = surfnperfRT.getNetworkDuration("/lib/resource-timing.js");
       }, 0);
 });
 </script>
 </head>
 <body>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="scripts/bootstrap.min.js"></script>
   <h1>Surf-N-Perf</h1>
 
   <div class="panel panel-default">
@@ -173,40 +172,44 @@
           <td id="getResourcesFromOrigin"></td>
         </tr>
         <tr>
-          <td> surfnperfRT.getResource("hhttp://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js") </td>
+          <td> surfnperfRT.getResource("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js") </td>
           <td id="getResource"></td>
         </tr>
         <tr>
-          <td> surfnperfRT.duration("hhttp://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js", "responseStart", "responseEnd") </td>
+          <td> surfnperfRT.duration("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js", "responseStart", "responseEnd") </td>
           <td id="duration"></td>
         </tr>
         <tr>
-          <td> surfnperfRT.duration("hhttp://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js", "fetchStart", "responseEnd") </td>
+          <td> surfnperfRT.duration("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js", "fetchStart", "responseEnd") </td>
           <td id="duration2"></td>
         </tr>
         <tr>
-          <td> surfnperfRT.start("hhttp://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js") </td>
+          <td> surfnperfRT.start("/lib/resource-timing.js") </td>
           <td id="start"></td>
         </tr>
         <tr>
-          <td> surfnperfRT.end("hhttp://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js") </td>
+          <td> surfnperfRT.end("/lib/resource-timing.js") </td>
           <td id="end"></td>
         </tr>
         <tr>
-          <td> surfnperfRT.getFullRequestLoadTime("hhttp://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js") </td>
+          <td> surfnperfRT.getFullRequestLoadTime("/lib/resource-timing.js") </td>
           <td id="getFullRequestLoadTime"></td>
         </tr>
         <tr>
-          <td> surfnperfRT.getNetworkTime("hhttp://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js") </td>
+          <td> surfnperfRT.getNetworkTime("/lib/resource-timing.js") </td>
           <td id="getNetworkTime"></td>
         </tr>
         <tr>
-          <td> surfnperfRT.getServerTime("hhttp://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js") </td>
+          <td> surfnperfRT.getServerTime("/lib/resource-timing.js") </td>
           <td id="getServerTime"></td>
         </tr>
         <tr>
-          <td> surfnperfRT.getBlockingTime("hhttp://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js") </td>
+          <td> surfnperfRT.getBlockingTime("/lib/resource-timing.js") </td>
           <td id="getBlockingTime"></td>
+        </tr>
+        <tr>
+          <td> surfnperfRT.getNetworkDuration("/lib/resource-timing.js") </td>
+          <td id="getNetworkDuration"></td>
         </tr>
       </tbody>
     </table>
