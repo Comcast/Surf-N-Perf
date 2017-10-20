@@ -161,6 +161,55 @@ define('spec/surfnperfRT_spec', [
         beforeEach(function() {
           SurfNPerfRT._resourceTiming = true;
           spyOn(SurfNPerfRT._perf(), 'getEntriesByType').andReturn([{
+            name: 'http://minsu.com/hi',
+            startTime: 50
+          }, {
+            name: 'http://ros.com/hi',
+            startTime: 100
+          }, {
+            name: 'http://john.com/hi',
+            startTime: 150
+          }, {
+            name: 'http://john.com/bye',
+            startTime: 200
+          }]);
+        });
+
+        it('returns an empty array when none of the resources are from the specified origin', function() {
+          expect(SurfNPerfRT.getResourcesFromOrigin('http://comcast.github.io')).toEqual([]);
+        });
+
+        it('returns an array of the resources from the specified origin if they exist', function() {
+          expect(SurfNPerfRT.getResourcesFromOrigin('http://john.com')).toEqual([{
+            name: 'http://john.com/hi',
+            startTime: 150
+          }, {
+            name: 'http://john.com/bye',
+            startTime: 200
+          }]);
+        });
+
+        it('returns an array of the specified resource property from the specified origin if they exist', function() {
+          expect(SurfNPerfRT.getResourcesFromOrigin('http://john.com', 'startTime')).toEqual([150, 200]);
+        });
+      });
+    });
+
+    describe('#getResourceNamesFromOrigin', function() {
+      describe('when the browser does not support the Resource Timing API', function() {
+        beforeEach(function() {
+          SurfNPerfRT._resourceTiming = false;
+        });
+
+        it('returns null', function() {
+          expect(SurfNPerfRT.getResourceNamesFromOrigin('http://comcast.github.io:3000')).toEqual(null);
+        });
+      });
+
+      describe('when the browser supports the Resource Timing APIs', function() {
+        beforeEach(function() {
+          SurfNPerfRT._resourceTiming = true;
+          spyOn(SurfNPerfRT._perf(), 'getEntriesByType').andReturn([{
             name: 'http://minsu.com/hi'
           }, {
             name: 'http://ros.com/hi'
@@ -172,14 +221,10 @@ define('spec/surfnperfRT_spec', [
         });
 
         it('returns an empty array when none of the resources are from the specified origin', function() {
-          expect(SurfNPerfRT.getResourcesFromOrigin('http://comcast.github.io')).toEqual([]);
+          expect(SurfNPerfRT.getResourceNamesFromOrigin('http://comcast.github.io')).toEqual([]);
         });
         it('returns an array of the resources from the specified origin if they exist', function() {
-          expect(SurfNPerfRT.getResourcesFromOrigin('http://john.com')).toEqual([{
-            name: 'http://john.com/hi'
-          }, {
-            name: 'http://john.com/bye'
-          }]);
+          expect(SurfNPerfRT.getResourceNamesFromOrigin('http://john.com')).toEqual(['http://john.com/hi', 'http://john.com/bye']);
         });
       });
     });
@@ -232,11 +277,25 @@ define('spec/surfnperfRT_spec', [
             entryType: 'resource',
             name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
           };
+          thirdResource = {
+            duration: 150,
+            entryType: 'resource',
+            name: 'https://comcast.github.io/Surf-N-Perf/assets/waves.jpg'
+          };
         });
 
         it('returns all matching resources returned by window.performance.getEntriesByName', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource]);
           expect(SurfNPerfRT.getResources('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual([firstResource, secondResource]);
+        });
+
+        it('returns all resources returned by window.performance.getEntriesByType("resource") if no name is passed in', function() {
+          spyOn(SurfNPerfRT._perf(), 'getEntriesByType').andCallFake(function(type) {
+            if(type === 'resource') {
+              return [firstResource, secondResource, thirdResource];
+            }
+          });
+          expect(SurfNPerfRT.getResources()).toEqual([firstResource, secondResource, thirdResource]);
         });
       });
     });
@@ -268,6 +327,11 @@ define('spec/surfnperfRT_spec', [
             entryType: 'resource',
             name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
           };
+          thirdResource = {
+            duration: 150,
+            entryType: 'resource',
+            name: 'https://comcast.github.io/Surf-N-Perf/assets/waves.jpg'
+          };
         });
 
         it('returns length of the array of resources returned by window.performance.getEntriesByName', function() {
@@ -282,6 +346,15 @@ define('spec/surfnperfRT_spec', [
           });
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource]);
           expect(SurfNPerfRT.getResourceCount('/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(2);
+        });
+
+        it('returns length of the array of resources returned by window.performance.getEntriesByType("resource") if no name is specified', function() {
+          spyOn(SurfNPerfRT._perf(), 'getEntriesByType').andCallFake(function(type) {
+            if(type === 'resource') {
+              return [firstResource, secondResource, thirdResource];
+            }
+          });
+          expect(SurfNPerfRT.getResourceCount()).toEqual(3);
         });
       });
     });
