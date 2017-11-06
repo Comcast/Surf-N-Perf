@@ -118,9 +118,9 @@
             
                 <li data-name="SurfNPerfRT.SNPRTProto.duration"><a href="SurfNPerfRT.html#.SNPRTProto.duration">SNPRTProto.duration</a></li>
             
-                <li data-name="SurfNPerfRT.SNPRTProto.end"><a href="SurfNPerfRT.html#.SNPRTProto.end">SNPRTProto.end</a></li>
-            
                 <li data-name="SurfNPerfRT.SNPRTProto.getBlockingTime"><a href="SurfNPerfRT.html#.SNPRTProto.getBlockingTime">SNPRTProto.getBlockingTime</a></li>
+            
+                <li data-name="SurfNPerfRT.SNPRTProto.getEnd"><a href="SurfNPerfRT.html#.SNPRTProto.getEnd">SNPRTProto.getEnd</a></li>
             
                 <li data-name="SurfNPerfRT.SNPRTProto.getFullRequestLoadTime"><a href="SurfNPerfRT.html#.SNPRTProto.getFullRequestLoadTime">SNPRTProto.getFullRequestLoadTime</a></li>
             
@@ -144,7 +144,7 @@
             
                 <li data-name="SurfNPerfRT.SNPRTProto.getServerTime"><a href="SurfNPerfRT.html#.SNPRTProto.getServerTime">SNPRTProto.getServerTime</a></li>
             
-                <li data-name="SurfNPerfRT.SNPRTProto.start"><a href="SurfNPerfRT.html#.SNPRTProto.start">SNPRTProto.start</a></li>
+                <li data-name="SurfNPerfRT.SNPRTProto.getStart"><a href="SurfNPerfRT.html#.SNPRTProto.getStart">SNPRTProto.getStart</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -502,186 +502,6 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".SNPRTProto.end">
-            
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.end<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line327">line 327</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Shorthand for <code>window.performance.getEntriesByName(name, &quot;resource&quot;)[0].endTime</code></p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>resource name (i.e. full URL)</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        Number
-                        
-                    
-            </td>
-            <td class="description last">time immediately after the user agent receives the last byte of the response or immediately before the transport connection is closed, whichever comes first. Returns undefined if the resource is not found, or null if Resource Timing is not supported</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id=".SNPRTProto.getBlockingTime">
             
             <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getBlockingTime<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
@@ -848,6 +668,186 @@
                     
             </td>
             <td class="description last">the time the resource was blocked. Returns false for a CORS request without a Timing-Allow-Origin header, undefined if the resource is not found, or null if Resource Timing is not supported</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".SNPRTProto.getEnd">
+            
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getEnd<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line327">line 327</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Shorthand for <code>window.performance.getEntriesByName(name, &quot;resource&quot;)[0].endTime</code></p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>resource name (i.e. full URL)</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Number
+                        
+                    
+            </td>
+            <td class="description last">time immediately after the user agent receives the last byte of the response or immediately before the transport connection is closed, whichever comes first. Returns undefined if the resource is not found, or null if Resource Timing is not supported</td>
         </tr>
     
     </tbody>
@@ -2691,9 +2691,9 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".SNPRTProto.start">
+        <h4 class="name" id=".SNPRTProto.getStart">
             
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.start<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getStart<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
         </h4>
     
         
@@ -2886,7 +2886,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Oct 20 2017 15:56:48 GMT+0000 (UTC)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 06 2017 21:57:53 GMT+0000 (UTC)
         </footer>
     </div>
 </div>
