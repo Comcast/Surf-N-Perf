@@ -596,11 +596,11 @@ define('spec/surfnperfRT_spec', [
         });
 
         it('start returns null', function() {
-          expect(SurfNPerfRT.start(name)).toEqual(null);
+          expect(SurfNPerfRT.getStart(name)).toEqual(null);
         });
 
         it('end returns null', function() {
-          expect(SurfNPerfRT.end(name)).toEqual(null);
+          expect(SurfNPerfRT.getEnd(name)).toEqual(null);
         });
 
         it('getFullRequestLoadTime returns null', function() {
@@ -656,13 +656,13 @@ define('spec/surfnperfRT_spec', [
           });
 
           it('start returns the startTime attribute of the resource', function() {
-            expect(SurfNPerfRT.start(name, {
+            expect(SurfNPerfRT.getStart(name, {
               decimalPlaces: 3
             })).toEqual(186.670);
           });
 
           it('end returns the responseEnd attribute of the resource', function() {
-            expect(SurfNPerfRT.end(name, {
+            expect(SurfNPerfRT.getEnd(name, {
               decimalPlaces: 3
             })).toEqual(252.165);
           });
@@ -696,14 +696,14 @@ define('spec/surfnperfRT_spec', [
           });
 
           it('start returns the startTime attribute of the resource', function() {
-            expect(SurfNPerfRT.start(name, {
+            expect(SurfNPerfRT.getStart(name, {
               decimalPlaces: 3,
               index: 1
             })).toEqual(186.670);
           });
 
           it('end returns the responseEnd attribute of the resource', function() {
-            expect(SurfNPerfRT.end(name, {
+            expect(SurfNPerfRT.getEnd(name, {
               decimalPlaces: 3,
               index: 1
             })).toEqual(252.165);
@@ -741,14 +741,14 @@ define('spec/surfnperfRT_spec', [
           });
 
           it('start returns the startTime attribute of the resource', function() {
-            expect(SurfNPerfRT.start(name, {
+            expect(SurfNPerfRT.getStart(name, {
               decimalPlaces: 3,
               index: 'last'
             })).toEqual(186.670);
           });
 
           it('end returns the responseEnd attribute of the resource', function() {
-            expect(SurfNPerfRT.end(name, {
+            expect(SurfNPerfRT.getEnd(name, {
               decimalPlaces: 3,
               index: 'last'
             })).toEqual(252.165);
@@ -782,11 +782,11 @@ define('spec/surfnperfRT_spec', [
           });
 
           it('start returns undefined', function() {
-            expect(SurfNPerfRT.start(name)).toBeUndefined();
+            expect(SurfNPerfRT.getStart(name)).toBeUndefined();
           });
 
           it('end returns undefined', function() {
-            expect(SurfNPerfRT.end(name)).toBeUndefined();
+            expect(SurfNPerfRT.getEnd(name)).toBeUndefined();
           });
 
           it('getFullRequestLoadTime returns undefined', function() {
