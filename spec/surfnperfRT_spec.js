@@ -5,7 +5,40 @@ define('spec/surfnperfRT_spec', [
 ) {
   describe('SurfNPerfRT', function() {
     var NOW_TS = 1388595600000, // Wed Jan 01 2014 12:00:00 GMT-0500 (EST)
-      NOW_HIGH_RES = 3.1415926;
+      NOW_HIGH_RES = 3.1415926,
+      MOCK_PERFORMANCE_RESOURCE_TIMING_ENTRY = {
+        connectEnd: 110.905,
+        connectStart: 110.905,
+        decodedBodySize: 70661,
+        domainLookupEnd: 110.905,
+        domainLookupStart: 110.905,
+        duration: 28.75,
+        encodedBodySize: 70661,
+        entryType: 'resource',
+        fetchStart: 110.905,
+        initiatorType: 'css',
+        name: 'http://comcast.github.io/Surf-N-Perf/assets/waves.jpg',
+        nextHopProtocol: 'http/1.1',
+        redirectEnd: 0,
+        redirectStart: 0,
+        requestStart: 112.39500000000001,
+        responseEnd: 139.655,
+        responseStart: 125.73500000000001,
+        secureConnectionStart: 0,
+        startTime: 110.905,
+        transferSize: 71247,
+        workerStart: 0
+      },
+      getTestResource = function() {
+        var resource = MOCK_PERFORMANCE_RESOURCE_TIMING_ENTRY;
+        if(window.performance && window.performance.getEntriesByType) {
+          var resources = window.performance.getEntriesByType('resource');
+          if(resources.length > 0) {
+            return resources[0];
+          }
+        }
+        return resource;
+      };
 
     beforeEach(function() {
       var name = 'a';
@@ -443,6 +476,11 @@ define('spec/surfnperfRT_spec', [
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource, thirdResource]);
           expect(SurfNPerfRT.getResource('/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(firstResource);
         });
+
+        it('returns the same PerformanceResourceTiming PerformanceEntry resource when passed that as the first argument instead of a string', function() {
+          var testResource = getTestResource();
+          expect(SurfNPerfRT.getResource(testResource)).toEqual(testResource);
+        });
       });
     });
 
@@ -582,6 +620,12 @@ define('spec/surfnperfRT_spec', [
         it('returns undefined if the resource is not found', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([]);
           expect(SurfNPerfRT.duration(name, 'requestStart', 'responseEnd')).toBeUndefined();
+        });
+
+        it('returns the proper value when a PerformanceResourceTiming PerformanceEntry resource is passed as the first argument', function() {
+          var testResource = getTestResource();
+          var expectedDuration = Math.round(testResource.responseEnd - testResource.startTime);
+          expect(SurfNPerfRT.duration(testResource, 'startTime', 'responseEnd')).toEqual(expectedDuration);
         });
       });
     });
@@ -776,6 +820,30 @@ define('spec/surfnperfRT_spec', [
           });
         });
 
+        describe('when a PerformanceResourceTiming PerformanceEntry resource is passed as the first argument', function() {
+          var testResource = getTestResource();
+
+          it('start returns the startTime attribute of the resource', function() {
+            expect(SurfNPerfRT.getStart(testResource)).toEqual(Math.round(testResource.startTime));
+          });
+
+          it('end returns the responseEnd attribute of the resource', function() {
+            expect(SurfNPerfRT.getEnd(testResource)).toEqual(Math.round(testResource.responseEnd));
+          });
+
+          it('getFullRequestLoadTime returns the duration attribute of the resource', function() {
+            expect(SurfNPerfRT.getFullRequestLoadTime(testResource)).toEqual(Math.round(testResource.duration));
+          });
+
+          it('getNetworkTime returns the duration between fetchStart & connectEnd for the resource', function() {
+            expect(SurfNPerfRT.getNetworkTime(testResource)).toEqual(Math.round(testResource.connectEnd - testResource.fetchStart));
+          });
+
+          it('getServerTime returns the duration between requestStart & responseEnd for the resource', function() {
+            expect(SurfNPerfRT.getServerTime(testResource)).toEqual(Math.round(testResource.responseEnd - testResource.requestStart));
+          });
+        });
+
         describe('when the resource is not found', function() {
           beforeEach(function() {
             spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([]);
@@ -875,6 +943,13 @@ define('spec/surfnperfRT_spec', [
           }]);
           expect(SurfNPerfRT.getBlockingTime(name)).toEqual(false);
         });
+
+        it('returns the proper value when a PerformanceResourceTiming PerformanceEntry resource is passed as the first argument', function() {
+          var testResource = getTestResource();
+          var getResourceSpy = spyOn(SurfNPerfRT, 'getResource');
+          SurfNPerfRT.getBlockingTime(testResource);
+          expect(getResourceSpy.mostRecentCall.args[0]).toEqual(testResource);
+        });
       });
     });
 
@@ -919,7 +994,6 @@ define('spec/surfnperfRT_spec', [
           })).toEqual(40.891);
         });
 
-
         it('properly handles the option index: "last"', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([{}, {}, {
             connectEnd: 106.006,
@@ -962,6 +1036,13 @@ define('spec/surfnperfRT_spec', [
             startTime: 100.00,
           }]);
           expect(SurfNPerfRT.getNetworkDuration(name)).toEqual(false);
+        });
+
+        it('returns the proper value when a PerformanceResourceTiming PerformanceEntry resource is passed as the first argument', function() {
+          var testResource = getTestResource();
+          var getResourceSpy = spyOn(SurfNPerfRT, 'getResource');
+          SurfNPerfRT.getNetworkDuration(testResource);
+          expect(getResourceSpy.mostRecentCall.args[0]).toEqual(testResource);
         });
       });
     });
