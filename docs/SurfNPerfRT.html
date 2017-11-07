@@ -268,12 +268,12 @@
     <div class="nameContainer">
         <h4 class="name" id=".SNPRTProto.duration">
             
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.duration<span class="signature">(name, startMark, endMark, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.duration<span class="signature">(name|resource, startMark, endMark, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line282">line 282</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line286">line 286</a>
         </div>
         
     </div>
@@ -315,13 +315,16 @@
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>name|resource</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">PerformanceResourceTiming</span>
 
 
             
@@ -336,7 +339,7 @@
                         
                     
                 
-                <p>resource name (i.e. full URL)</p></td>
+                <p>resource name (i.e. full URL) or an actual PerformanceResourceTiming PerformanceEntry resource object</p></td>
         </tr>
 	
 	
@@ -422,7 +425,7 @@
                         
                     
                 
-                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
+                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. Index is ignored if the first argument is a PerformanceResourceTiming resource. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
         </tr>
 	
 	
@@ -504,12 +507,12 @@
     <div class="nameContainer">
         <h4 class="name" id=".SNPRTProto.getBlockingTime">
             
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getBlockingTime<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getBlockingTime<span class="signature">(name|resource, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line405">line 405</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line409">line 409</a>
         </div>
         
     </div>
@@ -551,13 +554,16 @@
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>name|resource</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">PerformanceResourceTiming</span>
 
 
             
@@ -572,7 +578,7 @@
                         
                     
                 
-                <p>resource name (i.e. full URL)</p></td>
+                <p>resource name (i.e. full URL) or an actual PerformanceResourceTiming PerformanceEntry resource object</p></td>
         </tr>
 	
 	
@@ -602,7 +608,7 @@
                         
                     
                 
-                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
+                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. Index is ignored if the first argument is a PerformanceResourceTiming resource. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
         </tr>
 	
 	
@@ -684,12 +690,12 @@
     <div class="nameContainer">
         <h4 class="name" id=".SNPRTProto.getEnd">
             
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getEnd<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getEnd<span class="signature">(name|resource, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line327">line 327</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line331">line 331</a>
         </div>
         
     </div>
@@ -731,13 +737,16 @@
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>name|resource</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">PerformanceResourceTiming</span>
 
 
             
@@ -752,7 +761,7 @@
                         
                     
                 
-                <p>resource name (i.e. full URL)</p></td>
+                <p>resource name (i.e. full URL) or an actual PerformanceResourceTiming PerformanceEntry resource object</p></td>
         </tr>
 	
 	
@@ -782,7 +791,7 @@
                         
                     
                 
-                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
+                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. Index is ignored if the first argument is a PerformanceResourceTiming resource. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
         </tr>
 	
 	
@@ -864,12 +873,12 @@
     <div class="nameContainer">
         <h4 class="name" id=".SNPRTProto.getFullRequestLoadTime">
             
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getFullRequestLoadTime<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getFullRequestLoadTime<span class="signature">(name|resource, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line349">line 349</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line353">line 353</a>
         </div>
         
     </div>
@@ -911,13 +920,16 @@
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>name|resource</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">PerformanceResourceTiming</span>
 
 
             
@@ -932,7 +944,7 @@
                         
                     
                 
-                <p>resource name (i.e. full URL)</p></td>
+                <p>resource name (i.e. full URL) or an actual PerformanceResourceTiming PerformanceEntry resource object</p></td>
         </tr>
 	
 	
@@ -962,7 +974,7 @@
                         
                     
                 
-                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
+                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. Index is ignored if the first argument is a PerformanceResourceTiming resource. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
         </tr>
 	
 	
@@ -1049,7 +1061,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line264">line 264</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line268">line 268</a>
         </div>
         
     </div>
@@ -1189,12 +1201,12 @@
     <div class="nameContainer">
         <h4 class="name" id=".SNPRTProto.getNetworkDuration">
             
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getNetworkDuration<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getNetworkDuration<span class="signature">(name|resource, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line433">line 433</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line437">line 437</a>
         </div>
         
     </div>
@@ -1236,13 +1248,16 @@
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>name|resource</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">PerformanceResourceTiming</span>
 
 
             
@@ -1257,7 +1272,7 @@
                         
                     
                 
-                <p>resource name (i.e. full URL)</p></td>
+                <p>resource name (i.e. full URL) or an actual PerformanceResourceTiming PerformanceEntry resource object</p></td>
         </tr>
 	
 	
@@ -1287,7 +1302,7 @@
                         
                     
                 
-                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
+                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. Index is ignored if the first argument is a PerformanceResourceTiming resource. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
         </tr>
 	
 	
@@ -1369,12 +1384,12 @@
     <div class="nameContainer">
         <h4 class="name" id=".SNPRTProto.getNetworkTime">
             
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getNetworkTime<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getNetworkTime<span class="signature">(name|resource, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line371">line 371</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line375">line 375</a>
         </div>
         
     </div>
@@ -1416,13 +1431,16 @@
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>name|resource</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">PerformanceResourceTiming</span>
 
 
             
@@ -1437,7 +1455,7 @@
                         
                     
                 
-                <p>resource name (i.e. full URL)</p></td>
+                <p>resource name (i.e. full URL) or an actual PerformanceResourceTiming PerformanceEntry resource object</p></td>
         </tr>
 	
 	
@@ -1467,7 +1485,7 @@
                         
                     
                 
-                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
+                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. Index is ignored if the first argument is a PerformanceResourceTiming resource. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
         </tr>
 	
 	
@@ -1701,7 +1719,7 @@
     <div class="nameContainer">
         <h4 class="name" id=".SNPRTProto.getResource">
             
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getResource<span class="signature">(name, <span class="optional">index|options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{PerformanceResourceTiming}</span>
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getResource<span class="signature">(name|resource, <span class="optional">index|options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{PerformanceResourceTiming}</span>
         </h4>
     
         
@@ -1748,13 +1766,16 @@
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>name|resource</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">PerformanceResourceTiming</span>
 
 
             
@@ -1769,7 +1790,7 @@
                         
                     
                 
-                <p>resource name (i.e. full URL)</p></td>
+                <p>resource name (i.e. full URL) or an actual PerformanceResourceTiming PerformanceEntry resource object</p></td>
         </tr>
 	
 	
@@ -1802,7 +1823,7 @@
                         
                     
                 
-                <p>Returns the resource from the specified index. Index should be a 0-based integer or the special keyword 'last', which will return the last item. If passing an object instead of a string, the object property name is 'index'</p></td>
+                <p>Returns the resource from the specified index. Index should be a 0-based integer or the special keyword 'last', which will return the last item. If passing an object instead of a string, the object property name is 'index'. Ignored if the first argument is a PerformanceResourceTiming resource</p></td>
         </tr>
 	
 	
@@ -2513,12 +2534,12 @@
     <div class="nameContainer">
         <h4 class="name" id=".SNPRTProto.getServerTime">
             
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getServerTime<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getServerTime<span class="signature">(name|resource, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line388">line 388</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line392">line 392</a>
         </div>
         
     </div>
@@ -2560,13 +2581,16 @@
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>name|resource</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">PerformanceResourceTiming</span>
 
 
             
@@ -2581,7 +2605,7 @@
                         
                     
                 
-                <p>resource name (i.e. full URL)</p></td>
+                <p>resource name (i.e. full URL) or an actual PerformanceResourceTiming PerformanceEntry resource object</p></td>
         </tr>
 	
 	
@@ -2611,7 +2635,7 @@
                         
                     
                 
-                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
+                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. Index is ignored if the first argument is a PerformanceResourceTiming resource. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
         </tr>
 	
 	
@@ -2693,12 +2717,12 @@
     <div class="nameContainer">
         <h4 class="name" id=".SNPRTProto.getStart">
             
-            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getStart<span class="signature">(name, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
+            <span class="type-signature static">static</span>SurfNPerfRT.SNPRTProto.getStart<span class="signature">(name|resource, <span class="optional">options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line306">line 306</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line310">line 310</a>
         </div>
         
     </div>
@@ -2740,13 +2764,16 @@
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>name|resource</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">String</span>
+|
+
+<span class="param-type">PerformanceResourceTiming</span>
 
 
             
@@ -2761,7 +2788,7 @@
                         
                     
                 
-                <p>resource name (i.e. full URL)</p></td>
+                <p>resource name (i.e. full URL) or an actual PerformanceResourceTiming PerformanceEntry resource object</p></td>
         </tr>
 	
 	
@@ -2791,7 +2818,7 @@
                         
                     
                 
-                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
+                <p>Can contain an 'index' property and/or a 'decimalPlaces' property. 'index' will allow you to calculate the duration for a resource other than the first instance of that name. 'index' should be a 0-based integer or the special keyword 'last', which will return the last item. Index is ignored if the first argument is a PerformanceResourceTiming resource. 'decimalPlaces' will round the result to that number of decimal places (otherwise, an integer is returned)</p></td>
         </tr>
 	
 	
@@ -2886,7 +2913,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 06 2017 21:57:53 GMT+0000 (UTC)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Nov 07 2017 04:07:27 GMT+0000 (UTC)
         </footer>
     </div>
 </div>
