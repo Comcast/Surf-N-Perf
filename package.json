@@ -16,7 +16,7 @@
     "grunt-jsbeautifier": "^0.2.7",
     "grunt-jsdoc": "^2.2.0",
     "grunt-karma": "^2.0.0",
-    "install": "^0.8.4",
+    "install": "^0.12.1",
     "jaguarjs-jsdoc": "1.1.0",
     "karma": "^1.4.1",
     "karma-chrome-launcher": "^2.0.0",
