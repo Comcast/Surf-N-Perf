@@ -9,6 +9,7 @@ desc "Copy asset files to vendor directory in preparation for building"
 task :setup do
   file_map = {
     "../surfnperf.js" => "vendor/assets/javascripts/",
+    "../resource-timing.js" => "vendor/assets/javascripts/",
     "../README.md" => "./"
   }
 
