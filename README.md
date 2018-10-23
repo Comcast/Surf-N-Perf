@@ -122,9 +122,15 @@ That provides support for the following:
 
 **2.** Then just drop the [surfnperf.min.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.min.js) in your codebase and reference that JavaScript file in your HTML document. If you're using [RequireJS](http://requirejs.org/) or [Browserify](http://browserify.org/), it registers itself as 'surfnperf'.
 
+**3.** (Optional) If you would like access to the [Resource Timing](https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API/Using_the_Resource_Timing_API) helper functions, include [resource-timing.js](https://github.com/Comcast/Surf-N-Perf/blob/master/resource-timing.js) in your codebase and reference that JavaScript file in your HTML document. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'surfnperf/resource-timing', otherwise it is available on `window` as `window.surfnperfRT`.
+
 ### Storing & Retrieving Performance Data
 
 Details in the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API) page in the wiki
+
+### Resource Timing Helper Functions
+
+Documented in the [JSDoc-generated Documentation](http://comcast.github.io/Surf-N-Perf/docs/SurfNPerfRT.html)
 
 ## Ruby Project Integration
 
