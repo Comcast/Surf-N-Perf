@@ -1,4 +1,5 @@
 /*!
+ * @license
  * Copyright 2015-2019 Comcast Cable Communications Management, LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -143,7 +144,7 @@
   SNPProto._performanceTimingL2 = function(eventKey) {
     var delta = this.getTimingMark('loadEventEnd', 'DOM') - this.getTimingMark(eventKey, 'DOM'),
       value = window.SURF_N_PERF.highResMarks.loadEventEnd - delta;
-    return(value < 0) ? 0 : this._round(value, {
+    return (value < 0) ? 0 : this._round(value, {
       decimalPlaces: 10
     });
   };
@@ -269,7 +270,7 @@
   SNPProto._setMeasure = function(startMark, endMark) {
     try {
       this.userTiming().measure(this._measureName(startMark, endMark), startMark, endMark);
-    } catch(e) {
+    } catch (e) {
       if(window.console && window.console.error) {
         if(e && e.message) {
           console.error("Surf-N-Perf Exception:", e.message);
