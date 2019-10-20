@@ -426,8 +426,9 @@
    * @memberOf SurfNPerf
    */
   SNPProto.getFirstPaint = function(options) {
-    if(this.chromeLoadTimes()) {
-      return this._roundedDuration(this.getTimingMark('navigationStart', 'DOM'), this.chromeLoadTimes().firstPaintTime * 1000, options);
+    if (this._supportsPaintAPI()) {
+      var firstPaint = window.performance.getEntriesByName('first-paint')[0] || {};
+      return this._roundedDuration(this.getTimingMark('navigationStart', 'DOM'), firstPaint.startTime, options);
     } else if(this.msFirstPaint()) {
       return this._roundedDuration(this.getTimingMark('navigationStart', 'DOM'), this.msFirstPaint(), options);
     } else {
@@ -453,12 +454,8 @@
     }
   };
 
-  SNPProto.chromeLoadTimes = function() {
-    if(window.chrome && window.chrome.loadTimes) {
-      return window.chrome.loadTimes();
-    } else {
-      return undefined;
-    }
+  SNPProto._supportsPaintAPI = function() {
+    return window.performance && window.performance.getEntriesByName && 'PerformancePaintTiming' in window;
   };
 
   SNPProto.msFirstPaint = function() {
