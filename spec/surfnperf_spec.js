@@ -1376,16 +1376,6 @@ define('spec/surfnperf_spec', [
     });
 
 
-    describe('#chromeLoadTimes', function() {
-      it('returns a reference to window.chrome.loadTimes() if the browser supports it, otherwise undefined', function() {
-        if(window.chrome && window.chrome.loadTimes) {
-          expect(SurfNPerf.chromeLoadTimes()).toEqual(window.chrome.loadTimes());
-        } else {
-          expect(SurfNPerf.chromeLoadTimes()).toEqual(undefined);
-        }
-      });
-    });
-
     describe('#msFirstPaint', function() {
       it('returns a reference to window.performance.timing.msFirstPaint if the browser supports it, otherwise undefined', function() {
         if(window.performance && window.performance.timing && window.performance.timing.msFirstPaint) {
@@ -1404,21 +1394,19 @@ define('spec/surfnperf_spec', [
         });
       });
 
-      describe('when the client is using Chrome', function() {
+      describe('when the client supports paint timing api (Chrome)', function() {
         it('returns the time to first paint relative to navigation start time', function() {
-          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn({
-            firstPaintTime: 1388595601.000123
-          });
+          spyOn(SurfNPerf, '_supportsPaintAPI').andReturn(true);
           spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
 
-          expect(SurfNPerf.getFirstPaint()).toEqual(1000);
+          expect(SurfNPerf.getFirstPaint()).toNotEqual(null);
         });
       });
 
       describe('when the client is using IE/Edge', function() {
         it('returns the time to first paint relative to navigation start time', function() {
           spyOn(SurfNPerf, 'msFirstPaint').andReturn(1388595601005);
-          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
+          spyOn(SurfNPerf, '_supportsPaintAPI').andReturn(false);
 
           expect(SurfNPerf.getFirstPaint()).toEqual(1005);
         });
@@ -1426,7 +1414,7 @@ define('spec/surfnperf_spec', [
 
       describe('when the client is using browser without Time to First Paint built in support', function() {
         it('returns null since the browser does not have built in support', function() {
-          spyOn(SurfNPerf, 'chromeLoadTimes').andReturn(undefined);
+          spyOn(SurfNPerf, '_supportsPaintAPI').andReturn(false);
           spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
 
           expect(SurfNPerf.getFirstPaint()).toEqual(null);
