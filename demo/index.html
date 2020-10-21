@@ -90,6 +90,7 @@
   <!-- Bootstrap -->
   <link href="bootstrap.min.css" rel="stylesheet">
   <script src="http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"></script>
+  <script src="http://rawgit.com/Comcast/Surf-N-Perf/master/resource-timing.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script type="text/javascript">
     $(window).load(function() {
@@ -121,6 +122,17 @@
 
         document.getElementById('isHidden').innerHTML = surfnperf.isHidden();
         document.getElementById('getHiddenTime').innerHTML = surfnperf.getHiddenTime();
+
+        document.getElementById('getOrigins').innerHTML = surfnperfRT.getOrigins();
+        document.getElementById('getResourcesFromOrigin').innerHTML = surfnperfRT.getResourcesFromOrigin("http://rawgit.com");
+        document.getElementById('getResource').innerHTML = surfnperfRT.getResource("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
+        document.getElementById('duration').innerHTML = surfnperfRT.getResource("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
+        document.getElementById('start').innerHTML = surfnperfRT.start("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
+        document.getElementById('end').innerHTML = surfnperfRT.end("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
+        document.getElementById('getFullRequestLoadTime').innerHTML = surfnperfRT.getFullRequestLoadTime("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
+        document.getElementById('getNetworkTime').innerHTML = surfnperfRT.getNetworkTime("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
+        document.getElementById('getServerTime').innerHTML = surfnperfRT.getServerTime("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
+        document.getElementById('getBlockingTime').innerHTML = surfnperfRT.getBlockingTime("http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js");
 		}, 0);
 	});
   </script>
@@ -218,6 +230,60 @@
       <tr>
         <td> surfnperf.getHiddenTime() </td>
         <td id="getHiddenTime"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="panel-heading">Resource Timings Demo</div>
+
+
+  <table class="table table-bordered" cellspacing="0" width="80%">
+    <thead>
+      <tr>
+        <th> Method </th>
+        <th> Status/Loading Time </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td> surfnperfRT.getOrigins() </td>
+        <td id="getOrigins"></td>
+      </tr>
+      <tr>
+        <td> surfnperfRT.getResourcesFromOrigin("http://rawgit.com") </td>
+        <td id="getResourcesFromOrigin"></td>
+      </tr>
+      <tr>
+        <td> surfnperfRT.getResource("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
+        <td id="getResource"></td>
+      </tr>
+      <tr>
+        <td> surfnperfRT.duration("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
+        <td id="duration"></td>
+      </tr>
+      <tr>
+        <td> surfnperfRT.start("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
+        <td id="start"></td>
+      </tr>
+      <tr>
+        <td> surfnperfRT.end("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
+        <td id="end"></td>
+      </tr>
+      <tr>
+        <td> surfnperfRT.getFullRequestLoadTime("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
+        <td id="getFullRequestLoadTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperfRT.getNetworkTime("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
+        <td id="getNetworkTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperfRT.getServerTime("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
+        <td id="getServerTime"></td>
+      </tr>
+      <tr>
+        <td> surfnperfRT.getBlockingTime("http://johnriv.github.io/Surf-N-Perf/docs/scripts/linenumber.js") </td>
+        <td id="getBlockingTime"></td>
       </tr>
     </tbody>
   </table>
