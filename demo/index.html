@@ -124,7 +124,7 @@
         document.getElementById('getHiddenTime').innerHTML = surfnperf.getHiddenTime();
 
         var resource = surfnperfRT.getResources().find(function(r) {
-          return r.name.indexOf('bootstrap.min.js') != -1;
+          return r.name.indexOf('jquery.min.js') != -1;
         });
 
         var collection = document.getElementsByClassName('RTrn');
@@ -135,7 +135,7 @@
         document.getElementById('getOrigins').innerHTML = surfnperfRT.getOrigins();
         document.getElementById('getResourcesFromOrigin').innerHTML = surfnperfRT.getResourcesFromOrigin("http://rawgit.com");
         document.getElementById('getResource').innerHTML = JSON.stringify(surfnperfRT.getResource(resource.name)).replace(/,/g,",<br>").replace(/\{/g,"{<br>").replace(/\}/g,"<br>}");
-        document.getElementById('duration').innerHTML = surfnperfRT.duration(resource.name, 'fetchStart', 'responseEnd');
+        document.getElementById('duration').innerHTML = surfnperfRT.duration(resource.name, 'connectEnd', 'requestStart');
         document.getElementById('start').innerHTML = surfnperfRT.getStart(resource.name);
         document.getElementById('end').innerHTML = surfnperfRT.getEnd(resource.name);
         document.getElementById('getFullRequestLoadTime').innerHTML = surfnperfRT.getFullRequestLoadTime(resource.name);
@@ -147,9 +147,7 @@
   </script>
 </head>
 <body>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="scripts/bootstrap.min.js"></script>
-   <h1>Surf-N-Perf</h1>
+  <h1>Surf-N-Perf</h1>
 
   <div class="panel panel-default">
   <!-- Default panel contents -->
@@ -267,7 +265,7 @@
         <td id="getResource"></td>
       </tr>
       <tr>
-        <td> surfnperfRT.duration("<span class="RTrn"></span>", "fetchStart", "responseEnd") </td>
+        <td> surfnperfRT.duration("<span class="RTrn"></span>", "connectEnd", "requestStart") </td>
         <td id="duration"></td>
       </tr>
       <tr>
