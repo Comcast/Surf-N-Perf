@@ -1,6 +1,6 @@
 /*!
  * @license
- * Copyright 2015-2019 Comcast Cable Communications Management, LLC
+ * Copyright 2015-2020 Comcast Cable Communications Management, LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -426,7 +426,7 @@
    * @memberOf SurfNPerf
    */
   SNPProto.getFirstPaint = function(options) {
-    if (this._supportsPaintAPI()) {
+    if(this._supportsPaintAPI()) {
       var firstPaint = window.performance.getEntriesByName('first-paint')[0] || {};
       return this._roundedDuration(this.getTimingMark('navigationStart', 'DOM'), firstPaint.startTime, options);
     } else if(this.msFirstPaint()) {
