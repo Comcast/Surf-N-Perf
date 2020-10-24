@@ -89,9 +89,9 @@
 
   <!-- Bootstrap -->
   <link href="bootstrap.min.css" rel="stylesheet">
-  <script src="http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"></script>
-  <script src="http://rawgit.com/Comcast/Surf-N-Perf/master/resource-timing.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"></script>
+  <script src="https://rawgit.com/Comcast/Surf-N-Perf/master/resource-timing.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script type="text/javascript">
     $(window).load(function() {
 	  	setTimeout(function() {
@@ -133,7 +133,7 @@
         }
 
         document.getElementById('getOrigins').innerHTML = surfnperfRT.getOrigins();
-        document.getElementById('getResourcesFromOrigin').innerHTML = surfnperfRT.getResourcesFromOrigin("http://rawgit.com");
+        document.getElementById('getResourcesFromOrigin').innerHTML = surfnperfRT.getResourcesFromOrigin("https://rawgit.com");
         document.getElementById('getResource').innerHTML = JSON.stringify(surfnperfRT.getResource(resource.name)).replace(/,/g,",<br>").replace(/\{/g,"{<br>").replace(/\}/g,"<br>}");
         document.getElementById('duration').innerHTML = surfnperfRT.duration(resource.name, 'connectEnd', 'requestStart');
         document.getElementById('start').innerHTML = surfnperfRT.getStart(resource.name);
@@ -257,7 +257,7 @@
         <td id="getOrigins"></td>
       </tr>
       <tr>
-        <td> surfnperfRT.getResourcesFromOrigin("http://rawgit.com") </td>
+        <td> surfnperfRT.getResourcesFromOrigin("https://rawgit.com") </td>
         <td id="getResourcesFromOrigin"></td>
       </tr>
       <tr>

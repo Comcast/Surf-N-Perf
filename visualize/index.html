@@ -26,9 +26,9 @@
 		</style>
 		<link rel="stylesheet" type="text/css" href="nv.d3.css" />
 
-		<script src="http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-		<script src="http://d3js.org/d3.v3.js"></script>
+		<script src="https://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="https://d3js.org/d3.v3.js"></script>
 		<script src="nv.d3.js"></script>
 
 		<script type="text/javascript">
@@ -67,7 +67,7 @@
 				}
 			}, 3000);
 
-			function loadGraph(data) { 
+			function loadGraph(data) {
 				nv.addGraph(function() {
 					d3.select('#chart svg')
 							.datum(data)
@@ -123,8 +123,8 @@
 
 					//Format x-axis labels with custom function.
 					chart.xAxis
-					    .tickFormat(function(d, i) { 
-					      return i 
+					    .tickFormat(function(d, i) {
+					      return i
 					});
 
 					chart.yAxis
@@ -152,4 +152,4 @@
 		<div id="chart"><svg></svg></div>
 	</body>
 
-</html> 
+</html>
