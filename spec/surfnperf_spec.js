@@ -1422,6 +1422,42 @@ define('spec/surfnperf_spec', [
       });
     });
 
+    describe('#getFirstContentfulPaint', function() {
+      beforeEach(function() {
+        SurfNPerf._navigationTiming = true;
+        spyOn(SurfNPerf, 'performanceTiming').andReturn({
+          navigationStart: 1388595600000
+        });
+      });
+
+      describe('when the client supports paint timing api (Chrome)', function() {
+        it('returns the time to first paint relative to navigation start time', function() {
+          spyOn(SurfNPerf, '_supportsPaintAPI').andReturn(true);
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
+
+          expect(SurfNPerf.getFirstContentfulPaint()).toNotEqual(null);
+        });
+      });
+
+      describe('when the client is using IE/Edge', function() {
+        it('returns the time to first paint relative to navigation start time', function() {
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(1388595601005);
+          spyOn(SurfNPerf, '_supportsPaintAPI').andReturn(false);
+
+          expect(SurfNPerf.getFirstContentfulPaint()).toEqual(1005);
+        });
+      });
+
+      describe('when the client is using browser without Time to First Paint built in support', function() {
+        it('returns null since the browser does not have built in support', function() {
+          spyOn(SurfNPerf, '_supportsPaintAPI').andReturn(false);
+          spyOn(SurfNPerf, 'msFirstPaint').andReturn(undefined);
+
+          expect(SurfNPerf.getFirstContentfulPaint()).toEqual(null);
+        });
+      });
+    });
+
     describe("#_supportsRequestAnimationFrame", function() {
       it('returns a boolean based on the existence of window.requestAnimationFrame', function() {
         expect(SurfNPerf._supportsRequestAnimationFrame()).toEqual(!!window.requestAnimationFrame);
