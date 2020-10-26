@@ -68,6 +68,8 @@
             
                 <li data-name="SurfNPerf.SNPProto.duration"><a href="SurfNPerf.html#.SNPProto.duration">SNPProto.duration</a></li>
             
+                <li data-name="SurfNPerf.SNPProto.getFirstContentfulPaint"><a href="SurfNPerf.html#.SNPProto.getFirstContentfulPaint">SNPProto.getFirstContentfulPaint</a></li>
+            
                 <li data-name="SurfNPerf.SNPProto.getFirstPaint"><a href="SurfNPerf.html#.SNPProto.getFirstPaint">SNPProto.getFirstPaint</a></li>
             
                 <li data-name="SurfNPerf.SNPProto.getFirstPaintFrame"><a href="SurfNPerf.html#.SNPProto.getFirstPaintFrame">SNPProto.getFirstPaintFrame</a></li>
@@ -184,7 +186,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line52">line 52</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line53">line 53</a>
         </div>
         
     </div>
@@ -273,7 +275,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line286">line 286</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line287">line 287</a>
         </div>
         
     </div>
@@ -512,7 +514,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line409">line 409</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line410">line 410</a>
         </div>
         
     </div>
@@ -523,7 +525,8 @@
     
     
     <div class="description">
-        <p>Return the &quot;missing periods&quot; (non-zero durations) that occur between connectEnd and requestStart (when waiting on a Keep-Alive TCP connection to reuse), or between fetchStart and domainLookupStart (when waiting on things like the browser’s cache) of the specified resource<br>See &quot;Blocking Time&quot; section of http://nicj.net/resourcetiming-in-practice/ for additional details</p>
+        <p>Return the &quot;missing periods&quot; (non-zero durations) that occur between connectEnd and requestStart (when waiting on a Keep-Alive TCP connection to reuse), or between fetchStart and domainLookupStart (when waiting on things like the browser’s cache) of the specified resource<br>
+See &quot;Blocking Time&quot; section of http://nicj.net/resourcetiming-in-practice/ for additional details</p>
     </div>
     
 
@@ -695,7 +698,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line331">line 331</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line332">line 332</a>
         </div>
         
     </div>
@@ -878,7 +881,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line353">line 353</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line354">line 354</a>
         </div>
         
     </div>
@@ -889,7 +892,8 @@
     
     
     <div class="description">
-        <p>Shorthand for <code>window.performance.getEntriesByName(name, &quot;resource&quot;)[0].duration</code><br>Note this included blocking time. If you want blocking time filtered out, use <code>getNetworkTime</code></p>
+        <p>Shorthand for <code>window.performance.getEntriesByName(name, &quot;resource&quot;)[0].duration</code><br>
+Note this included blocking time. If you want blocking time filtered out, use <code>getNetworkTime</code></p>
     </div>
     
 
@@ -1061,7 +1065,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line268">line 268</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line269">line 269</a>
         </div>
         
     </div>
@@ -1206,7 +1210,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line437">line 437</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line438">line 438</a>
         </div>
         
     </div>
@@ -1217,7 +1221,9 @@
     
     
     <div class="description">
-        <p>Return the amount of time the network was actively fetching the first resource from name<br>Essentially, this is the duration minus blocking time<br>See http://<a target="_blank" href="http://www.stevesouders.com/blog/2014/11/25/serious-confusion-with-resource-timing/">www.stevesouders.com/blog/2014/11/25/serious-confusion-with-resource-timing/</a> for additional details</p>
+        <p>Return the amount of time the network was actively fetching the first resource from name<br>
+Essentially, this is the duration minus blocking time<br>
+See http://www.stevesouders.com/blog/2014/11/25/serious-confusion-with-resource-timing/ for additional details</p>
     </div>
     
 
@@ -1389,7 +1395,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line375">line 375</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line376">line 376</a>
         </div>
         
     </div>
@@ -1400,7 +1406,8 @@
     
     
     <div class="description">
-        <p>Return the time for App Cache, DNS &amp; TCP (and any time in between) of the specified resource<br>For a CORS request without a Timing-Allow-Origin header, the value will allows be false</p>
+        <p>Return the time for App Cache, DNS &amp; TCP (and any time in between) of the specified resource<br>
+For a CORS request without a Timing-Allow-Origin header, the value will allows be false</p>
     </div>
     
 
@@ -1572,7 +1579,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line116">line 116</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line117">line 117</a>
         </div>
         
     </div>
@@ -1724,7 +1731,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line237">line 237</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line238">line 238</a>
         </div>
         
     </div>
@@ -1735,7 +1742,8 @@
     
     
     <div class="description">
-        <p>Get the first resource from window.performance.getEntriesByName for the specified name<br>Optional 2nd arugment can return a resource other than the first (useful if you request the same resource multiple times, either to request updated data in a Single Page App, or when making a Cross Origin request that requires an initial OPTIONS request)</p>
+        <p>Get the first resource from window.performance.getEntriesByName for the specified name<br>
+Optional 2nd arugment can return a resource other than the first (useful if you request the same resource multiple times, either to request updated data in a Single Page App, or when making a Cross Origin request that requires an initial OPTIONS request)</p>
     </div>
     
 
@@ -1910,7 +1918,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line220">line 220</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line221">line 221</a>
         </div>
         
     </div>
@@ -2062,7 +2070,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line169">line 169</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line170">line 170</a>
         </div>
         
     </div>
@@ -2207,7 +2215,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line201">line 201</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line202">line 202</a>
         </div>
         
     </div>
@@ -2359,7 +2367,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line140">line 140</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line141">line 141</a>
         </div>
         
     </div>
@@ -2539,7 +2547,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line392">line 392</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line393">line 393</a>
         </div>
         
     </div>
@@ -2550,7 +2558,8 @@
     
     
     <div class="description">
-        <p>Return the time for the request &amp; response of the specified resource<br>For a CORS request without a Timing-Allow-Origin header, the value will allows be false</p>
+        <p>Return the time for the request &amp; response of the specified resource<br>
+For a CORS request without a Timing-Allow-Origin header, the value will allows be false</p>
     </div>
     
 
@@ -2722,7 +2731,7 @@
     
         
         <div class="tag-source">
-            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line310">line 310</a>
+            <a href="lib_resource-timing.js.html">lib/resource-timing.js</a>, <a href="lib_resource-timing.js.html#line311">line 311</a>
         </div>
         
     </div>
@@ -2913,7 +2922,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Oct 23 2018 17:05:00 GMT+0000 (UTC)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Oct 26 2020 21:54:51 GMT+0000 (Coordinated Universal Time)
         </footer>
     </div>
 </div>
