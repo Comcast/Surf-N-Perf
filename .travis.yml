@@ -4,7 +4,7 @@ node_js:
 - '10'
 env:
   global:
-    secure: cXSfe/DZUMsomv3I7AaO6HItVo4QwdaHv/dPzObjeP1V07r+ULhNo/lb8YgXLo1ryBu9nflXazpCjZ2Ef3S+F+7PUzK2xhP9z56RnDDnwcbdFlMuJ3LKN2GKHEvebQQInFqnwkgFI4bSQLHgyUPiZs5mj1fss4UWeKvFoqDJdHk=
+    secure: HKLkqolPSa4Bk1jSapiDFL99WxbkvlaJxzRB9ekJEta4zdqJ3Er885vLzHJdlLMiKLA306zYMUurzOqaMX77RzTxTlFlj0qYHluICiB3tXXeY8KZt9zdIUy8byaoGkNIMDjPmRIrfiLiBznL4NAow2j6ReUXD19VN5LJvkhUNPc=
 before_script: npm install -g grunt-cli
 after_success:
   - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
