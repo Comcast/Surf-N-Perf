@@ -3,7 +3,7 @@
 
 #### Features
 
-* Adds helper functions for [Resource Timing](https://www.w3.org/TR/resource-timing-1/) via [`surfnperf/resource-timing`](https://github.com/Comcast/Surf-N-Perf/blob/master/resource-timing.js) ([Unminified Code](https://github.com/Comcast/Surf-N-Perf/blob/master/lib/resource-timing.js), [Docs](http://comcast.github.io/Surf-N-Perf/docs/SurfNPerfRT.html))
+* Adds helper functions for [Resource Timing](https://www.w3.org/TR/resource-timing-1/) via [`surfnperf/resource-timing`](https://github.com/Comcast/Surf-N-Perf/blob/main/resource-timing.js) ([Unminified Code](https://github.com/Comcast/Surf-N-Perf/blob/main/lib/resource-timing.js), [Docs](http://comcast.github.io/Surf-N-Perf/docs/SurfNPerfRT.html))
 
 <a name="1.5.0"></a>
 ### 1.5.0
