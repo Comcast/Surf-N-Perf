@@ -303,12 +303,12 @@ define('spec/surfnperfRT_spec', [
           firstResource = {
             duration: 200,
             entryType: 'resource',
-            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js'
           };
           secondResource = {
             duration: 100,
             entryType: 'resource',
-            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js'
           };
           thirdResource = {
             duration: 150,
@@ -319,7 +319,7 @@ define('spec/surfnperfRT_spec', [
 
         it('returns all matching resources returned by window.performance.getEntriesByName', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource]);
-          expect(SurfNPerfRT.getResources('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual([firstResource, secondResource]);
+          expect(SurfNPerfRT.getResources('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js')).toEqual([firstResource, secondResource]);
         });
 
         it('returns all resources returned by window.performance.getEntriesByType("resource") if no name is passed in', function() {
@@ -353,12 +353,12 @@ define('spec/surfnperfRT_spec', [
           firstResource = {
             duration: 200,
             entryType: 'resource',
-            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js'
           };
           secondResource = {
             duration: 100,
             entryType: 'resource',
-            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js'
           };
           thirdResource = {
             duration: 150,
@@ -369,7 +369,7 @@ define('spec/surfnperfRT_spec', [
 
         it('returns length of the array of resources returned by window.performance.getEntriesByName', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource]);
-          expect(SurfNPerfRT.getResourceCount('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(2);
+          expect(SurfNPerfRT.getResourceCount('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js')).toEqual(2);
         });
 
         it('returns the proper value when passed a relative URL for the resource', function() {
@@ -378,7 +378,7 @@ define('spec/surfnperfRT_spec', [
             host: 'rawgit.com'
           });
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource]);
-          expect(SurfNPerfRT.getResourceCount('/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(2);
+          expect(SurfNPerfRT.getResourceCount('/Comcast/Surf-N-Perf/main/surfnperf.min.js')).toEqual(2);
         });
 
         it('returns length of the array of resources returned by window.performance.getEntriesByType("resource") if no name is specified', function() {
@@ -413,57 +413,57 @@ define('spec/surfnperfRT_spec', [
           firstResource = {
             duration: 200,
             entryType: 'resource',
-            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js'
           };
           secondResource = {
             duration: 100,
             entryType: 'resource',
-            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js'
           };
           thirdResource = {
             duration: 50,
             entryType: 'resource',
-            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js'
           };
         });
 
         it('returns the first resource in the array of resources returned by window.performance.getEntriesByName', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource, thirdResource]);
-          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(firstResource);
+          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js')).toEqual(firstResource);
         });
 
         it('returns the first resource in the array of resources returned by window.performance.getEntriesByName if the options parameter exists but does not contain an index property', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource, thirdResource]);
-          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js', {
+          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js', {
             decimalPlaces: 3
           })).toEqual(firstResource);
         });
 
         it('returns the resource specified by the index parameter from the array of resources returned by window.performance.getEntriesByName', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource, thirdResource]);
-          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js', 1)).toEqual(secondResource);
+          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js', 1)).toEqual(secondResource);
         });
 
         it('returns the last resource from the array of resources returned by window.performance.getEntriesByName if "last" is the 2nd paramter', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource, thirdResource]);
-          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js', 'last')).toEqual(thirdResource);
+          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js', 'last')).toEqual(thirdResource);
         });
 
         it('returns undefined if the index parameter does not exist in the array of resources returned by window.performance.getEntriesByName', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource, thirdResource]);
-          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js', 9)).toBeUndefined();
+          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js', 9)).toBeUndefined();
         });
 
         it('returns the resource specified by the object parameter\'s options index property from the array of resources returned by window.performance.getEntriesByName', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource, thirdResource]);
-          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js', {
+          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js', {
             index: 1
           })).toEqual(secondResource);
         });
 
         it('returns the last resource from the array of resources returned by window.performance.getEntriesByName if "last" is the 2nd paramter options index property', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource, thirdResource]);
-          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js', {
+          expect(SurfNPerfRT.getResource('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js', {
             index: 'last'
           })).toEqual(thirdResource);
         });
@@ -474,7 +474,7 @@ define('spec/surfnperfRT_spec', [
             host: 'rawgit.com'
           });
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource, thirdResource]);
-          expect(SurfNPerfRT.getResource('/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(firstResource);
+          expect(SurfNPerfRT.getResource('/Comcast/Surf-N-Perf/main/surfnperf.min.js')).toEqual(firstResource);
         });
 
         it('returns the same PerformanceResourceTiming PerformanceEntry resource when passed that as the first argument instead of a string', function() {
@@ -504,18 +504,18 @@ define('spec/surfnperfRT_spec', [
           firstResource = {
             duration: 200,
             entryType: 'resource',
-            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js'
           };
           secondResource = {
             duration: 100,
             entryType: 'resource',
-            name: 'http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js'
+            name: 'http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js'
           };
         });
 
         it('returns the last resource in the array of resources returned by window.performance.getEntriesByName', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource]);
-          expect(SurfNPerfRT.getLastResource('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(secondResource);
+          expect(SurfNPerfRT.getLastResource('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js')).toEqual(secondResource);
         });
 
         it('returns the proper value when passed a relative URL for the resource', function() {
@@ -524,12 +524,12 @@ define('spec/surfnperfRT_spec', [
             host: 'rawgit.com'
           });
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource, secondResource]);
-          expect(SurfNPerfRT.getLastResource('/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(secondResource);
+          expect(SurfNPerfRT.getLastResource('/Comcast/Surf-N-Perf/main/surfnperf.min.js')).toEqual(secondResource);
         });
 
         it('returns the only resource in the array of resources returned by window.performance.getEntriesByName if there is only 1', function() {
           spyOn(SurfNPerfRT._perf(), 'getEntriesByName').andReturn([firstResource]);
-          expect(SurfNPerfRT.getLastResource('http://rawgit.com/Comcast/Surf-N-Perf/master/surfnperf.min.js')).toEqual(firstResource);
+          expect(SurfNPerfRT.getLastResource('http://rawgit.com/Comcast/Surf-N-Perf/main/surfnperf.min.js')).toEqual(firstResource);
         });
       });
     });

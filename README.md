@@ -13,7 +13,7 @@ Check out the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/JavaS
 
 Available as an [NPM Module](https://www.npmjs.com/package/surfnperf), [Ruby Gem](https://rubygems.org/gems/surfnperf), and a [Bower](https://bower.io/) package.
 
-[![Build Status](https://travis-ci.org/Comcast/Surf-N-Perf.svg?branch=master)](https://travis-ci.org/Comcast/Surf-N-Perf)
+[![Build Status](https://travis-ci.org/Comcast/Surf-N-Perf.svg?branch=main)](https://travis-ci.org/Comcast/Surf-N-Perf)
 
 ## Usage
 
@@ -120,9 +120,9 @@ That provides support for the following:
 - A `"firstPaintFrame"` mark (available in the best possible format for the browser, either a [User Timing Mark](http://www.w3.org/TR/user-timing/#performancemark), [DOMHighResTimeStamp](http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp), or [DOMTimeStamp](https://developer.mozilla.org/en-US/docs/Web/API/DOMTimeStamp)) that approximates the Time To First Paint in browsers that [support `window.requestAnimationFrame`](http://caniuse.com/#feat=requestanimationframe).
 - The initial `visibilityState` as well as listeners for the `"visibilitychange"` event, enabling the ability to calculate how much time the page was hidden when you call `surfnperf.getHiddenTime()`. This is of particular importance as [Chrome as of version 57](https://developers.google.com/web/updates/2017/03/background_tabs) and [Firefox as of version 57](https://blog.mozilla.org/blog/2017/09/26/firefox-quantum-beta-developer-edition/) limit the resources assigned to background (hidden) tabs.
 
-**2.** Then just drop the [surfnperf.min.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.min.js) in your codebase and reference that JavaScript file in your HTML document. If you're using [RequireJS](http://requirejs.org/) or [Browserify](http://browserify.org/), it registers itself as 'surfnperf'.
+**2.** Then just drop the [surfnperf.min.js](https://github.com/Comcast/Surf-N-Perf/blob/main/surfnperf.min.js) in your codebase and reference that JavaScript file in your HTML document. If you're using [RequireJS](http://requirejs.org/) or [Browserify](http://browserify.org/), it registers itself as 'surfnperf'.
 
-**3.** (Optional) If you would like access to the [Resource Timing](https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API/Using_the_Resource_Timing_API) helper functions, include [resource-timing.js](https://github.com/Comcast/Surf-N-Perf/blob/master/resource-timing.js) in your codebase and reference that JavaScript file in your HTML document. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'surfnperf/resource-timing', otherwise it is available on `window` as `window.surfnperfRT`.
+**3.** (Optional) If you would like access to the [Resource Timing](https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API/Using_the_Resource_Timing_API) helper functions, include [resource-timing.js](https://github.com/Comcast/Surf-N-Perf/blob/main/resource-timing.js) in your codebase and reference that JavaScript file in your HTML document. If you're using [RequireJS](http://requirejs.org/), it registers itself as 'surfnperf/resource-timing', otherwise it is available on `window` as `window.surfnperfRT`.
 
 ### Storing & Retrieving Performance Data
 
@@ -142,7 +142,7 @@ The [surfnperf Ruby Gem](https://rubygems.org/gems/surfnperf) allows you to quic
 gem 'surfnperf'
 ```
 
-After a `$ bundle install`, you'll be able to include the [main JavaScript file](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js) in your JavaScript manifest by simply adding:
+After a `$ bundle install`, you'll be able to include the [main JavaScript file](https://github.com/Comcast/Surf-N-Perf/blob/main/surfnperf.js) in your JavaScript manifest by simply adding:
 
 ```
 //= require surfnperf
@@ -165,7 +165,7 @@ The [surfnperf Ruby Gem](https://rubygems.org/gems/surfnperf) also allows you to
 gem "surfnperf", ">=1.1.0"
 ```
 
-After a `$ bundle install`, you'll be able to include the [main JavaScript file](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js) in your JavaScript manifest by simply adding:
+After a `$ bundle install`, you'll be able to include the [main JavaScript file](https://github.com/Comcast/Surf-N-Perf/blob/main/surfnperf.js) in your JavaScript manifest by simply adding:
 
 ```
 //= require surfnperf
@@ -197,7 +197,7 @@ Add `surfnperf` to your `Gemfile`:
 gem 'surfnperf'
 ```
 
-After a `$ bundle install`, include [surfnperf.js](https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js) in your JavaScript manifest by adding:
+After a `$ bundle install`, include [surfnperf.js](https://github.com/Comcast/Surf-N-Perf/blob/main/surfnperf.js) in your JavaScript manifest by adding:
 
 ```
 //= require surfnperf
@@ -228,4 +228,4 @@ The `grunt dev` process will watch for file updates, so as you modify surfnperf.
 
 ## License
 
-Licensed under the [MIT License](https://github.com/Comcast/Surf-N-Perf/blob/master/LICENSE)
+Licensed under the [MIT License](https://github.com/Comcast/Surf-N-Perf/blob/main/LICENSE)
