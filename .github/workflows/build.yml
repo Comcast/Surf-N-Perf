@@ -1,0 +1,31 @@
+name: Build & Deploy Docs
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.x
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+    - name: Test code
+      run: npm test
+    - name: Install grunt
+      run: npm install -g grunt-cli
+    - name: Build docs
+      run: grunt jsdoc
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.5
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: _build/docs # The folder the action should deploy.
