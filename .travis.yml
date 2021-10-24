@@ -1,9 +1,0 @@
-language: node_js
-node_js:
-- '16'
-env:
-  global:
-    secure: HKLkqolPSa4Bk1jSapiDFL99WxbkvlaJxzRB9ekJEta4zdqJ3Er885vLzHJdlLMiKLA306zYMUurzOqaMX77RzTxTlFlj0qYHluICiB3tXXeY8KZt9zdIUy8byaoGkNIMDjPmRIrfiLiBznL4NAow2j6ReUXD19VN5LJvkhUNPc=
-before_script: npm install -g grunt-cli
-after_success:
-  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "main" && bash deploy.sh
