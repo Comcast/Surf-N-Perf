@@ -186,7 +186,7 @@
 <p>With Surf-N-Perf, all you need  is <code>surfnperf.getMark('foo')';</code>, and that's just the start!</p>
 <p>Check out the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API">JavaScript API</a> to see all of its features and the <a target="_blank" href="http://comcast.github.io/Surf-N-Perf/docs/SurfNPerf.html">full documentation</a> for a list of methods &amp; how to use them.</p>
 <p>Available as an <a target="_blank" href="https://www.npmjs.com/package/surfnperf">NPM Module</a>, <a target="_blank" href="https://rubygems.org/gems/surfnperf">Ruby Gem</a>, and a <a target="_blank" href="https://bower.io/">Bower</a> package.</p>
-<p><a target="_blank" href="https://travis-ci.org/Comcast/Surf-N-Perf"><img src="https://travis-ci.org/Comcast/Surf-N-Perf.svg?branch=master" alt="Build Status"></a></p>
+<p><a target="_blank" href="https://travis-ci.org/Comcast/Surf-N-Perf"><img src="https://travis-ci.org/Comcast/Surf-N-Perf.svg?branch=main" alt="Build Status"></a></p>
 <h2>Usage</h2>
 <h3>Including the code in your project</h3>
 <p>There are 2 pieces of code that need to be included in your webpage:</p>
@@ -286,8 +286,8 @@
 <li>A <code>&quot;firstPaintFrame&quot;</code> mark (available in the best possible format for the browser, either a <a target="_blank" href="http://www.w3.org/TR/user-timing/#performancemark">User Timing Mark</a>, <a target="_blank" href="http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp">DOMHighResTimeStamp</a>, or <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/DOMTimeStamp">DOMTimeStamp</a>) that approximates the Time To First Paint in browsers that <a target="_blank" href="http://caniuse.com/#feat=requestanimationframe">support <code>window.requestAnimationFrame</code></a>.</li>
 <li>The initial <code>visibilityState</code> as well as listeners for the <code>&quot;visibilitychange&quot;</code> event, enabling the ability to calculate how much time the page was hidden when you call <code>surfnperf.getHiddenTime()</code>. This is of particular importance as <a target="_blank" href="https://developers.google.com/web/updates/2017/03/background_tabs">Chrome as of version 57</a> and <a target="_blank" href="https://blog.mozilla.org/blog/2017/09/26/firefox-quantum-beta-developer-edition/">Firefox as of version 57</a> limit the resources assigned to background (hidden) tabs.</li>
 </ul>
-<p><strong>2.</strong> Then just drop the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.min.js">surfnperf.min.js</a> in your codebase and reference that JavaScript file in your HTML document. If you're using <a target="_blank" href="http://requirejs.org/">RequireJS</a> or <a target="_blank" href="http://browserify.org/">Browserify</a>, it registers itself as 'surfnperf'.</p>
-<p><strong>3.</strong> (Optional) If you would like access to the <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API/Using_the_Resource_Timing_API">Resource Timing</a> helper functions, include <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/master/resource-timing.js">resource-timing.js</a> in your codebase and reference that JavaScript file in your HTML document. If you're using <a target="_blank" href="http://requirejs.org/">RequireJS</a>, it registers itself as 'surfnperf/resource-timing', otherwise it is available on <code>window</code> as <code>window.surfnperfRT</code>.</p>
+<p><strong>2.</strong> Then just drop the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/main/surfnperf.min.js">surfnperf.min.js</a> in your codebase and reference that JavaScript file in your HTML document. If you're using <a target="_blank" href="http://requirejs.org/">RequireJS</a> or <a target="_blank" href="http://browserify.org/">Browserify</a>, it registers itself as 'surfnperf'.</p>
+<p><strong>3.</strong> (Optional) If you would like access to the <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API/Using_the_Resource_Timing_API">Resource Timing</a> helper functions, include <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/main/resource-timing.js">resource-timing.js</a> in your codebase and reference that JavaScript file in your HTML document. If you're using <a target="_blank" href="http://requirejs.org/">RequireJS</a>, it registers itself as 'surfnperf/resource-timing', otherwise it is available on <code>window</code> as <code>window.surfnperfRT</code>.</p>
 <h3>Storing &amp; Retrieving Performance Data</h3>
 <p>Details in the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/wiki/JavaScript-API">JavaScript API</a> page in the wiki</p>
 <h3>Resource Timing Helper Functions</h3>
@@ -297,7 +297,7 @@
 <p>The <a target="_blank" href="https://rubygems.org/gems/surfnperf">surfnperf Ruby Gem</a> allows you to quickly &amp; easily integrate Surf-N-Perf into your <a target="_blank" href="http://rubyonrails.org/">Rails</a> projects. To include the necessary files, add <code>surfnperf</code> to your <code>Gemfile</code>:</p>
 <pre class="prettyprint source lang-ruby"><code>gem 'surfnperf'
 </code></pre>
-<p>After a <code>$ bundle install</code>, you'll be able to include the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js">main JavaScript file</a> in your JavaScript manifest by simply adding:</p>
+<p>After a <code>$ bundle install</code>, you'll be able to include the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/main/surfnperf.js">main JavaScript file</a> in your JavaScript manifest by simply adding:</p>
 <pre class="prettyprint source"><code>//= require surfnperf
 </code></pre>
 <p>The necessary script for the <code>&lt;head&gt;</code> of your HTML document is also available to you via a <a target="_blank" href="http://guides.rubyonrails.org/layouts_and_rendering.html#using-partials">partial template</a> that you can include in the appropriate layout file for your page, such as <code>app/views/layouts/application.html.erb</code> by simply adding this line:</p>
@@ -308,7 +308,7 @@
 <p>The <a target="_blank" href="https://rubygems.org/gems/surfnperf">surfnperf Ruby Gem</a> also allows you to quickly &amp; easily integrate Surf-N-Perf into your <a target="_blank" href="https://middlemanapp.com/">Middleman</a> projects. Instructions are similar to the Rails instructions above, with one extra step. Start by adding at least v1.1.0 of <code>surfnperf</code> to your Middleman project's <code>Gemfile</code>:</p>
 <pre class="prettyprint source lang-ruby"><code>gem &quot;surfnperf&quot;, &quot;>=1.1.0&quot;
 </code></pre>
-<p>After a <code>$ bundle install</code>, you'll be able to include the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js">main JavaScript file</a> in your JavaScript manifest by simply adding:</p>
+<p>After a <code>$ bundle install</code>, you'll be able to include the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/main/surfnperf.js">main JavaScript file</a> in your JavaScript manifest by simply adding:</p>
 <pre class="prettyprint source"><code>//= require surfnperf
 </code></pre>
 <p>The necessary script for the <code>&lt;head&gt;</code> of your HTML document is also available to you via a <a target="_blank" href="https://middlemanapp.com/basics/helper_methods/#custom-defined-helpers">custom defined helper</a> that you can include in the appropriate layout file for your page, such as <code>source/layouts/layout.erb</code> by adding this line:</p>
@@ -324,7 +324,7 @@
 <p>Add <code>surfnperf</code> to your <code>Gemfile</code>:</p>
 <pre class="prettyprint source lang-ruby"><code>gem 'surfnperf'
 </code></pre>
-<p>After a <code>$ bundle install</code>, include <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/master/surfnperf.js">surfnperf.js</a> in your JavaScript manifest by adding:</p>
+<p>After a <code>$ bundle install</code>, include <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/main/surfnperf.js">surfnperf.js</a> in your JavaScript manifest by adding:</p>
 <pre class="prettyprint source"><code>//= require surfnperf
 </code></pre>
 <p>For now, you'll have to manually include the <a href="#including-the-code-in-your-project">necessary script</a> for the <code>&lt;head&gt;</code> of your HTML document.</p>
@@ -340,7 +340,7 @@
 <p>By default, it will run the tests using <a target="_blank" href="http://phantomjs.org/">PhantomJS</a>. You can also run the tests in any browser by going to http://localhost:9876/</p>
 <p>The <code>grunt dev</code> process will watch for file updates, so as you modify surfnperf.js or the test files, it will automatically run jshint, jsbeautifier, uglify &amp; the tests. To stop the watch process, press control + C</p>
 <h2>License</h2>
-<p>Licensed under the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/master/LICENSE">MIT License</a></p></article>
+<p>Licensed under the <a target="_blank" href="https://github.com/Comcast/Surf-N-Perf/blob/main/LICENSE">MIT License</a></p></article>
     </section>
 
 
@@ -351,7 +351,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Oct 26 2020 21:54:51 GMT+0000 (Coordinated Universal Time)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Sun Oct 24 2021 04:02:11 GMT+0000 (Coordinated Universal Time)
         </footer>
     </div>
 </div>
