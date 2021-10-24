@@ -13,7 +13,7 @@ Check out the [JavaScript API](https://github.com/Comcast/Surf-N-Perf/wiki/JavaS
 
 Available as an [NPM Module](https://www.npmjs.com/package/surfnperf), [Ruby Gem](https://rubygems.org/gems/surfnperf), and a [Bower](https://bower.io/) package.
 
-[![Build Status](https://travis-ci.org/Comcast/Surf-N-Perf.svg?branch=main)](https://travis-ci.org/Comcast/Surf-N-Perf)
+![Build Status](https://github.com/Comcast/Surf-N-Perf/actions/workflows/test.yml/badge.svg)
 
 ## Usage
 
