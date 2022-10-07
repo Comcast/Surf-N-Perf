@@ -4,7 +4,7 @@
   "description": "Micro-library for gathering frontend web page performance data",
   "main": "surfnperf.min",
   "engines": {
-    "node": ">=0.10.x"
+    "node": ">=0.10"
   },
   "dependencies": {},
   "devDependencies": {
