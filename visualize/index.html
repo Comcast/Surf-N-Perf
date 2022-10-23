@@ -8,6 +8,11 @@
 			  font: 10px sans-serif;
 			}
 
+			#loading {
+				font-size: 20px;
+				padding: 10px;
+			}
+
 			.axis path,
 			.axis line {
 			  fill: none;
@@ -81,6 +86,18 @@
 
 			var addDataPoint = function(network, processing, server) {
 				var len = data[0].values.length + 1;
+
+				// if a value is 0, D3 won't render it so setting 1 as the minimum
+				if (network <= 0) {
+					network = 1;
+				}
+				if (server <= 0) {
+					server = 1;
+				}
+				if (processing <= 0) {
+					processing = 1;
+				}
+
 				data[0].values.push([len, Math.log10(network)]);
 				data[1].values.push([len, Math.log10(server)]);
 				data[2].values.push([len, Math.log10(processing)]);
@@ -104,6 +121,9 @@
 					firstGenerated = true;
 					$("#loading").remove();
 					generateGraphNVD3(data);
+				} else {
+					var loadingTextElem = document.getElementById("loading");
+					loadingTextElem.innerHTML = loadingTextElem.innerHTML + ".";
 				}
 			};
 
