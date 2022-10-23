@@ -1,3 +1,14 @@
+<a name="2.0.0"></a>
+### 2.0.0
+
+#### Breaking Updates
+
+* Removes deprecated `chromeLoadTimes`
+
+#### Features
+
+* Using the [Paint Timing API](https://developer.mozilla.org/en-US/docs/Web/API/PerformancePaintTiming) for First Paint data
+
 <a name="1.6.0"></a>
 ### 1.6.0
 
